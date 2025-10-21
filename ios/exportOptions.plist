@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+  <dict>
+    <key>method</key>
+    <string>debugging</string> <!-- Use 'development' for internal testing -->
+    <key>teamID</key>
+    <string>YourTeamID</string> <!-- Optional: Only needed if you're using a team -->
+    <key>bundleID</key>
+    <string>com.example.testPosApp</string> <!-- Your app's bundle identifier -->
+    <key>signingStyle</key>
+    <string>automatic</string>
+  </dict>
+</plist>

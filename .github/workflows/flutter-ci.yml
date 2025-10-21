@@ -1,0 +1,108 @@
+# https://firebase.google.com/docs/cli?hl=ru#cli-ci-systems
+
+name: Flutter CI/CD
+
+on:
+  push: # merge or push will work
+    branches:
+      - master
+#  pull_request: # means that pull_request will work only when it will be a PR to the master branch
+#    branches:
+#      - master
+#    types:
+#      - closed # means that pull_request works only when PR is closed or merged
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.35.5"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run build_runner
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Run analyzer
+        run: |
+          flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Run tests
+        run: flutter test
+
+      # ---------------- ANDROID BUILD ---------------- #
+      - name: Build APK
+        run: flutter build apk --release
+
+
+      # ---------------- iOS BUILD ---------------- #
+      #      - name: Install CocoaPods dependencies
+      #        run: cd ios && pod install
+
+      #      - name: Build iOS app
+      #        run: |
+      #          flutter build ios --release --no-codesign
+
+      #      - name: Archive iOS App
+      #        run: |
+      #          xcodebuild -workspace ios/Runner.xcworkspace \
+      #          -scheme Runner \
+      #          -sdk iphoneos \
+      #          -configuration Release \
+      #          -archivePath build/Runner.xcarchive \
+      #          archive \
+      #          CODE_SIGNING_REQUIRED=NO \
+      #          CODE_SIGNING_ALLOWED=NO
+
+      #      - name: Export .ipa file
+      #        run: |
+      #          xcodebuild -exportArchive \
+      #          -archivePath build/Runner.xcarchive \
+      #          -exportPath build/ \
+      #          -exportOptionsPlist ios/exportOptions.plist
+      #          CODE_SIGNING_REQUIRED=NO \
+      #          CODE_SIGNING_ALLOWED=NO
+
+
+      # ---------------- FIREBASE AUTH ---------------- #
+      - name: Setup Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+
+      - name: Authenticate with Firebase
+        run: |
+          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > $HOME/firebase_key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json
+
+      #       Throwing error: Failed to authenticate, have you run firebase login?
+      #      - name: Upload APK to Firebase App Distribution
+      #        run: |
+      #          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
+      #            --app ${{ secrets.ANDROID_FIREBASE_APP_ID }} \
+      #            --groups group-testers
+      #        env:
+      #          GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase_key.json
+
+      #        Works find as well (using third parties helpers)
+      - name: Deploy Android App to Firebase
+        uses: wzieba/Firebase-Distribution-Github-Action@v1  # Use Firebase Distribution GitHub Action to deploy ||||||| Error: Container action is only supported on Linux
+        with:
+          appId: ${{secrets.ANDROID_FIREBASE_APP_ID}}  # Firebase App ID for Android
+          serviceCredentialsFileContent: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON}}  # Firebase service account key for authentication
+          groups: group-testers    # Distribution group(s) to receive the app
+          file: build/app/outputs/flutter-apk/app-release.apk  # Path to the built APK file
+
+#      - name: Deploy iOS App to Firebase
+#        uses: wzieba/Firebase-Distribution-Github-Action@v1
+#        with:
+#          appId: ${{ secrets.IOS_FIREBASE_APP_ID }}
+#          serviceCredentialsFileContent: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+#          groups: group-testers
+#          file: build/Runner.ipa

@@ -1,0 +1,41 @@
+include: package:flutter_lints/flutter.yaml
+
+formatter:
+  page_width: 100
+
+linter:
+  rules:
+    #    for commas, if code goes far from specific width length
+    #    https://dart.dev/tools/linter-rules/require_trailing_commas
+    - require_trailing_commas
+    #   in code if something is var and it should be final
+    #   it helps you to put them
+    #   https://dart.dev/tools/linter-rules/prefer_final_locals
+    - prefer_final_locals
+    #   for tear-offs, check out
+    #   https://dart.dev/tools/linter-rules/unnecessary_lambdas
+    - unnecessary_lambdas
+    - unnecessary_late
+    - avoid_dynamic_calls
+    # reminds to close stream_subscriptions
+    - cancel_subscriptions
+    - use_colored_box
+    - use_decorated_box
+    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+
+dart_code_metrics:
+  rules:
+    # FLUTTER RULES
+    - use-closest-build-context
+    # BLOC RULES
+    - avoid-passing-bloc-to-bloc
+    - avoid-passing-build-context-to-blocs
+    - avoid-bloc-public-methods
+    - avoid-duplicate-bloc-event-handlers
+    - prefer-correct-bloc-provider
+    - prefer-multi-bloc-provider
+    - prefer-sealed-bloc-state:
+        name-pattern: State$
+    - prefer-sealed-bloc-events:
+        name-pattern: Event$
