@@ -12,5 +12,25 @@ For production use, a different backend solution should be considered.
   <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/ios_pic_1.png" alt="Screenshot 1" width="200" />
   <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/ios_pic_2.png" alt="Screenshot 2" width="200" />
   <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/ios_pic_3.png" alt="Screenshot 3" width="200" />
-  <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/ios_pic_4.png" alt="Screenshot 7" width="200" />
+  <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/ios_pic_4.png" alt="Screenshot 4" width="200" />
+</p>
+
+<p float="left">
+  <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/web_1.png" alt="Screenshot 1" width="800" />
+</p>
+
+<p float="left">
+  <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/web_2.png" alt="Screenshot 2" width="800" />
+</p>
+
+<p float="left">
+  <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/web_3.png" alt="Screenshot 3" width="800" />
+</p>
+
+<p float="left">
+  <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/web_4.png" alt="Screenshot 4" width="800" />
+</p>
+
+<p float="left">
+  <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/web_5.png" alt="Screenshot 5" width="800" />
 </p>
