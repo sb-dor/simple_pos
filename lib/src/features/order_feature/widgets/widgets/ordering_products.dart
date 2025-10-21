@@ -62,25 +62,30 @@ class _OrderingProductsState extends State<OrderingProducts> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.asset('assets/images/image.webp', fit: BoxFit.fill),
+                                child: SizedBox(
+                                  width: 100,
+                                  child: Image.asset('assets/images/image.webp', fit: BoxFit.fill),
+                                ),
                               ),
                               const SizedBox(width: 10),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    "${product.price}",
-                                    style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w400,
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      "${product.price}",
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
-                                  ),
-                                  const Text(
-                                    "Склад 999",
-                                    style: TextStyle(fontSize: 11, color: Colors.grey),
-                                  ),
-                                ],
+                                    const Text(
+                                      "Склад 999",
+                                      style: TextStyle(fontSize: 11, color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
