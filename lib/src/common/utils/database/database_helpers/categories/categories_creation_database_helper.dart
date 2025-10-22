@@ -1,0 +1,3 @@
+abstract interface class ICategoriesCreationDatabaseHelper {}
+
+final class CategoriesCreationDatabaseHelperImpl implements ICategoriesCreationDatabaseHelper {}

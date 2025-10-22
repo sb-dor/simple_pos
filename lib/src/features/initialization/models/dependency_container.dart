@@ -6,6 +6,7 @@ import 'package:test_pos_app/src/common/utils/key_value_storage/shared_preferenc
 import 'package:test_pos_app/src/common/utils/paginate_list_helper.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
 import 'package:test_pos_app/src/features/cashier_feature/bloc/cashier_feature_bloc.dart';
+import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
 import 'package:test_pos_app/src/features/order_feature/bloc/order_feature_bloc.dart';
 import 'package:test_pos_app/src/features/order_tables/bloc/order_tables_bloc.dart';
@@ -33,6 +34,8 @@ class DependencyContainer {
   late final CashierFeatureBloc cashierFeatureBloc;
 
   late final TablesBloc tablesBloc;
+
+  late final CategoriesBloc categoriesBloc;
 
   late final SynchronizationBloc synchronizationBloc;
 

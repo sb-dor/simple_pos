@@ -105,6 +105,9 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
     appDatabase: dependencies.appDatabase,
     logger: dependencies.logger,
   ).create(),
+  "Categories bloc init" : (dependencies) {
+
+  },
   "Cashier bloc init": (dependencies) => dependencies.cashierFeatureBloc = CashierBlocFactory(
     appDatabase: dependencies.appDatabase,
     logger: dependencies.logger,

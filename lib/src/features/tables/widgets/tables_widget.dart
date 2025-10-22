@@ -54,7 +54,7 @@ class _TablesWidgetState extends State<TablesWidget> {
           drawer: MainAppDrawer(),
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              await context.push(AppRoutesName.tables + AppRoutesName.tableCreation);
+              await context.push(AppRoutesName.tables + AppRoutesName.creation);
               _tablesBloc.add(TablesEvent.refresh());
             },
             backgroundColor: Constants.mainAppColor,
@@ -163,7 +163,7 @@ class _TableWidgetState extends State<_TableWidget> {
     return GestureDetector(
       onTap: () async {
         final path =
-            "${AppRoutesName.tables}${AppRoutesName.tableCreation}?tableId=${widget.table.id}";
+            "${AppRoutesName.tables}${AppRoutesName.creation}?tableId=${widget.table.id}";
         await context.push(path);
         _tablesBloc.add(TablesEvent.refresh());
       },

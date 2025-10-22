@@ -62,8 +62,6 @@ class ImageProductSaverController with ChangeNotifier {
 
       final formData = FormData.fromMap(map);
 
-      print("formdata: ${formData.files}");
-
       final response = await dio.post("/products", data: formData);
 
       _logger.log(Level.debug, response.data);

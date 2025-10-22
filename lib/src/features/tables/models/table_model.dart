@@ -64,24 +64,24 @@ class TableModel {
 
   TableModel copyWith({
     String? id,
-    String? establishmentId,
-    String? name,
-    bool? vip,
-    DateTime? updatedAt,
+    ValueGetter<String?>? establishmentId,
+    ValueGetter<String?>? name,
+    ValueGetter<bool?>? vip,
+    ValueGetter<DateTime?>? updatedAt,
     ValueGetter<Uint8List?>? imageData,
-    Widget? icon,
-    Color? color,
+    ValueGetter<Widget?>? icon,
+    ValueGetter<Color?>? color,
     bool? changed,
   }) {
     return TableModel(
       id: id ?? this.id,
-      establishmentId: establishmentId ?? this.establishmentId,
-      name: name ?? this.name,
-      vip: vip ?? this.vip,
-      updatedAt: updatedAt ?? this.updatedAt,
-      imageData: imageData?.call() ?? this.imageData,
-      icon: icon ?? this.icon,
-      color: color ?? this.color,
+      establishmentId: establishmentId != null ? establishmentId() : this.establishmentId,
+      name: name != null ? name() : this.name,
+      vip: vip != null ? vip() : this.vip,
+      updatedAt: updatedAt != null ? updatedAt() : this.updatedAt,
+      imageData: imageData != null ? imageData() : this.imageData,
+      icon: icon != null ? icon() : this.icon,
+      color: color != null ? color() : this.color,
       changed: changed ?? false,
     );
   }

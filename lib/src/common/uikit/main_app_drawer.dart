@@ -118,6 +118,24 @@ class _MainAppDrawerState extends State<MainAppDrawer> {
                   context.go(AppRoutesName.tables);
                 },
               ),
+              ListTile(
+                leading: const Icon(Icons.category),
+                title: const Text(Constants.categories),
+                onTap: () {
+                  Navigator.pop(context);
+                  // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
+                  context.go(AppRoutesName.categories);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.fastfood),
+                title: const Text(Constants.products),
+                onTap: () {
+                  Navigator.pop(context);
+                  // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
+                  // context.go(AppRoutesName.tables);
+                },
+              ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(

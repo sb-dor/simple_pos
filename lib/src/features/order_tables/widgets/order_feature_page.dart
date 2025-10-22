@@ -61,27 +61,21 @@ class _OrderFeaturePageState extends State<OrderFeaturePage> {
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
             child: MainAppBar(label: "Simple POS"),
           ),
-          body: DecoratedBox(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: Constants.appGradientColor,
+          body: SafeArea(
+            child: DecoratedBox(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: Constants.appGradientColor,
+                ),
               ),
-            ),
-            child: SafeArea(
               child: BlocBuilder<OrderTablesBloc, OrderTablesState>(
                 bloc: _orderTablesBloc,
                 builder: (context, state) {
                   return WindowSizeScope.of(context).maybeMap(
-                    compact: () => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: _buildContent(context, state, crossAxisCount: 1),
-                    ),
-                    medium: () => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: _buildContent(context, state, crossAxisCount: 2),
-                    ),
+                    compact: () => _buildContent(context, state, crossAxisCount: 1),
+                    medium: () => _buildContent(context, state, crossAxisCount: 2),
                     orElse: () => Align(
                       alignment: Alignment.topCenter,
                       child: SizedBox(
@@ -113,7 +107,10 @@ class _OrderFeaturePageState extends State<OrderFeaturePage> {
           onTap: () => context.read<OrderTablesBloc>().add(OrderTablesEvent.refresh()),
         ),
       ),
-      OrderTables$CompletedState() => _BuildGrid(state: state, crossAxisCount: crossAxisCount),
+      OrderTables$CompletedState() =>
+        state.tables.isEmpty
+            ? const Center(child: Text("No tables"))
+            : _BuildGrid(state: state, crossAxisCount: crossAxisCount),
     };
   }
 }
@@ -133,7 +130,7 @@ class _BuildGridState extends State<_BuildGrid> {
   Widget build(BuildContext context) {
     return GridView.builder(
       key: ValueKey(widget.state.tables.length),
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.all(10),
       physics: const AlwaysScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: widget.crossAxisCount,

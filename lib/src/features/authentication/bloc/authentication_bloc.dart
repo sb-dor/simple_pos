@@ -122,8 +122,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         event.onMessage(response.message ?? ''); // Notify UI about messages
       }
 
-      debugPrint("user authenticated: ${response.userModel}");
-
       if (response.userModel != null) {
         // If user data exists
         final currentStateModel = state.stateModel.copyWith(

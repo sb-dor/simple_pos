@@ -150,7 +150,6 @@ class _ImageProductUpdateWidgetState extends State<ImageProductUpdateWidget> {
                               },
                               itemBuilder: (context, index) {
                                 final image = variant.$2.images![index];
-                                print("image file: ${image.file} | ${image.path}");
                                 return Stack(
                                   key: ValueKey(
                                     image.id ?? image.path ?? image.file?.path ?? index,

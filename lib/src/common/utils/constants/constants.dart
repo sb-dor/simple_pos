@@ -8,6 +8,7 @@ abstract class Constants {
   static const vip1 = "VIP 1";
   static const vip2 = "VIP 2";
   static const products = "Товары";
+  static const categories = "Категории";
   static const settings = "Параметры";
   static const salesMode = "Режим продаж";
   static const tables = "Столы";

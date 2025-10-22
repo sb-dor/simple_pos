@@ -6,6 +6,8 @@ import 'package:test_pos_app/src/features/authentication/widgets/authentication_
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_register_widget.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_select_establishment_widget.dart';
 import 'package:test_pos_app/src/features/cashier_feature/widgets/cashier_page.dart';
+import 'package:test_pos_app/src/features/categories/widgets/categories_widget.dart';
+import 'package:test_pos_app/src/features/category_creation/widgets/category_creation_widgets.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/order_feature/widgets/sales_mode_screen.dart';
 import 'package:test_pos_app/src/features/order_feature/widgets/widgets/sales_mode_products_screen.dart';
@@ -22,7 +24,8 @@ abstract class AppRoutesName {
   static const String orderTables = "/order-tables";
   static const String cashier = "/cashier/:cashierId";
   static const String tables = "/tables";
-  static const String tableCreation = "/creation";
+  static const String creation = "/creation";
+  static const String categories = "/categories";
 }
 
 mixin AppRouter<T extends StatefulWidget> on State<T> {
@@ -128,9 +131,24 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
           },
           routes: [
             GoRoute(
-              path: AppRoutesName.tableCreation,
+              path: AppRoutesName.creation,
               builder: (context, state) {
                 return TableCreationWidget(tableId: state.uri.queryParameters['tableId']);
+              },
+            ),
+          ],
+        ),
+
+        GoRoute(
+          path: AppRoutesName.categories,
+          builder: (context, state) {
+            return CategoriesWidget();
+          },
+          routes: [
+            GoRoute(
+              path: AppRoutesName.creation,
+              builder: (context, state) {
+                return CategoryCreationWidgets(categoryId: state.uri.queryParameters['categoryId']);
               },
             ),
           ],

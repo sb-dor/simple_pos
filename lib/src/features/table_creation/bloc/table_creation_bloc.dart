@@ -61,7 +61,6 @@ class TableCreationBloc extends Bloc<TableCreationEvent, TableCreationState> {
     if (event.tableId != null) {
       table = await _iTableCreationRepository.table(event.tableId!);
     }
-    print("table getting: $table | ${event.tableId}");
 
     emit(TableCreationState.completed(tableModel: table));
   }
@@ -78,12 +77,12 @@ class TableCreationBloc extends Bloc<TableCreationEvent, TableCreationState> {
 
     table = table.copyWith(
       id: table.id ?? Uuid().v4(),
-      establishmentId: event.establishment.id,
-      name: event.tableData.name,
-      vip: event.tableData.isVip,
-      updatedAt: datetime,
+      establishmentId: () => event.establishment.id,
+      name: () => event.tableData.name,
+      vip: () => event.tableData.isVip,
+      updatedAt: () => datetime,
       imageData: () => bytes,
-      color: event.tableData.selectedColor,
+      color: () => event.tableData.selectedColor,
     );
 
     final save = await _iTableCreationRepository.save(table);

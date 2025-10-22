@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CategoryCreationWidgets extends StatefulWidget {
-  const CategoryCreationWidgets({super.key});
+  const CategoryCreationWidgets({super.key, required this.categoryId});
+
+  final String? categoryId;
 
   @override
   State<CategoryCreationWidgets> createState() => _CategoryCreationWidgetsState();

@@ -17,7 +17,6 @@ class TempImageModel {
 
   String imageURL(ImageSize imageSize) {
     final getImage = "${ImageProductConstant.baseURL}/product/image/${imageSize.value}_$path";
-    print('get image is: $getImage');
     return getImage;
   }
 }
