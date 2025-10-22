@@ -8,6 +8,9 @@ performance, or suitability for the specific requirements of this application.
 
 For production use, a different backend solution should be considered.
 
+**Google Play:** [https://play.google.com/store/apps/details?id=com.sbdor.simplepos&hl=en]  
+**Web Version:** [https://pos-app-41810.web.app]
+
 ## Mobile Screenshots
 <p float="left">
   <img src="https://raw.githubusercontent.com/sb-dor/simple_pos/refs/heads/main/app_pics/ios_pic_1.png" alt="Screenshot 1" width="200" />
