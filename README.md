@@ -8,8 +8,8 @@ performance, or suitability for the specific requirements of this application.
 
 For production use, a different backend solution should be considered.
 
-**Google Play:** [https://play.google.com/store/apps/details?id=com.sbdor.simplepos&hl=en]  
-**Web Version:** [https://pos-app-41810.web.app]
+[Google Play](https://play.google.com/store/apps/details?id=com.sbdor.simplepos&hl=en)
+[Web](https://pos-app-41810.web.app)
 
 ## Mobile Screenshots
 <p float="left">
