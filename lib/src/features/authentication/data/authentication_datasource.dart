@@ -31,12 +31,14 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
   AuthenticationDatasourceImpl({
     required final FirebaseFirestore firebaseStore,
     required final SharedPreferencesService sharedPreferencesService,
+    required final EstablishmentDatabaseHelper establishmentDatabaseHelper,
+    required final OrderTableDbTableHelper orderTableDbTableHelper,
     required final AppDatabase appDatabase,
     required final Logger logger,
   }) : _logger = logger,
        _sharedPreferencesService = sharedPreferencesService,
-       _establishmentDatabaseHelper = EstablishmentDatabaseHelper(appDatabase, logger),
-       _orderTableDbTableHelper = OrderTableDbTableHelper(appDatabase, logger) {
+       _establishmentDatabaseHelper = establishmentDatabaseHelper,
+       _orderTableDbTableHelper = orderTableDbTableHelper {
     _usersRef = firebaseStore
         .collection('users')
         .withConverter<UserModel>(

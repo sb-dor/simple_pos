@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
-import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/establishment_database_helper.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
-import 'package:test_pos_app/src/common/utils/key_value_storage/shared_preferences_service.dart';
 import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
@@ -14,12 +12,11 @@ abstract interface class ISynchronizationRepository {
 final class SynchronizationRepositoryImpl implements ISynchronizationRepository {
   SynchronizationRepositoryImpl({
     required final FirebaseFirestore firebaseStore,
-    required final AppDatabase appDatabase,
-    required final SharedPreferencesService sharedPreferencesService,
+    required final EstablishmentDatabaseHelper establishmentDatabaseHelper,
+    required final OrderTableDbTableHelper orderTableDbTableHelper,
     required final Logger logger,
-  }) : _sharedPreferencesService = sharedPreferencesService,
-       _establishmentDatabaseHelper = EstablishmentDatabaseHelper(appDatabase, logger),
-       _orderTableDbTableHelper = OrderTableDbTableHelper(appDatabase, logger),
+  }) : _establishmentDatabaseHelper = establishmentDatabaseHelper,
+       _orderTableDbTableHelper = orderTableDbTableHelper,
        _logger = logger {
     _establishmentRef = firebaseStore
         .collection('establishments')
@@ -31,7 +28,6 @@ final class SynchronizationRepositoryImpl implements ISynchronizationRepository 
         );
   }
 
-  final SharedPreferencesService _sharedPreferencesService;
   final EstablishmentDatabaseHelper _establishmentDatabaseHelper;
   final OrderTableDbTableHelper _orderTableDbTableHelper;
   final Logger _logger;

@@ -1,7 +1,5 @@
-import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_model.dart';
-import 'package:test_pos_app/src/common/utils/database/app_database.dart';
-import 'package:test_pos_app/src/common/utils/database/database_helpers/customer_invoice_database_helper.dart';
+import 'package:test_pos_app/src/common/utils/database/database_helpers/customer_invoices/customer_invoice_database_helper.dart';
 
 abstract class ICashierFeatureDataSource {
   Future<List<CustomerInvoiceModel>> invoices();
@@ -9,9 +7,8 @@ abstract class ICashierFeatureDataSource {
 
 class CashierFeatureDataSourceImpl implements ICashierFeatureDataSource {
   CashierFeatureDataSourceImpl({
-    required final AppDatabase appDatabase,
-    required final Logger logger,
-  }) : _customerInvoiceDatabaseHelper = CustomerInvoiceDatabaseHelper(appDatabase, logger);
+    required final CustomerInvoiceDatabaseHelper customerInvoiceDatabaseHelper,
+  }) : _customerInvoiceDatabaseHelper = customerInvoiceDatabaseHelper;
 
   final CustomerInvoiceDatabaseHelper _customerInvoiceDatabaseHelper;
 

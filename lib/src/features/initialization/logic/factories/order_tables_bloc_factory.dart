@@ -1,5 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
+import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
 import 'package:test_pos_app/src/features/initialization/logic/dependency_composition/dependency_composition.dart';
 import 'package:test_pos_app/src/features/order_tables/bloc/order_tables_bloc.dart';
 import 'package:test_pos_app/src/features/order_tables/data/order_tables_datasource.dart';
@@ -16,8 +17,7 @@ final class OrderTablesBlocFactory extends Factory<OrderTablesBloc> {
   @override
   OrderTablesBloc create() {
     final IOrderTablesDatasource datasource = OrderTablesDatasourceImpl(
-      appDatabase: _appDatabase,
-      logger: _logger,
+      orderTableDbTableHelper: OrderTableDbTableHelper(_appDatabase, _logger),
     );
 
     final IOrderTablesRepository repository = OrderTablesRepositoryImpl(datasource);

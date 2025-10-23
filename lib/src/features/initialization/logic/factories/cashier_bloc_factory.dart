@@ -1,5 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
+import 'package:test_pos_app/src/common/utils/database/database_helpers/customer_invoices/customer_invoice_database_helper.dart';
 import 'package:test_pos_app/src/common/utils/paginate_list_helper.dart';
 import 'package:test_pos_app/src/features/cashier_feature/bloc/cashier_feature_bloc.dart';
 import 'package:test_pos_app/src/features/cashier_feature/data/cashier_feature_data_source.dart';
@@ -22,8 +23,7 @@ final class CashierBlocFactory extends Factory<CashierFeatureBloc> {
   @override
   CashierFeatureBloc create() {
     final ICashierFeatureDataSource datasource = CashierFeatureDataSourceImpl(
-      appDatabase: _appDatabase,
-      logger: _logger,
+      customerInvoiceDatabaseHelper: CustomerInvoiceDatabaseHelper(_appDatabase, _logger),
     );
 
     final ICashierFeatureRepo repo = CashierFeatureRepoImpl(datasource);

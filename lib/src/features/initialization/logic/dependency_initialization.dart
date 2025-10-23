@@ -8,11 +8,14 @@ import 'package:logger/logger.dart';
 import 'package:test_pos_app/firebase_options.dart';
 import 'package:test_pos_app/src/common/utils/bloc_observer/bloc_observer_manager.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
+import 'package:test_pos_app/src/common/utils/database/database_helpers/establishment_database_helper.dart';
+import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
 import 'package:test_pos_app/src/common/utils/key_value_storage/shared_preferences_service.dart';
 import 'package:test_pos_app/src/common/utils/paginate_list_helper.dart';
 import 'package:test_pos_app/src/common/utils/reusable_functions.dart';
 import 'package:test_pos_app/src/features/initialization/logic/desktop_initialization.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/cashier_bloc_factory.dart';
+import 'package:test_pos_app/src/features/initialization/logic/factories/categories_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/order_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/order_tables_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
@@ -105,9 +108,9 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
     appDatabase: dependencies.appDatabase,
     logger: dependencies.logger,
   ).create(),
-  "Categories bloc init" : (dependencies) {
-
-  },
+  "Categories bloc init": (dependencies) => dependencies.categoriesBloc = CategoriesBlocFactory(
+    appDatabase: dependencies.appDatabase,
+  ).create(),
   "Cashier bloc init": (dependencies) => dependencies.cashierFeatureBloc = CashierBlocFactory(
     appDatabase: dependencies.appDatabase,
     logger: dependencies.logger,
@@ -116,8 +119,14 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
   "Synchronization bloc init": (dependencies) {
     final ISynchronizationRepository synchronizationRepository = SynchronizationRepositoryImpl(
       firebaseStore: FirebaseFirestore.instance,
-      appDatabase: dependencies.appDatabase,
-      sharedPreferencesService: dependencies.sharedPreferencesService,
+      establishmentDatabaseHelper: EstablishmentDatabaseHelper(
+        dependencies.appDatabase,
+        dependencies.logger,
+      ),
+      orderTableDbTableHelper: OrderTableDbTableHelper(
+        dependencies.appDatabase,
+        dependencies.logger,
+      ),
       logger: dependencies.logger,
     );
     final SynchronizationBloc synchronizationBloc = SynchronizationBloc(

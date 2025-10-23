@@ -8,7 +8,7 @@ abstract interface class ICategoriesDatasource {
 final class CategoriesDatasourceImpl implements ICategoriesDatasource {
   CategoriesDatasourceImpl(this._categoriesDatabaseHelper);
 
-  final ICategoriesDatabaseHelper _categoriesDatabaseHelper;
+  final CategoriesDatabaseHelperImpl _categoriesDatabaseHelper;
 
   @override
   Future<List<CategoryModel>> categories() {

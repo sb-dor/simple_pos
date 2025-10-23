@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
+import 'package:test_pos_app/src/common/utils/database/database_helpers/establishment_database_helper.dart';
+import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
 import 'package:test_pos_app/src/common/utils/key_value_storage/shared_preferences_service.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
 import 'package:test_pos_app/src/features/authentication/data/authentication_datasource.dart';
@@ -27,6 +29,8 @@ final class AuthenticationBlocFactory extends Factory<AuthenticationBloc> {
       logger: _logger,
       sharedPreferencesService: _sharedPreferencesService,
       appDatabase: _appDatabase,
+      establishmentDatabaseHelper: EstablishmentDatabaseHelper(_appDatabase, _logger),
+      orderTableDbTableHelper: OrderTableDbTableHelper(_appDatabase, _logger)
     );
 
     final IAuthenticationRepository repository = AuthenticationRepositoryImpl(datasource);
