@@ -120,7 +120,7 @@ class _AuthenticationAuthCheckWidgetState extends State<AuthenticationAuthCheckW
           const SizedBox(height: 16),
           Text(
             "Please wait a moment",
-            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),
+            style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 14),
           ),
         ],
       ),

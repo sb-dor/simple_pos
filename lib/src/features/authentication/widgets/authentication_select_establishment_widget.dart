@@ -86,7 +86,7 @@ class _AuthenticationSelectEstablishmentWidgetState
           duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.95),
+            color: Colors.white.withValues(alpha: 0.95),
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(color: Colors.black12, blurRadius: 20, offset: const Offset(0, 10)),
@@ -139,7 +139,7 @@ class _AuthenticationSelectEstablishmentWidgetState
                           border: Border.all(color: const Color(0xFFCBD5E1)),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),

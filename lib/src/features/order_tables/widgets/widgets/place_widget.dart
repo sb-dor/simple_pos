@@ -43,7 +43,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
             boxShadow: _hovered
                 ? [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
+                      color: Colors.black.withValues(alpha: 0.15),
                       offset: const Offset(0, 6),
                       blurRadius: 10,
                     ),
