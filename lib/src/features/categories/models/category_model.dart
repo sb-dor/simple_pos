@@ -7,14 +7,14 @@ class CategoryModel {
 
   factory CategoryModel.fromDb(Map<String, dynamic> json) => CategoryModel();
 
-  final int? id;
+  final String? id;
   final String? name;
   final DateTime? updatedAt;
   final Color? color;
   final bool changed;
 
   CategoryModel copyWith({
-    int? id,
+    String? id,
     ValueGetter<String?>? name,
     ValueGetter<DateTime?>? updatedAt,
     ValueGetter<Color?>? color,

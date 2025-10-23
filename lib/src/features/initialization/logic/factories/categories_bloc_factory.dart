@@ -1,5 +1,4 @@
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
-import 'package:test_pos_app/src/common/utils/database/database_helpers/categories/categories_database_helper.dart';
 import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/categories/data/categories_datasource.dart';
 import 'package:test_pos_app/src/features/categories/data/categories_repository.dart';
@@ -12,9 +11,8 @@ final class CategoriesBlocFactory extends Factory<CategoriesBloc> {
 
   @override
   CategoriesBloc create() {
-    final categoryDatabaseHelper = CategoriesDatabaseHelperImpl(_appDatabase);
     final ICategoriesDatasource categoriesDatasource = CategoriesDatasourceImpl(
-      categoryDatabaseHelper,
+      _appDatabase,
     );
     final ICategoriesRepository categoriesRepository = CategoriesRepositoryImpl(
       categoriesDatasource,

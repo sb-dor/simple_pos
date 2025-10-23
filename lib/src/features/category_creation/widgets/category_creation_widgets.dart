@@ -12,6 +12,6 @@ class CategoryCreationWidgets extends StatefulWidget {
 class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(floatingActionButton: FloatingActionButton(onPressed: () {}));
   }
 }
