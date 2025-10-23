@@ -5,7 +5,7 @@ name: Flutter CI/CD
 on:
   push: # merge or push will work
     branches:
-      - main
+      - category_creation
 #  pull_request: # means that pull_request will work only when it will be a PR to the master branch
 #    branches:
 #      - master
