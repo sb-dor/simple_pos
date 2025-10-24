@@ -41,6 +41,11 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
         }
       },
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {}, child: Icon(Icons.add)),
+        floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
+          orElse: () => FloatingActionButtonLocation.centerFloat,
+          compact: () => FloatingActionButtonLocation.endFloat,
+        ),
         drawer: MainAppDrawer(),
         appBar: PreferredSize(
           preferredSize: Size(double.infinity, kToolbarHeight),
