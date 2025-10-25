@@ -48,7 +48,6 @@ jobs:
         run: |
           echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > $HOME/firebase_key.json
           export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json
-          firebase use --add ${{ secrets.FIREBASE_PROJECT_ID }}
 
 
       - name: Install FlutterFire CLI
@@ -63,8 +62,6 @@ jobs:
         run: |
           flutterfire configure \
           --project=${{ secrets.FIREBASE_PROJECT_ID }} \
-          --out=lib/firebase_options.dart \
-          --yes \
           --platforms=android,ios
 
       # ---------------- ANDROID BUILD ---------------- #
