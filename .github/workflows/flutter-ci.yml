@@ -23,7 +23,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.35.5"
+          flutter-version: "stable"
 
       - name: Install dependencies
         run: flutter pub get
@@ -37,6 +37,30 @@ jobs:
 
       - name: Run tests
         run: flutter test
+
+        # ---------------- FIREBASE AUTH ---------------- #
+      - name: Setup Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+
+
+      - name: Authenticate with Firebase
+        run: |
+          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > $HOME/firebase_key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json
+
+
+      - name: Install FlutterFire CLI
+        run: dart pub global activate flutterfire_cli
+
+      - name: Configure Firebase
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase_key.json
+        run: |
+          dart pub global run flutterfire_cli configure \
+          --project=${{ secrets.FIREBASE_PROJECT_ID }} \
+          --out=lib/firebase_options.dart \
+          --yes \
+          --platforms=android,ios
 
       # ---------------- ANDROID BUILD ---------------- #
       - name: Build APK
@@ -70,16 +94,6 @@ jobs:
       #          -exportOptionsPlist ios/exportOptions.plist
       #          CODE_SIGNING_REQUIRED=NO \
       #          CODE_SIGNING_ALLOWED=NO
-
-
-      # ---------------- FIREBASE AUTH ---------------- #
-      - name: Setup Firebase CLI
-        run: curl -sL https://firebase.tools | bash
-
-      - name: Authenticate with Firebase
-        run: |
-          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > $HOME/firebase_key.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json
 
       #       Throwing error: Failed to authenticate, have you run firebase login?
       #      - name: Upload APK to Firebase App Distribution
