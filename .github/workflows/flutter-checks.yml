@@ -13,7 +13,7 @@ jobs:
   flutter-checks:
     name: Run Flutter Checks
     runs-on: ubuntu-latest # macos-latest
-    if: github.ref != 'refs/heads/main' # Skip if running on master
+    if: github.ref != 'refs/heads/main' # Skip if running on main
 
 
     steps:
