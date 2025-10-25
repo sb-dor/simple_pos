@@ -37,7 +37,7 @@ final class CategoryCreationDatasourceImpl implements ICategoryCreationDatasourc
           name: Value(category.name),
           colorValue: Value(category.color?.toARGB32()),
           updatedAt: Value(DateTime.now()),
-          changed: Value(true),
+          changed: Value(category.changed),
         ),
       );
       return true;
@@ -50,7 +50,7 @@ final class CategoryCreationDatasourceImpl implements ICategoryCreationDatasourc
               name: Value(category.name),
               colorValue: Value(category.color?.toARGB32()),
               updatedAt: Value(category.updatedAt),
-              changed: Value(true),
+              changed: Value(category.changed),
             ),
           ));
       return true;

@@ -4,6 +4,8 @@ class CategoryTable extends Table {
 
   TextColumn get id => text()();
 
+  TextColumn get establishmentId => text().nullable()();
+
   TextColumn get name => text().nullable()();
 
   DateTimeColumn get updatedAt => dateTime().nullable()();

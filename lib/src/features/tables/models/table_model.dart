@@ -86,7 +86,7 @@ class TableModel {
     );
   }
 
-  OrderTableDbTableCompanion toDbTableCompanion() => OrderTableDbTableCompanion(
+  OrderTableDbTableCompanion toDbTableCompanion({bool changed = false}) => OrderTableDbTableCompanion(
     id: Value.absentIfNull(id),
     establishmentId: Value.absentIfNull(establishmentId),
     name: Value(name),
@@ -94,7 +94,7 @@ class TableModel {
     updatedAt: Value(updatedAt),
     image: Value(imageData),
     colorValue: Value(color?.toARGB32()),
-    changed: Value(true),
+    changed: Value(changed),
   );
 
   Map<String, Object?> toMap() => {

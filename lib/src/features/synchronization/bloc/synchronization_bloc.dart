@@ -50,9 +50,9 @@ class SynchronizationBloc extends Bloc<SynchronizationEvent, SynchronizationStat
     try {
       emit(SynchronizationState.inProgress());
 
-      final tableSync = await _iSynchronizationRepository.tableSync();
+      final sync = await _iSynchronizationRepository.sync();
 
-      if (!tableSync) {
+      if (!sync) {
         emit(
           SynchronizationState.error(message: "Something went wrong with table synchronization"),
         );
