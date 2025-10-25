@@ -24,7 +24,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.29.1"
+          flutter-version: "3.35.5"
 
       - name: Install dependencies
         run: flutter pub get
@@ -49,16 +49,32 @@ jobs:
         run: |
           echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > $HOME/firebase_key.json
           export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json
+          
+
 
       - name: Create firebase_options
         run: 'echo "$FIREBASE_OPTIONS_BASE64" | base64 --decode > lib/firebase_options.dart'
         env:
           FIREBASE_OPTIONS_BASE64: ${{ secrets.FIREBASE_OPTIONS_BASE64 }}
 
+
+
       - name: Create google_service_json for Android
         run: 'echo "$GOOGLE_SERVICES_JSON_BASE64" | base64 --decode > android/app/google-services.json'
         env:
           GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+
+      - name: Create key_properties for ANDROID
+        run: 'echo "$KEY_PROPERTIES" | base64 --decode > android/key.properties'
+        env:
+          KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
+
+      - name: Create upload-keystore for ANDROID
+        run: 'echo "$UPLOAD_KEYSTORE" | base64 --decode > android/app/upload-keystore.jks'
+        env:
+          UPLOAD_KEYSTORE: ${{ secrets.UPLOAD_KEYSTORE }}
+
+
 
       - name: Create GoogleService-Info for IOS
         run: 'echo "$GOOGLE_SERVICE_PLIST_BASE64" | base64 --decode > ios/Runner/GoogleService-Info.plist'
