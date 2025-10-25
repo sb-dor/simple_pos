@@ -40,7 +40,11 @@ jobs:
 
         # ---------------- FIREBASE AUTH ---------------- #
       - name: Setup Firebase CLI
-        run: curl -sL https://firebase.tools | bash
+        run:
+          curl -sL https://firebase.tools | bash
+          firebase --version
+          firebase login:ci --no-localhost
+          firebase use --add ${{ secrets.FIREBASE_PROJECT_ID }}
 
       - name: Authenticate with Firebase
         run: |
