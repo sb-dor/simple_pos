@@ -42,7 +42,6 @@ jobs:
       - name: Setup Firebase CLI
         run: curl -sL https://firebase.tools | bash
 
-
       - name: Authenticate with Firebase
         run: |
           echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > $HOME/firebase_key.json
@@ -59,7 +58,7 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase_key.json
         run: |
-          dart pub global run flutterfire_cli configure \
+          flutterfire configure \
           --project=${{ secrets.FIREBASE_PROJECT_ID }} \
           --out=lib/firebase_options.dart \
           --yes \
