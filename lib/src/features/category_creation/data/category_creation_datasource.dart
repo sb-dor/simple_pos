@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
 
@@ -24,8 +25,37 @@ final class CategoryCreationDatasourceImpl implements ICategoryCreationDatasourc
   }
 
   @override
-  Future<bool> save(CategoryModel category) {
-    // TODO: implement save
-    throw UnimplementedError();
+  Future<bool> save(CategoryModel category) async {
+    final findCategory = await this.category(category.id);
+
+    if (findCategory != null) {
+      await (_appDatabase.update(
+        _appDatabase.categoryTable,
+      )..where((el) => el.id.equals(category.id!))).write(
+        CategoryTableCompanion(
+          id: Value(findCategory.id),
+          name: Value(category.name),
+          colorValue: Value(category.color?.toARGB32()),
+          updatedAt: Value(DateTime.now()),
+          changed: Value(true),
+        ),
+      );
+      return true;
+    } else if (category.id != null) {
+      await (_appDatabase
+          .into(_appDatabase.categoryTable)
+          .insert(
+            CategoryTableCompanion(
+              id: Value(category.id!),
+              name: Value(category.name),
+              colorValue: Value(category.color?.toARGB32()),
+              updatedAt: Value(category.updatedAt),
+              changed: Value(true),
+            ),
+          ));
+      return true;
+    }
+
+    return false;
   }
 }

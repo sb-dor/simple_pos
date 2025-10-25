@@ -34,11 +34,15 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
     );
     _categoryCreationBloc = CategoryCreationBlocFactory(
       appDatabase: dependencies.appDatabase,
+      logger: dependencies.logger,
     ).create();
+
+    _categoryCreationBloc.add(CategoryCreationEvent.init(categoryId: widget.categoryId));
   }
 
   @override
   void dispose() {
+    _categoryCreationBloc.close();
     _nameController.dispose();
     super.dispose();
   }
@@ -46,7 +50,11 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<CategoryCreationBloc, CategoryCreationState>(
+      bloc: _categoryCreationBloc,
       listener: (context, state) {
+        if (state is CategoryCreation$InitialState && state.category != null) {
+          _categoryCreationWidgetController.init(state.category!);
+        }
         if (state is CategoryCreation$CompletedState) {
           context.pop(context);
         }
@@ -61,6 +69,12 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               if (!_categoryCreationWidgetController.validated) return;
+              _categoryCreationBloc.add(
+                CategoryCreationEvent.save(
+                  categoryCreationData: _categoryCreationWidgetController.categoryCreationData,
+                  onSave: () {},
+                ),
+              );
             },
             child: Icon(Icons.save),
           ),

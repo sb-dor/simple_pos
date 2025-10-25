@@ -30,8 +30,5 @@ final class CategoryCreationRepositoryImpl implements ICategoryCreationRepositor
   }
 
   @override
-  Future<bool> save(CategoryModel category) {
-    // TODO: implement save
-    throw UnimplementedError();
-  }
+  Future<bool> save(CategoryModel category) => _iCategoryCreationDatasource.save(category);
 }

@@ -5,6 +5,7 @@ import 'package:test_pos_app/src/common/uikit/circular_progress_indicator_widget
 import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_bar.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
+import 'package:test_pos_app/src/common/uikit/text_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
@@ -62,6 +63,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
           body: SafeArea(
             child: CustomScrollView(
               slivers: [
+                SliverToBoxAdapter(child: SizedBox(height: 10)),
                 BlocBuilder<CategoriesBloc, CategoriesState>(
                   bloc: _categoriesBloc,
                   builder: (context, categoriesState) {
@@ -75,7 +77,12 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                       case Categories$ErrorState():
                         return SliverFillRemaining(
                           child: Center(
-                            child: ErrorButtonWidget(label: Constants.reloadLabel, onTap: () {}),
+                            child: ErrorButtonWidget(
+                              label: Constants.reloadLabel,
+                              onTap: () {
+                                _categoriesBloc.add(CategoriesEvent.refresh());
+                              },
+                            ),
                           ),
                         );
 
@@ -86,41 +93,44 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                             child: GridView.builder(
                               padding: const EdgeInsets.all(12),
                               itemCount: categoriesState.categories.length,
+                              shrinkWrap: true,
                               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 4, // number of circles per row
                                 crossAxisSpacing: 12,
                                 mainAxisSpacing: 12,
-                                childAspectRatio: 1,
+                                childAspectRatio: 0.9,
                               ),
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 final category = categoriesState.categories[index];
 
                                 return GestureDetector(
-                                  onTap: () {},
+                                  onTap: () async {
+                                    await context.push(
+                                      "${AppRoutesName.categories}${AppRoutesName.creation}?categoryId=${category.id}",
+                                    );
+                                    _categoriesBloc.add(CategoriesEvent.refresh());
+                                  },
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CircleAvatar(
                                         radius: 30,
                                         backgroundColor: category.color ?? Colors.grey,
-                                        child: Text(
-                                          category.name != null && category.name!.isNotEmpty
+                                        child: TextWidget(
+                                          text: category.name != null && category.name!.isNotEmpty
                                               ? category.name![0].toUpperCase()
-                                              : '?',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          ),
+                                              : '-',
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          size: 18,
                                         ),
                                       ),
                                       const SizedBox(height: 6),
-                                      Text(
-                                        category.name ?? '',
+                                      TextWidget(
+                                        text: category.name ?? '',
                                         textAlign: TextAlign.center,
-                                        style: const TextStyle(fontSize: 12),
-                                        overflow: TextOverflow.ellipsis,
+                                        overFlow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),

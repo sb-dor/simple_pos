@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
+import 'package:test_pos_app/src/features/categories/models/category_model.dart';
 
 class CategoryCreationData {
   CategoryCreationData({required this.name, required this.color});
@@ -41,6 +42,12 @@ class CategoryCreationWidgetController extends ChangeNotifier {
     } else {
       _error = null;
     }
+    notifyListeners();
+  }
+
+  void init(CategoryModel category) {
+    _selectedColor = category.color ?? Colors.white;
+    _nameController.text = category.name ?? '';
     notifyListeners();
   }
 
