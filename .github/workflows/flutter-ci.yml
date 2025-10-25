@@ -40,7 +40,7 @@ jobs:
 
         # ---------------- FIREBASE AUTH ---------------- #
       - name: Setup Firebase CLI
-        run:
+        run: |
           curl -sL https://firebase.tools | bash
           firebase --version
           firebase login:ci --no-localhost
