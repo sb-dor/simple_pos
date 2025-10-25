@@ -8,17 +8,23 @@ part 'category_creation_bloc.freezed.dart';
 @freezed
 sealed class CategoryCreationEvent with _$CategoryCreationEvent {
   const factory CategoryCreationEvent.init({@Default(null) String? categoryId}) =
-      _CategoryCreation$RefreshEvent;
+      _CategoryCreation$InitEvent;
 
   const factory CategoryCreationEvent.save({
-    required final CategoryCreationWidgetData categoryData,
+    required final CategoryCreationData categoryCreationData,
     required final void Function() onSave,
   }) = _CategoryCreation$SaveEvent;
 }
 
 @freezed
 sealed class CategoryCreationState with _$CategoryCreationState {
-  const factory CategoryCreationState.initial() = _Initial;
+  const factory CategoryCreationState.initial() = CategoryCreation$InitialState;
+
+  const factory CategoryCreationState.inProgress() = CategoryCreation$InProgressState;
+
+  const factory CategoryCreationState.error() = CategoryCreation$ErrorState;
+
+  const factory CategoryCreationState.completed() = CategoryCreation$CompletedState;
 
   static CategoryCreationState get initialState => CategoryCreationState.initial();
 }
@@ -32,7 +38,7 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
     //
     on<CategoryCreationEvent>(
       (event, emit) => switch (event) {
-        final _CategoryCreation$RefreshEvent event => _categoryCreation$RefreshEvent(event, emit),
+        final _CategoryCreation$InitEvent event => _categoryCreation$InitEvent(event, emit),
         final _CategoryCreation$SaveEvent event => _categoryCreation$SaveEvent(event, emit),
       },
     );
@@ -40,8 +46,8 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
 
   final ICategoryCreationRepository _iCategoryCreationRepository;
 
-  void _categoryCreation$RefreshEvent(
-    _CategoryCreation$RefreshEvent event,
+  void _categoryCreation$InitEvent(
+    _CategoryCreation$InitEvent event,
     Emitter<CategoryCreationState> emit,
   ) async {}
 

@@ -7,7 +7,7 @@ part 'categories_bloc.freezed.dart';
 
 @freezed
 sealed class CategoriesEvent with _$CategoriesEvent {
-  const factory CategoriesEvent.load() = Categories$LoadEvent;
+  const factory CategoriesEvent.refresh() = Categories$RefreshEvent;
 }
 
 @freezed
@@ -29,14 +29,17 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     //
     on<CategoriesEvent>(
       (event, emit) => switch (event) {
-        final Categories$LoadEvent event => _categories$LoadEvent(event, emit),
+        final Categories$RefreshEvent event => _categories$RefreshEvent(event, emit),
       },
     );
   }
 
   final ICategoriesRepository _iCategoriesRepository;
 
-  void _categories$LoadEvent(Categories$LoadEvent event, Emitter<CategoriesState> emit) async {
+  void _categories$RefreshEvent(
+    Categories$RefreshEvent event,
+    Emitter<CategoriesState> emit,
+  ) async {
     try {
       emit(CategoriesState.inProgress());
 

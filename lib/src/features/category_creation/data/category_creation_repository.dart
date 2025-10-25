@@ -5,6 +5,8 @@ import 'package:test_pos_app/src/features/category_creation/data/category_creati
 
 abstract interface class ICategoryCreationRepository {
   Future<CategoryModel?> category(final String? categoryId);
+
+  Future<bool> save(final CategoryModel category);
 }
 
 final class CategoryCreationRepositoryImpl implements ICategoryCreationRepository {
@@ -25,5 +27,11 @@ final class CategoryCreationRepositoryImpl implements ICategoryCreationRepositor
       color: categoryData.colorValue == null ? null : Color(categoryData.colorValue!),
       changed: categoryData.changed,
     );
+  }
+
+  @override
+  Future<bool> save(CategoryModel category) {
+    // TODO: implement save
+    throw UnimplementedError();
   }
 }

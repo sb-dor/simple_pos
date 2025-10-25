@@ -19,6 +19,7 @@ abstract class Constants {
   static const reloadLabel = "Повторить";
   static const logout = "Выйти";
   static const tableCreation = "Создание столиков";
+  static const categoryCreation = "Создание категоии";
 
   //
   static const String pending = "PENDING";
