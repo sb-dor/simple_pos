@@ -43,13 +43,12 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
           firebase --version
-          firebase login:ci --no-localhost
-          firebase use --add ${{ secrets.FIREBASE_PROJECT_ID }}
 
       - name: Authenticate with Firebase
         run: |
           echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > $HOME/firebase_key.json
           export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json
+          firebase use --add ${{ secrets.FIREBASE_PROJECT_ID }}
 
 
       - name: Install FlutterFire CLI
