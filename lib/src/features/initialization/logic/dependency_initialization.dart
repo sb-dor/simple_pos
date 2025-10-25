@@ -21,6 +21,7 @@ import 'package:test_pos_app/src/features/initialization/logic/factories/order_t
 import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
 import 'package:test_pos_app/src/features/initialization/models/dependency_container.dart';
 import 'package:test_pos_app/src/features/synchronization/bloc/synchronization_bloc.dart';
+import 'package:test_pos_app/src/features/synchronization/data/synchronization_datasource.dart';
 import 'package:test_pos_app/src/features/synchronization/data/synchronization_repository.dart';
 import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart';
 import 'factories/authentication_bloc_factory.dart';
@@ -117,17 +118,22 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
     paginatingListHelper: dependencies.paginateListHelper,
   ).create(),
   "Synchronization bloc init": (dependencies) {
-    final ISynchronizationRepository synchronizationRepository = SynchronizationRepositoryImpl(
+    final ISynchronizationDatasource synchronizationDatasource = SynchronizationDatasourceImpl(
       firebaseStore: FirebaseFirestore.instance,
-      establishmentDatabaseHelper: EstablishmentDatabaseHelper(
-        dependencies.appDatabase,
-        dependencies.logger,
-      ),
       orderTableDbTableHelper: OrderTableDbTableHelper(
         dependencies.appDatabase,
         dependencies.logger,
       ),
       logger: dependencies.logger,
+      appDatabase: dependencies.appDatabase,
+    );
+    final ISynchronizationRepository synchronizationRepository = SynchronizationRepositoryImpl(
+      establishmentDatabaseHelper: EstablishmentDatabaseHelper(
+        dependencies.appDatabase,
+        dependencies.logger,
+      ),
+      logger: dependencies.logger,
+      synchronizationDatasource: synchronizationDatasource,
     );
     final SynchronizationBloc synchronizationBloc = SynchronizationBloc(
       iSynchronizationRepository: synchronizationRepository,

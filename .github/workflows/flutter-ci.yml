@@ -1,14 +1,15 @@
 # https://firebase.google.com/docs/cli?hl=ru#cli-ci-systems
+# https://www.youtube.com/watch?v=OUqPB-DAWIg - about base64
 
 name: Flutter CI/CD
 
 on:
   push: # merge or push will work
     branches:
-      - master
-#  pull_request: # means that pull_request will work only when it will be a PR to the master branch
-#    branches:
-#      - master
+      - main
+  pull_request: # means that pull_request will work only when it will be a PR to the master branch
+    branches:
+      - main
 #    types:
 #      - closed # means that pull_request works only when PR is closed or merged
 
@@ -37,6 +38,49 @@ jobs:
 
       - name: Run tests
         run: flutter test
+
+        # ---------------- FIREBASE AUTH ---------------- #
+      - name: Setup Firebase CLI
+        run: |
+          curl -sL https://firebase.tools | bash
+          firebase --version
+
+      - name: Authenticate with Firebase
+        run: |
+          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > $HOME/firebase_key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json
+          
+
+
+      - name: Create firebase_options
+        run: 'echo "$FIREBASE_OPTIONS_BASE64" | base64 --decode > lib/firebase_options.dart'
+        env:
+          FIREBASE_OPTIONS_BASE64: ${{ secrets.FIREBASE_OPTIONS_BASE64 }}
+
+
+
+      - name: Create google_service_json for Android
+        run: 'echo "$GOOGLE_SERVICES_JSON_BASE64" | base64 --decode > android/app/google-services.json'
+        env:
+          GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+
+      - name: Create key_properties for ANDROID
+        run: 'echo "$KEY_PROPERTIES" | base64 --decode > android/key.properties'
+        env:
+          KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
+
+      - name: Create upload-keystore for ANDROID
+        run: 'echo "$UPLOAD_KEYSTORE" | base64 --decode > android/app/upload-keystore.jks'
+        env:
+          UPLOAD_KEYSTORE: ${{ secrets.UPLOAD_KEYSTORE }}
+
+
+
+      - name: Create GoogleService-Info for IOS
+        run: 'echo "$GOOGLE_SERVICE_PLIST_BASE64" | base64 --decode > ios/Runner/GoogleService-Info.plist'
+        env:
+          GOOGLE_SERVICE_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICE_PLIST_BASE64 }}
+
 
       # ---------------- ANDROID BUILD ---------------- #
       - name: Build APK
@@ -70,16 +114,6 @@ jobs:
       #          -exportOptionsPlist ios/exportOptions.plist
       #          CODE_SIGNING_REQUIRED=NO \
       #          CODE_SIGNING_ALLOWED=NO
-
-
-      # ---------------- FIREBASE AUTH ---------------- #
-      - name: Setup Firebase CLI
-        run: curl -sL https://firebase.tools | bash
-
-      - name: Authenticate with Firebase
-        run: |
-          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > $HOME/firebase_key.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json
 
       #       Throwing error: Failed to authenticate, have you run firebase login?
       #      - name: Upload APK to Firebase App Distribution

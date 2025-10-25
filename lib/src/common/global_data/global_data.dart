@@ -8,40 +8,40 @@ import 'package:test_pos_app/src/common/models/waiter_model.dart';
 abstract class GlobalData {
   static const WaiterModel currentWaiter = WaiterModel(id: 1, name: "Andrew Tate");
 
-  static List<TableModel> tables = [
-    TableModel(
-      id: '1',
-      name: Constants.mainHall,
-      vip: false,
-      icon: const Icon(Icons.list_alt, color: Colors.blue),
-      color: Colors.amberAccent.shade100,
-    ),
-    TableModel(
-      id: '2',
-      name: Constants.letka,
-      vip: false,
-      icon: const Icon(Icons.list_alt, color: Colors.blue),
-      color: Colors.amberAccent.shade100,
-    ),
-    TableModel(
-      id: '3',
-      name: Constants.vip1,
-      vip: true,
-      icon: const Icon(Icons.list_alt, color: Colors.blue),
-      color: Colors.amberAccent.shade100,
-    ),
-    TableModel(
-      id: '4',
-      name: Constants.vip2,
-      vip: true,
-      icon: const Icon(Icons.print, color: Colors.blue),
-      color: Colors.blue.shade100,
-    ),
-  ];
+  // static List<TableModel> tables = [
+  //   TableModel(
+  //     id: '1',
+  //     name: Constants.mainHall,
+  //     vip: false,
+  //     icon: const Icon(Icons.list_alt, color: Colors.blue),
+  //     color: Colors.amberAccent.shade100,
+  //   ),
+  //   TableModel(
+  //     id: '2',
+  //     name: Constants.letka,
+  //     vip: false,
+  //     icon: const Icon(Icons.list_alt, color: Colors.blue),
+  //     color: Colors.amberAccent.shade100,
+  //   ),
+  //   TableModel(
+  //     id: '3',
+  //     name: Constants.vip1,
+  //     vip: true,
+  //     icon: const Icon(Icons.list_alt, color: Colors.blue),
+  //     color: Colors.amberAccent.shade100,
+  //   ),
+  //   TableModel(
+  //     id: '4',
+  //     name: Constants.vip2,
+  //     vip: true,
+  //     icon: const Icon(Icons.print, color: Colors.blue),
+  //     color: Colors.blue.shade100,
+  //   ),
+  // ];
 
   static const List<CategoryModel> categories = [
-    CategoryModel(id: 1, name: Constants.firstFoods),
-    CategoryModel(id: 2, name: Constants.secondFoods),
+    CategoryModel(id: "1", name: Constants.firstFoods),
+    CategoryModel(id: "2", name: Constants.secondFoods),
   ];
 
   static List<ProductModel> products = [

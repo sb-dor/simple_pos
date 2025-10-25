@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:test_pos_app/src/common/utils/database/tables/establishment_table.dart';
 import 'app_database.steps.dart';
+import 'tables/category_table.dart';
 import 'tables/customer_invoice_details_table.dart';
 import 'tables/customer_invoices_table.dart';
 import 'tables/order_table_db_table.dart';
@@ -15,6 +16,7 @@ part 'app_database.g.dart';
     CustomerInvoiceDetailsTable,
     EstablishmentTable,
     OrderTableDbTable,
+    CategoryTable,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -33,7 +35,7 @@ class AppDatabase extends _$AppDatabase {
       );
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration {
@@ -51,6 +53,9 @@ class AppDatabase extends _$AppDatabase {
             },
             from2To3: (Migrator m, Schema3 schema) async {
               await m.addColumn(orderTableDbTable, orderTableDbTable.establishmentId);
+            },
+            from3To4: (Migrator m, Schema4 schema) async {
+              await m.createTable(categoryTable);
             },
           ),
         );

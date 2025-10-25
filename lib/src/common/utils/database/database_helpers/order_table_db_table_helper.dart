@@ -23,11 +23,11 @@ final class OrderTableDbTableHelper {
       if (findTable == null) {
         await (_appDatabase
             .into(_appDatabase.orderTableDbTable)
-            .insert(tableModel.toDbTableCompanion()));
+            .insert(tableModel.toDbTableCompanion(changed: tableModel.changed)));
       } else {
         await (_appDatabase.update(_appDatabase.orderTableDbTable)
               ..where((element) => element.id.equals(tableModel.id!)))
-            .write(tableModel.toDbTableCompanion());
+            .write(tableModel.toDbTableCompanion(changed: tableModel.changed));
       }
       return true;
     } catch (error, stackTrace) {

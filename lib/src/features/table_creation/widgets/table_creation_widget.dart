@@ -88,7 +88,6 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
         child: AppBarBack(label: Constants.tableCreation),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Constants.mainAppColor,
         onPressed: () {
           if (!_tableCreationChangeNotifierController.isValidate) return;
           final establishment = _authenticationBloc.state.stateModel.establishment;
@@ -111,6 +110,10 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
           );
         },
         child: Icon(Icons.save),
+      ),
+      floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
+        orElse: () => FloatingActionButtonLocation.centerFloat,
+        compact: () => FloatingActionButtonLocation.endFloat,
       ),
       body: DecoratedBox(
         decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),

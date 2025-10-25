@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:test_pos_app/src/features/synchronization/data/synchronization_repository.dart';
 
@@ -50,9 +50,9 @@ class SynchronizationBloc extends Bloc<SynchronizationEvent, SynchronizationStat
     try {
       emit(SynchronizationState.inProgress());
 
-      final tableSync = await _iSynchronizationRepository.tableSync();
+      final sync = await _iSynchronizationRepository.sync();
 
-      if (!tableSync) {
+      if (!sync) {
         emit(
           SynchronizationState.error(message: "Something went wrong with table synchronization"),
         );

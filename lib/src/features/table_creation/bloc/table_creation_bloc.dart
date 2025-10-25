@@ -83,6 +83,7 @@ class TableCreationBloc extends Bloc<TableCreationEvent, TableCreationState> {
       updatedAt: () => datetime,
       imageData: () => bytes,
       color: () => event.tableData.selectedColor,
+      changed: true,
     );
 
     final save = await _iTableCreationRepository.save(table);

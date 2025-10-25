@@ -57,8 +57,11 @@ class _TablesWidgetState extends State<TablesWidget> {
               await context.push(AppRoutesName.tables + AppRoutesName.creation);
               _tablesBloc.add(TablesEvent.refresh());
             },
-            backgroundColor: Constants.mainAppColor,
             child: Icon(Icons.add),
+          ),
+          floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
+            orElse: () => FloatingActionButtonLocation.centerFloat,
+            compact: () => FloatingActionButtonLocation.endFloat,
           ),
           body: DecoratedBox(
             decoration: BoxDecoration(
