@@ -1,19 +1,20 @@
 name: Flutter Checks
 
 on:
-  # merge or push will work on "push"
-  push: # it's not necessary, because we will not run this when pushing to the master, only when some another branch created PR
+  push:
     branches:
-      - category_creation
-#  pull_request: # means that pull_request will work only when it will be a PR to the master branch
-#    branches:
-#      - category_creation
+      - '**'
+      - '!main'
+
+  pull_request:
+    branches:
+      - '**'
+      - '!main'
 
 jobs:
   flutter-checks:
     name: Run Flutter Checks
     runs-on: ubuntu-latest # macos-latest
-    if: github.ref != 'refs/heads/main' # Skip if running on main
 
 
     steps:
