@@ -6,6 +6,7 @@ import 'tables/category_table.dart';
 import 'tables/customer_invoice_details_table.dart';
 import 'tables/customer_invoices_table.dart';
 import 'tables/order_table_db_table.dart';
+import 'tables/products_categories_table.dart';
 
 part 'app_database.g.dart';
 
@@ -17,6 +18,7 @@ part 'app_database.g.dart';
     EstablishmentTable,
     OrderTableDbTable,
     CategoryTable,
+    ProductsCategoriesTable,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -35,7 +37,7 @@ class AppDatabase extends _$AppDatabase {
       );
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration {
@@ -56,6 +58,9 @@ class AppDatabase extends _$AppDatabase {
             },
             from3To4: (Migrator m, Schema4 schema) async {
               await m.createTable(categoryTable);
+            },
+            from4To5: (Migrator m, Schema5 schema) async {
+              await m.createTable(productsCategoriesTable);
             },
           ),
         );

@@ -7,8 +7,6 @@ import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/features/category_creation/bloc/category_creation_bloc.dart';
 import 'package:test_pos_app/src/features/category_creation/widgets/controllers/category_creation_widget_controller.dart';
-import 'package:test_pos_app/src/features/initialization/logic/factories/category_creation_bloc_factory.dart';
-import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
 
 class CategoryCreationWidgets extends StatefulWidget {
@@ -22,27 +20,18 @@ class CategoryCreationWidgets extends StatefulWidget {
 
 class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
   late final CategoryCreationWidgetController _categoryCreationWidgetController;
-  late final CategoryCreationBloc _categoryCreationBloc;
   final TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
     _categoryCreationWidgetController = CategoryCreationWidgetController(
       nameController: _nameController,
     );
-    _categoryCreationBloc = CategoryCreationBlocFactory(
-      appDatabase: dependencies.appDatabase,
-      logger: dependencies.logger,
-    ).create();
-
-    _categoryCreationBloc.add(CategoryCreationEvent.init(categoryId: widget.categoryId));
   }
 
   @override
   void dispose() {
-    _categoryCreationBloc.close();
     _nameController.dispose();
     super.dispose();
   }
@@ -50,7 +39,6 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<CategoryCreationBloc, CategoryCreationState>(
-      bloc: _categoryCreationBloc,
       listener: (context, state) {
         if (state is CategoryCreation$InitialState && state.category != null) {
           _categoryCreationWidgetController.init(state.category!);
@@ -69,7 +57,7 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               if (!_categoryCreationWidgetController.validated) return;
-              _categoryCreationBloc.add(
+              context.read<CategoryCreationBloc>().add(
                 CategoryCreationEvent.save(
                   categoryCreationData: _categoryCreationWidgetController.categoryCreationData,
                   onSave: () {},
