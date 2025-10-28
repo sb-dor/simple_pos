@@ -36,6 +36,7 @@ class _CategoryCreationConfigWidgetState extends State<CategoryCreationConfigWid
     ).create();
 
     _categoryCreationBloc.add(CategoryCreationEvent.init(categoryId: widget.categoryId));
+    _productsCategoriesBloc.add(ProductsOfCategoryEvent.load(categoryId: widget.categoryId));
   }
 
   @override

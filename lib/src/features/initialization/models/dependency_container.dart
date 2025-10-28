@@ -10,6 +10,7 @@ import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
 import 'package:test_pos_app/src/features/order_feature/bloc/order_feature_bloc.dart';
 import 'package:test_pos_app/src/features/order_tables/bloc/order_tables_bloc.dart';
+import 'package:test_pos_app/src/features/products/bloc/products_bloc.dart';
 import 'package:test_pos_app/src/features/synchronization/bloc/synchronization_bloc.dart';
 import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
 
@@ -36,6 +37,8 @@ class DependencyContainer {
   late final TablesBloc tablesBloc;
 
   late final CategoriesBloc categoriesBloc;
+
+  late final ProductsBloc productsBloc;
 
   late final SynchronizationBloc synchronizationBloc;
 

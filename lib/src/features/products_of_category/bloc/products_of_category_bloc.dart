@@ -7,7 +7,7 @@ part 'products_of_category_bloc.freezed.dart';
 
 @freezed
 sealed class ProductsOfCategoryEvent with _$ProductsOfCategoryEvent {
-  const factory ProductsOfCategoryEvent.load({required final String categoryId}) =
+  const factory ProductsOfCategoryEvent.load({required final String? categoryId}) =
       _ProductsOfCategory$LoadEvent;
 }
 

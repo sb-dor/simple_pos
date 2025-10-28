@@ -18,6 +18,7 @@ import 'package:test_pos_app/src/features/initialization/logic/factories/cashier
 import 'package:test_pos_app/src/features/initialization/logic/factories/categories_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/order_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/order_tables_bloc_factory.dart';
+import 'package:test_pos_app/src/features/initialization/logic/factories/products_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
 import 'package:test_pos_app/src/features/initialization/models/dependency_container.dart';
 import 'package:test_pos_app/src/features/synchronization/bloc/synchronization_bloc.dart';
@@ -112,6 +113,9 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
   "Categories bloc init": (dependencies) => dependencies.categoriesBloc = CategoriesBlocFactory(
     appDatabase: dependencies.appDatabase,
   ).create(),
+  "Products bloc initl": (dependencies) {
+    dependencies.productsBloc = ProductsBlocFactory(dependencies.appDatabase).create();
+  },
   "Cashier bloc init": (dependencies) => dependencies.cashierFeatureBloc = CashierBlocFactory(
     appDatabase: dependencies.appDatabase,
     logger: dependencies.logger,
