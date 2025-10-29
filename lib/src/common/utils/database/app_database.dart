@@ -7,6 +7,7 @@ import 'tables/customer_invoice_details_table.dart';
 import 'tables/customer_invoices_table.dart';
 import 'tables/order_table_db_table.dart';
 import 'tables/products_categories_table.dart';
+import 'tables/products_table.dart';
 
 part 'app_database.g.dart';
 
@@ -19,6 +20,7 @@ part 'app_database.g.dart';
     OrderTableDbTable,
     CategoryTable,
     ProductsCategoriesTable,
+    ProductsTable,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -61,6 +63,7 @@ class AppDatabase extends _$AppDatabase {
             },
             from4To5: (Migrator m, Schema5 schema) async {
               await m.createTable(productsCategoriesTable);
+              await m.createTable(productsTable);
             },
           ),
         );

@@ -13,6 +13,7 @@ import 'package:test_pos_app/src/features/order_feature/widgets/sales_mode_scree
 import 'package:test_pos_app/src/features/order_feature/widgets/widgets/sales_mode_products_screen.dart';
 import 'package:test_pos_app/src/features/order_feature/widgets/widgets/sales_mode_settings_screen.dart';
 import 'package:test_pos_app/src/features/order_tables/widgets/order_feature_page.dart';
+import 'package:test_pos_app/src/features/products/widgets/products_widget.dart';
 import 'package:test_pos_app/src/features/table_creation/widgets/table_creation_widget.dart';
 import 'package:test_pos_app/src/features/tables/widgets/tables_widget.dart';
 
@@ -26,6 +27,7 @@ abstract class AppRoutesName {
   static const String tables = "/tables";
   static const String creation = "/creation";
   static const String categories = "/categories";
+  static const String products = "/products";
 }
 
 mixin AppRouter<T extends StatefulWidget> on State<T> {
@@ -143,6 +145,23 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
           path: AppRoutesName.categories,
           builder: (context, state) {
             return CategoriesWidget();
+          },
+          routes: [
+            GoRoute(
+              path: AppRoutesName.creation,
+              builder: (context, state) {
+                return CategoryCreationConfigWidget(
+                  categoryId: state.uri.queryParameters['categoryId'],
+                );
+              },
+            ),
+          ],
+        ),
+
+        GoRoute(
+          path: AppRoutesName.products,
+          builder: (context, state) {
+            return ProductsWidget();
           },
           routes: [
             GoRoute(

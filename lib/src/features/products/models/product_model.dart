@@ -19,7 +19,7 @@ class ProductModel {
     this.updatedAt,
   });
 
-  final int? id;
+  final String? id;
   final CategoryModel? category;
   final ProductType productType;
   final String? name;
