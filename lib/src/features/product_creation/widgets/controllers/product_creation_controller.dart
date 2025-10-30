@@ -4,4 +4,4 @@ class ProductCreationData {
 
 }
 
-class ProductCreationController extends ChangeNotifier {}
+class ProductCreationWidgetController extends ChangeNotifier {}

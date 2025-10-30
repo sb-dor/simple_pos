@@ -133,7 +133,7 @@ class _MainAppDrawerState extends State<MainAppDrawer> {
                 onTap: () {
                   Navigator.pop(context);
                   // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
-                  // context.go(AppRoutesName.tables);
+                  context.go(AppRoutesName.products);
                 },
               ),
               Align(

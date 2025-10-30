@@ -64,6 +64,16 @@ class AppDatabase extends _$AppDatabase {
             from4To5: (Migrator m, Schema5 schema) async {
               await m.createTable(productsCategoriesTable);
               await m.createTable(productsTable);
+
+              await m.alterTable(
+                TableMigration(
+                  schema.customerInvoicesDetails,
+                  columnTransformer: {
+                    customerInvoiceDetailsTable.productId: customerInvoiceDetailsTable.productId
+                        .cast<String>(),
+                  },
+                ),
+              );
             },
           ),
         );

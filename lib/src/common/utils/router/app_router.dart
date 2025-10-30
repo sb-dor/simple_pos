@@ -13,6 +13,7 @@ import 'package:test_pos_app/src/features/order_feature/widgets/sales_mode_scree
 import 'package:test_pos_app/src/features/order_feature/widgets/widgets/sales_mode_products_screen.dart';
 import 'package:test_pos_app/src/features/order_feature/widgets/widgets/sales_mode_settings_screen.dart';
 import 'package:test_pos_app/src/features/order_tables/widgets/order_feature_page.dart';
+import 'package:test_pos_app/src/features/product_creation/widgets/product_creation_config_widget.dart';
 import 'package:test_pos_app/src/features/products/widgets/products_widget.dart';
 import 'package:test_pos_app/src/features/table_creation/widgets/table_creation_widget.dart';
 import 'package:test_pos_app/src/features/tables/widgets/tables_widget.dart';
@@ -167,8 +168,8 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
             GoRoute(
               path: AppRoutesName.creation,
               builder: (context, state) {
-                return CategoryCreationConfigWidget(
-                  categoryId: state.uri.queryParameters['categoryId'],
+                return ProductCreationConfigWidget(
+                  productsId: state.uri.queryParameters['productId'],
                 );
               },
             ),

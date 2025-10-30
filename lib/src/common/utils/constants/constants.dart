@@ -2,24 +2,25 @@ import 'package:flutter/material.dart';
 
 abstract class Constants {
   static final mainAppColor = Colors.amberAccent.shade100;
-  static const chooseTextAppBar = "Выбор";
-  static const mainHall = "Основной зал";
-  static const letka = "Летка";
-  static const vip1 = "VIP 1";
-  static const vip2 = "VIP 2";
-  static const products = "Товары";
-  static const categories = "Категории";
-  static const settings = "Параметры";
-  static const salesMode = "Режим продаж";
-  static const tables = "Столы";
-  static const firstFoods = "1 блюда";
+  static const String chooseTextAppBar = "Выбор";
+  static const String mainHall = "Основной зал";
+  static const String letka = "Летка";
+  static const String vip1 = "VIP 1";
+  static const String vip2 = "VIP 2";
+  static const String products = "Товары";
+  static const String categories = "Категории";
+  static const String settings = "Параметры";
+  static const String salesMode = "Режим продаж";
+  static const String tables = "Столы";
+  static const String firstFoods = "1 блюда";
   static const secondFoods = "2 блюда";
-  static const pay = "Оплатить";
-  static const cashier = "Кассир";
-  static const reloadLabel = "Повторить";
-  static const logout = "Выйти";
-  static const tableCreation = "Создание столиков";
-  static const categoryCreation = "Создание категоии";
+  static const String pay = "Оплатить";
+  static const String cashier = "Кассир";
+  static const String reloadLabel = "Повторить";
+  static const String logout = "Выйти";
+  static const String tableCreation = "Создание столиков";
+  static const String categoryCreation = "Создание категоии";
+  static const String productCreation = "Создание товара";
 
   //
   static const String pending = "PENDING";

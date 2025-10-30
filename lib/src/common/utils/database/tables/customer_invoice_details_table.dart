@@ -6,7 +6,7 @@ class CustomerInvoiceDetailsTable extends Table {
 
   IntColumn get customerInvoiceId => integer().nullable().references(CustomerInvoicesTable, #id)();
 
-  IntColumn get productId => integer().nullable()();
+  TextColumn get productId => text().nullable()(); // changed from IntColumn to TextColumn
 
   RealColumn get price => real().nullable()();
 

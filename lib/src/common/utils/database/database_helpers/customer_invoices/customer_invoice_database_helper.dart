@@ -47,7 +47,7 @@ final class CustomerInvoiceDatabaseHelper {
     final checkItemsWithCurrentInvoice =
         await (_appDatabase.select(_appDatabase.customerInvoiceDetailsTable)..where((element) {
               return element.customerInvoiceId.equals(customerInvoiceId ?? 0) &
-                  element.productId.equals(item?.product?.id ?? 0);
+                  element.productId.equals(item?.product?.id ?? "");
             }))
             .get();
 
@@ -62,7 +62,7 @@ final class CustomerInvoiceDatabaseHelper {
         if ((item.qty ?? 0.0) <= 0.0) {
           await (_appDatabase.delete(_appDatabase.customerInvoiceDetailsTable)..where((element) {
                 return element.customerInvoiceId.equals(customerInvoiceId ?? 0) &
-                    element.productId.equals(item.product?.id ?? 0);
+                    element.productId.equals(item.product?.id ?? "");
               }))
               .go();
 
@@ -73,7 +73,7 @@ final class CustomerInvoiceDatabaseHelper {
 
         await (_appDatabase.update(_appDatabase.customerInvoiceDetailsTable)..where((element) {
               return element.customerInvoiceId.equals(customerInvoiceId ?? 0) &
-                  element.productId.equals(item.product?.id ?? 0);
+                  element.productId.equals(item.product?.id ?? "");
             }))
             .write(item.toDbCompanion(customerInvoiceId));
       }
@@ -91,7 +91,7 @@ final class CustomerInvoiceDatabaseHelper {
     if (checkInvoiceForPlace.isNotEmpty) {
       await (_appDatabase.delete(_appDatabase.customerInvoiceDetailsTable)..where((element) {
             return element.customerInvoiceId.equals(checkInvoiceForPlace.first.id) &
-                element.productId.equals(orderItem?.product?.id ?? 0);
+                element.productId.equals(orderItem?.product?.id ?? "");
           }))
           .go();
 
