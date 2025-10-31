@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-class ProductCreationData {
-
-}
+class ProductCreationData {}
 
 class ProductCreationWidgetController extends ChangeNotifier {}

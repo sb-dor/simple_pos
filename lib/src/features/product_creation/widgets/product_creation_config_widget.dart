@@ -11,6 +11,7 @@ import 'package:test_pos_app/src/features/product_creation/widgets/controllers/p
 import 'package:go_router/go_router.dart';
 import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
+import 'package:test_pos_app/src/features/products/models/product_model.dart';
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
 import 'package:test_pos_app/src/features/products/models/product_type.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
