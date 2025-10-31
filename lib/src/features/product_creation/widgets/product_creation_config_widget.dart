@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_pos_app/src/common/uikit/app_bar_back.dart';
+import 'package:test_pos_app/src/common/uikit/drop_down_selection_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/text_controller_listener.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/product_creation_bloc_factory.dart';

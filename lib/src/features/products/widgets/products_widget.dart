@@ -30,6 +30,7 @@ class _ProductsWidgetState extends State<ProductsWidget> {
     final dependencies = DependenciesScope.of(context, listen: false);
     _authenticationBloc = dependencies.authenticationBloc;
     _productsBloc = dependencies.productsBloc;
+    _productsBloc.add(ProductsEvent.load());
   }
 
   @override
@@ -54,41 +55,44 @@ class _ProductsWidgetState extends State<ProductsWidget> {
           },
           child: Icon(Icons.add),
         ),
-        body: CustomScrollView(
-          slivers: [
-            BlocBuilder<ProductsBloc, ProductsState>(
-              bloc: _productsBloc,
-              builder: (context, productsState) {
-                switch (productsState) {
-                  case Products$InitialState():
-                    return SliverToBoxAdapter(child: SizedBox.shrink());
-                  case Products$InProgressState():
-                    return SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicatorWidget()),
-                    );
-                  case Products$ErrorState():
-                    return SliverFillRemaining(
-                      child: Center(
-                        child: ErrorButtonWidget(label: Constants.reloadLabel, onTap: () {}),
-                      ),
-                    );
-                  case Products$CompletedState():
-                    return ListView.builder(
-                      itemCount: productsState.products.length,
-                      itemBuilder: (context, index) {
-                        final product = productsState.products[index];
-                        return ProductItemTile(
-                          product: product,
-                          onTap: () {
-                            // open details or edit product
-                          },
-                        );
-                      },
-                    );
-                }
-              },
-            ),
-          ],
+        body: DecoratedBox(
+          decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
+          child: CustomScrollView(
+            slivers: [
+              BlocBuilder<ProductsBloc, ProductsState>(
+                bloc: _productsBloc,
+                builder: (context, productsState) {
+                  switch (productsState) {
+                    case Products$InitialState():
+                      return SliverToBoxAdapter(child: SizedBox.shrink());
+                    case Products$InProgressState():
+                      return SliverFillRemaining(
+                        child: Center(child: CircularProgressIndicatorWidget()),
+                      );
+                    case Products$ErrorState():
+                      return SliverFillRemaining(
+                        child: Center(
+                          child: ErrorButtonWidget(label: Constants.reloadLabel, onTap: () {}),
+                        ),
+                      );
+                    case Products$CompletedState():
+                      return SliverList.builder(
+                        itemCount: productsState.products.length,
+                        itemBuilder: (context, index) {
+                          final product = productsState.products[index];
+                          return ProductItemTile(
+                            product: product,
+                            onTap: () {
+                              // open details or edit product
+                            },
+                          );
+                        },
+                      );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

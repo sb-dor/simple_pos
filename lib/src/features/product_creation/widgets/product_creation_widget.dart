@@ -12,16 +12,17 @@ class _ProductCreationWidgets extends StatefulWidget {
 class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
   late final ProductCreationWidgetController _productCreationWidgetController;
 
-  final _nameController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _wholesalePriceController = TextEditingController();
-  final _packQtyController = TextEditingController();
-  final _barcodeController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _wholesalePriceController = TextEditingController();
+  final TextEditingController _packQtyController = TextEditingController();
+  final TextEditingController _productTypeController = TextEditingController();
+  final TextEditingController _barcodeController = TextEditingController();
 
   late final TextControllerListener _nameControllerListener;
   late final TextControllerListener _priceControllerListener;
-  late final TextControllerListener _wholesalePriceControllerListener;
   late final TextControllerListener _packQtyControllerListener;
+  late final TextControllerListener _barcodeControllerListener;
 
   @override
   void initState() {
@@ -29,16 +30,22 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
     _productCreationWidgetController = ProductCreationWidgetController();
     _nameControllerListener = TextControllerListener(_nameController);
     _priceControllerListener = TextControllerListener(_priceController);
-    _wholesalePriceControllerListener = TextControllerListener(_wholesalePriceController);
     _packQtyControllerListener = TextControllerListener(_packQtyController);
+    _barcodeControllerListener = TextControllerListener(_barcodeController);
   }
 
   @override
   void dispose() {
+    _productCreationWidgetController.dispose();
+    _nameControllerListener.dispose();
+    _priceControllerListener.dispose();
+    _packQtyControllerListener.dispose();
+    _barcodeControllerListener.dispose();
     _nameController.dispose();
     _priceController.dispose();
     _wholesalePriceController.dispose();
     _packQtyController.dispose();
+    _productTypeController.dispose();
     _barcodeController.dispose();
     super.dispose();
   }
@@ -54,9 +61,13 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            if (!_controller.validated) return;
-            // TODO: Integrate with your Bloc save logic here
-            context.pop();
+            final nameValidated = _nameControllerListener.validated;
+            final priceValidated = _priceControllerListener.validated;
+            final packQtyValidated = _packQtyControllerListener.validated;
+            final barcodeValidated = _barcodeControllerListener.validated;
+
+            if (!nameValidated || !priceValidated || !packQtyValidated || !barcodeValidated) return;
+
           },
           child: const Icon(Icons.save),
         ),
@@ -78,112 +89,93 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListenableBuilder(
-                      listenable: _controller,
+                      listenable: Listenable.merge([
+                        _productCreationWidgetController,
+                        _nameControllerListener,
+                        _priceControllerListener,
+                        _packQtyControllerListener,
+                        _barcodeControllerListener,
+                      ]),
                       builder: (context, _) {
-                        return SingleChildScrollView(
+                        return ListView(
                           padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Create Product",
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 12),
+                          children: [
+                            const Text(
+                              "Create Product",
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 12),
 
-                              // 🏷️ Product name
-                              TextField(
-                                controller: _nameController,
-                                decoration: InputDecoration(
-                                  labelText: "Product Name",
-                                  border: const OutlineInputBorder(),
-                                  errorText: _controller.nameError,
-                                ),
+                            // 🏷️ Product name
+                            TextField(
+                              controller: _nameController,
+                              decoration: InputDecoration(
+                                labelText: "Product Name",
+                                border: const OutlineInputBorder(),
+                                errorText: _nameControllerListener.error,
                               ),
-                              const SizedBox(height: 12),
+                            ),
+                            const SizedBox(height: 12),
 
-                              // 💰 Price
-                              TextField(
-                                controller: _priceController,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelText: "Retail Price",
-                                  border: const OutlineInputBorder(),
-                                  errorText: _controller.priceError,
-                                ),
+                            // 💰 Price
+                            TextField(
+                              controller: _priceController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: "Retail Price",
+                                border: const OutlineInputBorder(),
+                                errorText: _priceControllerListener.error,
                               ),
-                              const SizedBox(height: 12),
+                            ),
+                            const SizedBox(height: 12),
 
-                              // 🏷️ Wholesale price
-                              TextField(
-                                controller: _wholesalePriceController,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  labelText: "Wholesale Price",
-                                  border: OutlineInputBorder(),
-                                ),
+                            // 🏷️ Wholesale price
+                            TextField(
+                              controller: _wholesalePriceController,
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                labelText: "Wholesale Price",
+                                border: OutlineInputBorder(),
                               ),
-                              const SizedBox(height: 12),
+                            ),
+                            const SizedBox(height: 12),
 
-                              // 📦 Pack quantity
-                              TextField(
-                                controller: _packQtyController,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  labelText: "Pack Quantity",
-                                  border: OutlineInputBorder(),
-                                ),
+                            // 📦 Pack quantity
+                            TextField(
+                              controller: _packQtyController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: "Pack Quantity",
+                                border: OutlineInputBorder(),
+                                errorText: _packQtyControllerListener.error,
                               ),
-                              const SizedBox(height: 12),
+                            ),
+                            const SizedBox(height: 12),
 
-                              // 🏷️ Barcode
-                              TextField(
-                                controller: _barcodeController,
-                                decoration: const InputDecoration(
-                                  labelText: "Barcode",
-                                  border: OutlineInputBorder(),
-                                ),
+                            // 🏷️ Barcode
+                            TextField(
+                              controller: _barcodeController,
+                              decoration: const InputDecoration(
+                                labelText: "Barcode",
+                                border: OutlineInputBorder(),
                               ),
-                              const SizedBox(height: 12),
+                            ),
+                            const SizedBox(height: 12),
 
-                              // 🧩 Product type dropdown
-                              DropdownButtonFormField<ProductType>(
-                                value: _controller.productType,
-                                decoration: const InputDecoration(
-                                  labelText: "Product Type",
-                                  border: OutlineInputBorder(),
-                                ),
-                                items: ProductType.values
-                                    .map(
-                                      (e) => DropdownMenuItem(
-                                        value: e,
-                                        child: Text("${e.type} (${e.unit})"),
-                                      ),
-                                    )
-                                    .toList(),
-                                onChanged: _controller.setProductType,
-                              ),
-                              const SizedBox(height: 12),
+                            // 🧩 Product type dropdown
+                            DropDownSelectionWidget(
+                              textController: _productTypeController,
+                              listOfDropdownEntries: ProductType.values
+                                  .map(
+                                    (e) => DropdownMenuEntry<ProductType>(value: e, label: e.type),
+                                  )
+                                  .toList(),
+                              title: "Product Type",
+                              onSelect: (productType) {},
+                            ),
 
-                              // 🗂 Category selector (placeholder)
-                              DropdownButtonFormField<CategoryModel>(
-                                value: _controller.selectedCategory,
-                                decoration: const InputDecoration(
-                                  labelText: "Category",
-                                  border: OutlineInputBorder(),
-                                ),
-                                items: _controller.availableCategories
-                                    .map(
-                                      (cat) => DropdownMenuItem(
-                                        value: cat,
-                                        child: Text(cat.name ?? "Unnamed"),
-                                      ),
-                                    )
-                                    .toList(),
-                                onChanged: _controller.setCategory,
-                              ),
-                            ],
-                          ),
+                            const SizedBox(height: 12),
+                          ],
                         );
                       },
                     ),
