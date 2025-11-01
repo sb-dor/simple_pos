@@ -49,8 +49,7 @@ class _TablesWidgetState extends State<TablesWidget> {
           drawer: MainAppDrawer(),
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              await context.push(AppRoutesName.tables + AppRoutesName.creation);
-              _tablesBloc.add(TablesEvent.refresh());
+              context.go(AppRoutesName.tables + AppRoutesName.creation);
             },
             child: Icon(Icons.add),
           ),
@@ -161,8 +160,7 @@ class _TableWidgetState extends State<_TableWidget> {
     return GestureDetector(
       onTap: () async {
         final path = "${AppRoutesName.tables}${AppRoutesName.creation}?tableId=${widget.table.id}";
-        await context.push(path);
-        _tablesBloc.add(TablesEvent.refresh());
+        context.go(path);
       },
       child: MouseRegion(
         onEnter: (_) => setState(() => _hovered = true),

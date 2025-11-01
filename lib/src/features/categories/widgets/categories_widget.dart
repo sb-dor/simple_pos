@@ -8,7 +8,6 @@ import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
 import 'package:test_pos_app/src/common/uikit/text_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
-import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
@@ -23,14 +22,12 @@ class CategoriesWidget extends StatefulWidget {
 }
 
 class _CategoriesWidgetState extends State<CategoriesWidget> {
-  late final AuthenticationBloc _authenticationBloc;
   late final CategoriesBloc _categoriesBloc;
 
   @override
   void initState() {
     super.initState();
     final dependencies = DependenciesScope.of(context, listen: false);
-    _authenticationBloc = dependencies.authenticationBloc;
     _categoriesBloc = dependencies.categoriesBloc;
   }
 
@@ -41,8 +38,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
         child: (context) => Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              await context.push(AppRoutesName.categories + AppRoutesName.creation);
-              _categoriesBloc.add(CategoriesEvent.refresh());
+              context.go(AppRoutesName.categories + AppRoutesName.creation);
             },
             child: Icon(Icons.add),
           ),
@@ -104,10 +100,9 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
 
                                     return GestureDetector(
                                       onTap: () async {
-                                        await context.push(
+                                        context.go(
                                           "${AppRoutesName.categories}${AppRoutesName.creation}?categoryId=${category.id}",
                                         );
-                                        _categoriesBloc.add(CategoriesEvent.refresh());
                                       },
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,

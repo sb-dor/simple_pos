@@ -10,8 +10,6 @@ class _ProductCreationWidgets extends StatefulWidget {
 }
 
 class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
-  late final ProductCreationWidgetController _productCreationWidgetController;
-
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _wholesalePriceController = TextEditingController();
@@ -24,10 +22,13 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
   late final TextControllerListener _packQtyControllerListener;
   late final TextControllerListener _barcodeControllerListener;
 
+  ProductType? _productType;
+  bool _visible = true;
+  Uint8List? _image;
+
   @override
   void initState() {
     super.initState();
-    _productCreationWidgetController = ProductCreationWidgetController();
     _nameControllerListener = TextControllerListener(_nameController);
     _priceControllerListener = TextControllerListener(_priceController);
     _packQtyControllerListener = TextControllerListener(_packQtyController);
@@ -36,7 +37,6 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
 
   @override
   void dispose() {
-    _productCreationWidgetController.dispose();
     _nameControllerListener.dispose();
     _priceControllerListener.dispose();
     _packQtyControllerListener.dispose();
@@ -52,9 +52,21 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
 
   void _initControllers(ProductModel product) {
     _nameController.text = product.name ?? '';
-    _priceController.text = "price";
-    _packQtyController.text = "pack";
-    _barcodeController.text = "barcode";
+    if (product.price != null) {
+      _priceController.text = "${ReusableFunctions.instance.separateNumbersRegex(product.price)}";
+    }
+    if (product.wholesalePrice != null) {
+      _wholesalePriceController.text =
+          "${ReusableFunctions.instance.separateNumbersRegex(product.wholesalePrice)}";
+    }
+    if (product.packQty != null) {
+      _packQtyController.text =
+          "${ReusableFunctions.instance.separateNumbersRegex(product.packQty)}";
+    }
+    _packQtyController.text = product.packQty?.toString() ?? '';
+    _barcodeController.text = product.barcode ?? '';
+    _productType = product.productType;
+    _productTypeController.text = "${product.productType.type}, ${product.productType.unit}";
     setState(() {});
   }
 
@@ -76,7 +88,7 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
             drawer: const MainAppDrawer(),
             appBar: PreferredSize(
               preferredSize: const Size(double.infinity, kToolbarHeight),
-              child: const AppBarBack(label: "Create Product"),
+              child: const AppBarBack(label: "Create Product", backPath: AppRoutesName.products),
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -85,8 +97,35 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                 final packQtyValidated = _packQtyControllerListener.validated;
                 final barcodeValidated = _barcodeControllerListener.validated;
 
-                if (!nameValidated || !priceValidated || !packQtyValidated || !barcodeValidated)
+                if (!nameValidated || !priceValidated || !packQtyValidated || !barcodeValidated) {
                   return;
+                }
+
+                final trimmedPrice = ReusableFunctions.instance.clearSeparatedNumbers(
+                  _priceController.text.trim(),
+                );
+                final trimmedWholeSalePrice = ReusableFunctions.instance.clearSeparatedNumbers(
+                  _wholesalePriceController.text.trim(),
+                );
+                final trimmedPackQty = ReusableFunctions.instance.clearSeparatedNumbers(
+                  _packQtyController.text.trim(),
+                );
+
+                final productCreationData = ProductCreationData(
+                  name: _nameControllerListener.trimmedText,
+                  price: double.tryParse(trimmedPrice),
+                  wholesalePrice: double.tryParse(trimmedWholeSalePrice),
+                  packQty: double.tryParse(trimmedPackQty),
+                  barcode: _barcodeControllerListener.trimmedText,
+                  productType: _productType,
+                );
+
+                context.read<ProductCreationBloc>().add(
+                  ProductCreationEvent.save(
+                    productCreationData: productCreationData,
+                    onSave: () {},
+                  ),
+                );
               },
               child: const Icon(Icons.save),
             ),
@@ -111,7 +150,6 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                         ),
                         child: ListenableBuilder(
                           listenable: Listenable.merge([
-                            _productCreationWidgetController,
                             _nameControllerListener,
                             _priceControllerListener,
                             _packQtyControllerListener,
@@ -127,7 +165,6 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                                 ),
                                 const SizedBox(height: 12),
 
-                                // 🏷️ Product name
                                 TextField(
                                   controller: _nameController,
                                   decoration: InputDecoration(
@@ -138,42 +175,41 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                                 ),
                                 const SizedBox(height: 12),
 
-                                // 💰 Price
                                 TextField(
                                   controller: _priceController,
-                                  keyboardType: TextInputType.number,
+                                  keyboardType: ReusableFunctions.instance.numberInputType,
                                   decoration: InputDecoration(
                                     labelText: "Retail Price",
                                     border: const OutlineInputBorder(),
                                     errorText: _priceControllerListener.error,
                                   ),
+                                  inputFormatters: [DecimalTextInputFormatter()],
                                 ),
                                 const SizedBox(height: 12),
 
-                                // 🏷️ Wholesale price
                                 TextField(
                                   controller: _wholesalePriceController,
-                                  keyboardType: TextInputType.number,
+                                  keyboardType: ReusableFunctions.instance.numberInputType,
                                   decoration: const InputDecoration(
                                     labelText: "Wholesale Price",
                                     border: OutlineInputBorder(),
                                   ),
+                                  inputFormatters: [DecimalTextInputFormatter()],
                                 ),
                                 const SizedBox(height: 12),
 
-                                // 📦 Pack quantity
                                 TextField(
                                   controller: _packQtyController,
-                                  keyboardType: TextInputType.number,
+                                  keyboardType: ReusableFunctions.instance.numberInputType,
                                   decoration: InputDecoration(
                                     labelText: "Pack Quantity",
                                     border: OutlineInputBorder(),
                                     errorText: _packQtyControllerListener.error,
                                   ),
+                                  inputFormatters: [DecimalTextInputFormatter()],
                                 ),
                                 const SizedBox(height: 12),
 
-                                // 🏷️ Barcode
                                 TextField(
                                   controller: _barcodeController,
                                   decoration: const InputDecoration(
@@ -183,17 +219,28 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                                 ),
                                 const SizedBox(height: 12),
 
-                                // 🧩 Product type dropdown
                                 DropDownSelectionWidget(
                                   textController: _productTypeController,
                                   listOfDropdownEntries: ProductType.values
                                       .map(
-                                        (e) =>
-                                            DropdownMenuEntry<ProductType>(value: e, label: e.type),
+                                        (e) => DropdownMenuEntry<ProductType>(
+                                          value: e,
+                                          label: "${e.type}, ${e.unit}",
+                                        ),
                                       )
                                       .toList(),
                                   title: "Product Type",
-                                  onSelect: (productType) {},
+                                  enableSearch: false,
+                                  requestFocusOnTap: false,
+                                  onSelect: (productType) {
+                                    setState(() {
+                                      if (_productType == productType) {
+                                        _productType = null;
+                                      } else {
+                                        _productType = productType;
+                                      }
+                                    });
+                                  },
                                 ),
 
                                 const SizedBox(height: 12),

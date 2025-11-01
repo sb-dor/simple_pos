@@ -17,6 +17,8 @@ class DropDownSelectionWidget<T> extends StatelessWidget {
     this.maximumSize = const Size(200, 200),
     this.dropdownMenuCloseBehavior = DropdownMenuCloseBehavior.all,
     this.checkForEmpty = true,
+    this.enableSearch = true,
+    this.requestFocusOnTap = true,
   });
 
   final List<DropdownMenuEntry<T>> listOfDropdownEntries;
@@ -32,6 +34,8 @@ class DropDownSelectionWidget<T> extends StatelessWidget {
   final Size maximumSize;
   final DropdownMenuCloseBehavior dropdownMenuCloseBehavior;
   final bool checkForEmpty;
+  final bool enableSearch;
+  final bool requestFocusOnTap;
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +149,8 @@ class DropDownSelectionWidget<T> extends StatelessWidget {
         // textStyle: TextStyle(color: appTheme.appColors.textColor),
         controller: textController,
         dropdownMenuEntries: listOfDropdownEntries,
+        enableSearch: enableSearch,
+        requestFocusOnTap: requestFocusOnTap,
       );
     }
   }

@@ -5,10 +5,16 @@ import 'package:test_pos_app/src/common/uikit/text_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 
 class AppBarBack extends StatefulWidget {
-  const AppBarBack({super.key, this.backLabel = "Назад", required this.label});
+  const AppBarBack({
+    super.key,
+    required this.label,
+    required this.backPath,
+    this.backLabel = "Назад",
+  });
 
-  final String backLabel;
   final String label;
+  final String backPath;
+  final String backLabel;
 
   @override
   State<AppBarBack> createState() => _AppBarBackState();
@@ -38,7 +44,7 @@ class _AppBarBackState extends State<AppBarBack> {
                       ),
                     ),
                     onPressed: () {
-                      context.pop();
+                      context.go(widget.backPath);
                     },
                     label: Text(widget.backLabel),
                     icon: Icon(Icons.arrow_back),

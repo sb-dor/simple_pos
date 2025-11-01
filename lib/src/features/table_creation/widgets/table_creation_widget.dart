@@ -8,6 +8,7 @@ import 'package:test_pos_app/src/common/uikit/app_bar_back.dart';
 import 'package:test_pos_app/src/common/uikit/circular_progress_indicator_widget.dart';
 import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
+import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/table_creation_bloc_factory.dart';
@@ -89,7 +90,7 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
         child: (context) => Scaffold(
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: AppBarBack(label: Constants.tableCreation),
+            child: AppBarBack(label: Constants.tableCreation, backPath: AppRoutesName.tables),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {

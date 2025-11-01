@@ -86,7 +86,7 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
         child: (context) => Scaffold(
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: AppBarBack(label: Constants.salesMode),
+            child: AppBarBack(label: Constants.salesMode, backPath: AppRoutesName.orderTables),
           ),
           body: DecoratedBox(
             decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),

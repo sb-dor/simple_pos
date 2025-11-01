@@ -5,6 +5,7 @@ import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/uikit/app_bar_back.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
+import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/category_creation/bloc/category_creation_bloc.dart';
 import 'package:test_pos_app/src/features/category_creation/widgets/controllers/category_creation_widget_controller.dart';
@@ -54,7 +55,10 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
             drawer: MainAppDrawer(),
             appBar: PreferredSize(
               preferredSize: Size(double.infinity, kToolbarHeight),
-              child: AppBarBack(label: Constants.categoryCreation),
+              child: AppBarBack(
+                label: Constants.categoryCreation,
+                backPath: AppRoutesName.categories,
+              ),
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {

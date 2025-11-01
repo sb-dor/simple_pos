@@ -22,4 +22,28 @@ final class ReusableFunctions {
   void showSnackBar({required BuildContext context, required String message}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
+
+  TextInputType get numberInputType {
+    return defaultTargetPlatform == TargetPlatform.macOS ||
+            defaultTargetPlatform == TargetPlatform.iOS
+        ? const TextInputType.numberWithOptions(decimal: true, signed: true)
+        : TextInputType.number;
+  }
+
+  String? separateNumbersRegex(num? number) {
+    if (number == null) return null;
+    return number.toString().replaceAllMapped(
+      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+      (match) => '${match[1]} ',
+    );
+  }
+
+  String clearSeparatedNumbers(String value) {
+    String res = '';
+    for (int i = 0; i < value.length; i++) {
+      if (value[i] == ' ') continue;
+      res += value[i];
+    }
+    return res;
+  }
 }

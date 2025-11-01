@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_pos_app/src/features/products/models/product_model.dart';
 
 class ProductItemTile extends StatelessWidget {
-  const ProductItemTile({
-    super.key,
-    required this.product,
-    this.onTap,
-  });
+  const ProductItemTile({super.key, required this.product, this.onTap});
 
   final ProductModel product;
   final VoidCallback? onTap;
@@ -25,38 +21,25 @@ class ProductItemTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4, offset: const Offset(0, 2))],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 🖼 Product image
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: image != null
-                  ? Image.memory(
-                image,
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-              )
+                  ? Image.memory(image, width: 60, height: 60, fit: BoxFit.cover)
                   : Container(
-                width: 60,
-                height: 60,
-                color: Colors.grey.shade200,
-                alignment: Alignment.center,
-                child: const Icon(Icons.inventory_2_outlined, color: Colors.grey),
-              ),
+                      width: 60,
+                      height: 60,
+                      color: Colors.grey.shade200,
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.inventory_2_outlined, color: Colors.grey),
+                    ),
             ),
             const SizedBox(width: 12),
 
-            // 📄 Product details
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +47,7 @@ class ProductItemTile extends StatelessWidget {
                   Text(
                     product.name ?? "Unnamed product",
                     style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (product.category != null)
@@ -85,8 +68,6 @@ class ProductItemTile extends StatelessWidget {
                 ],
               ),
             ),
-
-            // 📦 Unit
             Text(
               product.productType.unit,
               style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[700]),
@@ -99,6 +80,6 @@ class ProductItemTile extends StatelessWidget {
 
   String _formatPrice() {
     final price = product.price ?? 0;
-    return "${price.toStringAsFixed(2)} ${product.productType.unit}";
+    return price.toStringAsFixed(2);
   }
 }

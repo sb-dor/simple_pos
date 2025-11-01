@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:test_pos_app/src/features/product_creation/data/product_creation_repository.dart';
-import 'package:test_pos_app/src/features/product_creation/widgets/controllers/product_creation_controller.dart';
+import 'package:test_pos_app/src/features/product_creation/models/product_creation_data.dart';
 import 'package:test_pos_app/src/features/products/models/product_model.dart';
+import 'package:uuid/uuid.dart';
 
 part 'product_creation_bloc.freezed.dart';
 
@@ -56,7 +57,10 @@ class ProductCreationBloc extends Bloc<ProductCreationEvent, ProductCreationStat
     _ProductCreation$InitEvent event,
     Emitter<ProductCreationState> emit,
   ) async {
-    try {} catch (error, stackTrace) {
+    try {
+      final product = await _productCreationRepository.product(event.productId);
+      emit(ProductCreationState.initial(product));
+    } catch (error, stackTrace) {
       addError(error, stackTrace);
     }
   }
@@ -65,7 +69,31 @@ class ProductCreationBloc extends Bloc<ProductCreationEvent, ProductCreationStat
     _ProductCreation$SaveEvent event,
     Emitter<ProductCreationState> emit,
   ) async {
-    try {} catch (error, stackTrace) {
+    try {
+      emit(ProductCreationState.inProgress(state.product));
+
+      final product = (state.product ?? ProductModel()).copyWith(
+        id: state.product?.id ?? const Uuid().v4(),
+        name: () => event.productCreationData.name,
+        price: () => event.productCreationData.price,
+        wholesalePrice: () => event.productCreationData.wholesalePrice,
+        packQty: () => event.productCreationData.packQty,
+        productType: event.productCreationData.productType,
+        barcode: () => event.productCreationData.barcode,
+        changed: true,
+        visible: event.productCreationData.visible,
+        imageData: () => event.productCreationData.image,
+      );
+
+      final save = await _productCreationRepository.save(product);
+
+      if (save) {
+        emit(ProductCreationState.completed(product));
+        event.onSave();
+      } else {
+        emit(ProductCreationState.error(state.product));
+      }
+    } catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(ProductCreationState.error(state.product));
     }
