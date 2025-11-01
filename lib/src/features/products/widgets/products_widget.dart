@@ -87,7 +87,7 @@ class _ProductsWidgetState extends State<ProductsWidget> {
                                 crossAxisCount: WindowSizeScope.of(
                                   context,
                                   listen: false,
-                                ).maybeMap(orElse: () => 4),
+                                ).maybeMap(orElse: () => 4, compact: () => 2, medium: () => 3),
                                 mainAxisExtent: 100,
                               ),
                               itemCount: productsState.products.length,
