@@ -9,20 +9,25 @@
 #  Dependabot следит за версиями библиотек в твоём pubspec.yaml, Dockerfile, etc.
 #  Если выходит новая версия — он создаёт PR:
 
-#  Параметр
-#  Что делает
+#
 # version: 2
 #       Второй формат конфигурации Dependabot (актуальный)
+
 # enable-beta-ecosystems: true
 #       Разрешены экспериментальные экосистемы (pub для Flutter/Dart как раз в бете)
+
 # package-ecosystem: "pub"
 #       Он следит за зависимостями в pubspec.yaml
+
 # directory: "/"
 #       Сканирует корень репозитория (где находится pubspec.yaml)
+
 # schedule.interval: "monthly"
 #       Проверяет 1 раз в месяц, не чаще
+
 # open-pull-requests-limit: 5
 #       Максимум 5 PR одновременно, если найдёт много обновлений
+
 # rebase-strategy: auto
 #       Если есть конфликт — сам попытается перебазировать PR
 
