@@ -82,26 +82,42 @@ class _ProductsWidgetState extends State<ProductsWidget> {
                               ),
                             );
                           case Products$CompletedState():
-                            return SliverGrid.builder(
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: WindowSizeScope.of(
-                                  context,
-                                  listen: false,
-                                ).maybeMap(orElse: () => 4, compact: () => 2, medium: () => 3),
-                                mainAxisExtent: 100,
+                            return WindowSizeScope.of(context).maybeMap(
+                              compact: () => SliverList.builder(
+                                itemCount: productsState.products.length,
+                                itemBuilder: (context, index) {
+                                  final product = productsState.products[index];
+                                  return ProductItemTile(
+                                    product: product,
+                                    onTap: () {
+                                      final path =
+                                          "${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}";
+                                      context.go(path);
+                                    },
+                                  );
+                                },
                               ),
-                              itemCount: productsState.products.length,
-                              itemBuilder: (context, index) {
-                                final product = productsState.products[index];
-                                return ProductItemTile(
-                                  product: product,
-                                  onTap: () {
-                                    final path =
-                                        "${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}";
-                                    context.go(path);
-                                  },
-                                );
-                              },
+                              orElse: () => SliverGrid.builder(
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: WindowSizeScope.of(
+                                    context,
+                                    listen: false,
+                                  ).maybeMap(orElse: () => 4, medium: () => 3),
+                                  mainAxisExtent: 120,
+                                ),
+                                itemCount: productsState.products.length,
+                                itemBuilder: (context, index) {
+                                  final product = productsState.products[index];
+                                  return ProductItemTile(
+                                    product: product,
+                                    onTap: () {
+                                      final path =
+                                          "${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}";
+                                      context.go(path);
+                                    },
+                                  );
+                                },
+                              ),
                             );
                         }
                       },

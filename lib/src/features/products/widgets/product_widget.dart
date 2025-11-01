@@ -80,6 +80,6 @@ class ProductItemTile extends StatelessWidget {
 
   String _formatPrice() {
     final price = product.price ?? 0;
-    return price.toStringAsFixed(2);
+    return "Price: ${price.toStringAsFixed(2)}";
   }
 }

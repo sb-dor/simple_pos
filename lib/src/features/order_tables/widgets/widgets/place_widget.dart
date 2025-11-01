@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
-import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
-import 'package:test_pos_app/src/features/order_feature/bloc/order_feature_bloc.dart';
 
 class PlaceWidget extends StatefulWidget {
   const PlaceWidget({super.key, required this.table});
@@ -15,14 +13,7 @@ class PlaceWidget extends StatefulWidget {
 }
 
 class _PlaceWidgetState extends State<PlaceWidget> {
-  late final OrderFeatureBloc _orderFeatureBloc;
   bool _hovered = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _orderFeatureBloc = DependenciesScope.of(context, listen: false).orderFeatureBloc;
-  }
 
   @override
   Widget build(BuildContext context) {

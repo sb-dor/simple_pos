@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/uikit/app_bar_back.dart';
 import 'package:test_pos_app/src/common/uikit/circular_progress_indicator_widget.dart';
@@ -16,6 +17,7 @@ import 'package:test_pos_app/src/features/initialization/widgets/dependencies_sc
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
 import 'package:test_pos_app/src/features/table_creation/bloc/table_creation_bloc.dart';
 import 'package:test_pos_app/src/features/table_creation/widgets/controller/table_creation_change_notifier_controller.dart';
+import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
 
 class TableCreationWidget extends StatefulWidget {
   const TableCreationWidget({super.key, required this.tableId});
@@ -108,10 +110,11 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
                   establishment: establishment,
                   onSave: () {
                     if (!mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Table Created: ${_nameController.text}")),
-                    );
-                    Navigator.pop(context);
+                    DependenciesScope.of(
+                      context,
+                      listen: false,
+                    ).tablesBloc.add(TablesEvent.refresh());
+                    context.go(AppRoutesName.tables);
                   },
                 ),
               );

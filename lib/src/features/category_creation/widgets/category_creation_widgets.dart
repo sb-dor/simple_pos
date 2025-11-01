@@ -7,8 +7,10 @@ import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
+import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/category_creation/bloc/category_creation_bloc.dart';
 import 'package:test_pos_app/src/features/category_creation/widgets/controllers/category_creation_widget_controller.dart';
+import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
 
 class CategoryCreationWidgets extends StatefulWidget {
@@ -46,7 +48,11 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
           _categoryCreationWidgetController.init(state.category!);
         }
         if (state is CategoryCreation$CompletedState) {
-          context.pop(context);
+          DependenciesScope.of(
+            context,
+            listen: false,
+          ).categoriesBloc.add(CategoriesEvent.refresh());
+          context.go(AppRoutesName.categories);
         }
       },
       child: AuthenticationListener(

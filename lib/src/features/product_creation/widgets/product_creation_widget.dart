@@ -79,7 +79,8 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
         }
 
         if (state is ProductCreation$CompletedState) {
-          context.pop();
+          DependenciesScope.of(context, listen: false).productsBloc.add(ProductsEvent.load());
+          context.go(AppRoutesName.products);
         }
       },
       child: AuthenticationListener(
@@ -159,12 +160,6 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                             return ListView(
                               padding: const EdgeInsets.all(16),
                               children: [
-                                const Text(
-                                  "Create Product",
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 12),
-
                                 TextField(
                                   controller: _nameController,
                                   decoration: InputDecoration(
