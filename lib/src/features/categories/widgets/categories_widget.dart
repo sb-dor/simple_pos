@@ -10,6 +10,7 @@ import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
@@ -35,14 +36,8 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
-      bloc: _authenticationBloc,
-      listener: (context, state) {
-        if (state is Authentication$UnauthenticatedState) {
-          context.pushReplacement(AppRoutesName.authentication + AppRoutesName.login);
-        }
-      },
-      child: SynchronizationListener(
+    return AuthenticationListener(
+      child: (context) => SynchronizationListener(
         child: (context) => Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () async {

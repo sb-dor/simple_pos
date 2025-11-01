@@ -8,7 +8,9 @@ import 'package:test_pos_app/src/common/uikit/app_bar_back.dart';
 import 'package:test_pos_app/src/common/uikit/text_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
+import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
+import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
 import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
 
 class SalesModeScreen extends StatefulWidget {
@@ -79,70 +81,78 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     final currentTabIndex = widget.statefulNavigationShell.currentIndex;
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-        child: AppBarBack(label: Constants.salesMode),
-      ),
-      body: DecoratedBox(
-        decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
-        child: SafeArea(
-          child: Center(
-            child: SizedBox(
-              width: WindowSizeScope.of(context).expandedSize,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(
-                                  currentTabIndex == 0 ? Colors.amber : null,
-                                ),
-                                shape: WidgetStatePropertyAll(
-                                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+    return AuthenticationListener(
+      child: (context) => SynchronizationListener(
+        child: (context) => Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+            child: AppBarBack(label: Constants.salesMode),
+          ),
+          body: DecoratedBox(
+            decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
+            child: SafeArea(
+              child: Center(
+                child: SizedBox(
+                  width: WindowSizeScope.of(context).expandedSize,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStatePropertyAll(
+                                      currentTabIndex == 0 ? Colors.amber : null,
+                                    ),
+                                    shape: WidgetStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    widget.statefulNavigationShell.goBranch(0);
+                                  },
+                                  child: TextWidget(
+                                    text: "Товары",
+                                    color: currentTabIndex == 0 ? Colors.white : null,
+                                  ),
                                 ),
                               ),
-                              onPressed: () {
-                                widget.statefulNavigationShell.goBranch(0);
-                              },
-                              child: TextWidget(
-                                text: "Товары",
-                                color: currentTabIndex == 0 ? Colors.white : null,
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStatePropertyAll(
+                                      currentTabIndex == 1 ? Colors.amber : null,
+                                    ),
+                                    shape: WidgetStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    widget.statefulNavigationShell.goBranch(1);
+                                  },
+                                  child: TextWidget(
+                                    text: "Настройки",
+                                    color: currentTabIndex == 1 ? Colors.white : null,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(
-                                  currentTabIndex == 1 ? Colors.amber : null,
-                                ),
-                                shape: WidgetStatePropertyAll(
-                                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                ),
-                              ),
-                              onPressed: () {
-                                widget.statefulNavigationShell.goBranch(1);
-                              },
-                              child: TextWidget(
-                                text: "Настройки",
-                                color: currentTabIndex == 1 ? Colors.white : null,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Expanded(child: widget.statefulNavigationShell),
+                    ],
                   ),
-                  Expanded(child: widget.statefulNavigationShell),
-                ],
+                ),
               ),
             ),
           ),

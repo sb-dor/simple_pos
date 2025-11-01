@@ -11,6 +11,7 @@ import 'package:test_pos_app/src/common/uikit/text_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
+import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
 import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
@@ -38,14 +39,8 @@ class _TablesWidgetState extends State<TablesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
-      bloc: _authenticationBloc,
-      listener: (context, state) {
-        if (state is Authentication$UnauthenticatedState) {
-          context.pushReplacement(AppRoutesName.authentication + AppRoutesName.login);
-        }
-      },
-      child: SynchronizationListener(
+    return AuthenticationListener(
+      child: (context) => SynchronizationListener(
         child: (context) => Scaffold(
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
@@ -165,8 +160,7 @@ class _TableWidgetState extends State<_TableWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        final path =
-            "${AppRoutesName.tables}${AppRoutesName.creation}?tableId=${widget.table.id}";
+        final path = "${AppRoutesName.tables}${AppRoutesName.creation}?tableId=${widget.table.id}";
         await context.push(path);
         _tablesBloc.add(TablesEvent.refresh());
       },

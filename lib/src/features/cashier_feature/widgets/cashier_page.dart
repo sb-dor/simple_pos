@@ -9,8 +9,10 @@ import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
+import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/cashier_feature/bloc/cashier_feature_bloc.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
+import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
 import 'widgets/cashier_invoice_widget.dart';
 
 class CashierPage extends StatefulWidget {
@@ -37,62 +39,58 @@ class _CashierPageState extends State<CashierPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
-      bloc: _authenticationBloc,
-      listener: (context, state) {
-        if (state is Authentication$UnauthenticatedState) {
-          context.pushReplacement(AppRoutesName.authentication + AppRoutesName.login);
-        }
-      },
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-          child: MainAppBar(label: Constants.cashier),
-        ),
-        drawer: const MainAppDrawer(),
-        body: DecoratedBox(
-          decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
-          child: SafeArea(
-            child: RefreshIndicator(
-              onRefresh: () async => _cashierFeatureBloc.add(CashierFeatureEvents.initial()),
-              child: Center(
-                child: SizedBox(
-                  width: WindowSizeScope.of(context).expandedSize,
-                  child: ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(8),
-                    children: [
-                      BlocBuilder<CashierFeatureBloc, CashierFeatureStates>(
-                        bloc: _cashierFeatureBloc,
-                        builder: (context, state) {
-                          switch (state) {
-                            case Cashier$InititalState():
-                              return SizedBox.shrink();
-                            case Cashier$InProgressState():
-                              return CircularProgressIndicatorWidget();
-                            case Cashier$ErrorState():
-                              return ErrorButtonWidget(
-                                label: Constants.reloadLabel,
-                                onTap: () {
-                                  //
-                                },
-                              );
-                            case Cashier$CompletedState():
-                              final currentStateModel = state.cashierFeatureStateModel;
-                              return ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(height: 20),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: currentStateModel.invoices.length,
-                                itemBuilder: (context, index) {
-                                  final invoice = currentStateModel.invoices[index];
-                                  return CashierInvoiceWidget(customerInvoice: invoice);
-                                },
-                              );
-                          }
-                        },
-                      ),
-                    ],
+    return AuthenticationListener(
+      child: (context) => SynchronizationListener(
+        child: (context) => Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+            child: MainAppBar(label: Constants.cashier),
+          ),
+          drawer: const MainAppDrawer(),
+          body: DecoratedBox(
+            decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
+            child: SafeArea(
+              child: RefreshIndicator(
+                onRefresh: () async => _cashierFeatureBloc.add(CashierFeatureEvents.initial()),
+                child: Center(
+                  child: SizedBox(
+                    width: WindowSizeScope.of(context).expandedSize,
+                    child: ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(8),
+                      children: [
+                        BlocBuilder<CashierFeatureBloc, CashierFeatureStates>(
+                          bloc: _cashierFeatureBloc,
+                          builder: (context, state) {
+                            switch (state) {
+                              case Cashier$InititalState():
+                                return SizedBox.shrink();
+                              case Cashier$InProgressState():
+                                return CircularProgressIndicatorWidget();
+                              case Cashier$ErrorState():
+                                return ErrorButtonWidget(
+                                  label: Constants.reloadLabel,
+                                  onTap: () {
+                                    //
+                                  },
+                                );
+                              case Cashier$CompletedState():
+                                final currentStateModel = state.cashierFeatureStateModel;
+                                return ListView.separated(
+                                  separatorBuilder: (context, index) => const SizedBox(height: 20),
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: currentStateModel.invoices.length,
+                                  itemBuilder: (context, index) {
+                                    final invoice = currentStateModel.invoices[index];
+                                    return CashierInvoiceWidget(customerInvoice: invoice);
+                                  },
+                                );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
