@@ -15,24 +15,34 @@ jobs:
   flutter-checks:
     name: Run Flutter Checks
     runs-on: ubuntu-latest # macos-latest
+    timeout-minutes: 30
 
 
     steps:
-      - name: Checkout repository
+      - name: Get the .github actions
         uses: actions/checkout@v4
 
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: ./.github/actions/setup
         with:
           flutter-version: "3.35.5"
 
       - name: Install dependencies
+        timeout-minutes: 1
         run: flutter pub get
 
-      - name: Run build_runner
-        run: dart run build_runner build --delete-conflicting-outputs
+      - name: 🚦 Check code format
+        id: check-format
+        timeout-minutes: 1
+        run: |
+          find lib test -name "*.dart" ! -name "*.*.dart" -print0 | xargs -0 dart format --set-exit-if-changed --line-length 120 -o none
 
-      - name: Run analyzer
+      #      - name: Run build_runner
+      #        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Check for Warnings
+        id: check-analyzer
+        timeout-minutes: 1
         run: |
           flutter analyze --no-fatal-infos --no-fatal-warnings || true
 

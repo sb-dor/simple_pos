@@ -16,23 +16,38 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest # macos-latest
+    timeout-minutes: 30
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Get the .github actions
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: Setup Flutter and dependencies
+        uses: ./.github/actions/setup
         with:
           flutter-version: "3.35.5"
 
+
       - name: Install dependencies
+        timeout-minutes: 1
         run: flutter pub get
 
-      - name: Run build_runner
-        run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Run analyzer
+      - name: Check code format
+        id: check-format
+        timeout-minutes: 1
+        run: |
+          find lib test -name "*.dart" ! -name "*.*.dart" -print0 | xargs -0 dart format --set-exit-if-changed --line-length 120 -o none
+
+      #      - name: Run build_runner
+      #        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Check for Warnings
+        id: check-analyzer
+        timeout-minutes: 1
         run: |
           flutter analyze --no-fatal-infos --no-fatal-warnings || true
 
@@ -49,7 +64,7 @@ jobs:
         run: |
           echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}' > $HOME/firebase_key.json
           export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json
-          
+
 
 
       - name: Create firebase_options
