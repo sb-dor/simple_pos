@@ -62,7 +62,7 @@ dependencies:
   dio: ^5.8.0+1
   faker: ^2.2.0
   encrypt: ^5.0.3
-  firebase_crashlytics: ^5.0.2
+  firebase_crashlytics: ^5.0.3
   flutter_launcher_icons: ^0.14.4
   rename: ^3.1.0
 
