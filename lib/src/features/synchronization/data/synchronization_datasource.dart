@@ -5,12 +5,15 @@ import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
 import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
+import 'package:test_pos_app/src/features/products/models/product_model.dart';
 import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 abstract interface class ISynchronizationDatasource {
   Future<bool> tableSync({required final Establishment establishment});
 
   Future<bool> categorySync({required final Establishment establishment});
+
+  Future<bool> productsSync({required final Establishment establishment});
 }
 
 final class SynchronizationDatasourceImpl implements ISynchronizationDatasource {
@@ -146,6 +149,70 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
         await (_appDatabase.update(_appDatabase.categoryTable)
               ..where((element) => element.id.equals(category.id!)))
             .write(category.toDbCategoryCompanion());
+      }
+    }
+
+    return true;
+  }
+
+  @override
+  Future<bool> productsSync({required Establishment establishment}) async {
+    final establishmentRef = _establishmentRef.doc(establishment.documentId);
+
+    final productsRef = establishmentRef
+        .collection('products')
+        .withConverter(
+          fromFirestore: (doc, _) => ProductModel.fromJson(doc.data() ?? {}),
+          toFirestore: (value, _) => value.toMap(),
+        );
+
+    final localChangedProducts = (await (_appDatabase.select(
+      _appDatabase.productsTable,
+    )..where((el) => el.changed.equals(true))).get()).map(ProductModel.fromDbTable);
+
+    if (localChangedProducts.isNotEmpty) {
+      final batch = FirebaseFirestore.instance.batch();
+
+      for (final each in localChangedProducts) {
+        final docRef = productsRef.doc(each.id);
+
+        final docSnapshot = await docRef.get();
+
+        if (docSnapshot.exists) {
+          batch.update(docRef, each.toMap());
+        } else {
+          batch.set(docRef, each);
+        }
+      }
+
+      await batch.commit();
+    }
+
+    await (_appDatabase.update(_appDatabase.productsTable)
+          ..where((t) => t.id.isIn(localChangedProducts.map((e) => e.id ?? '').toList())))
+        .write(ProductsTableCompanion(changed: const Value(true)));
+
+    final remoteSnapshot = await productsRef.get();
+
+    final remoteProducts = remoteSnapshot.docs.map((d) => d.data()).toList();
+
+    _logger.log(Level.info, "Remote products: $remoteProducts");
+
+    if (remoteProducts.isEmpty) return true;
+
+    for (final product in remoteProducts) {
+      if (product.id == null) continue;
+      final findTable = await (_appDatabase.select(
+        _appDatabase.productsTable,
+      )..where((element) => element.id.equals(product.id!))).getSingleOrNull();
+      if (findTable == null) {
+        await (_appDatabase
+            .into(_appDatabase.productsTable)
+            .insert(product.toDbProductCompanion()));
+      } else {
+        await (_appDatabase.update(_appDatabase.productsTable)
+              ..where((element) => element.id.equals(product.id!)))
+            .write(product.toDbProductCompanion());
       }
     }
 

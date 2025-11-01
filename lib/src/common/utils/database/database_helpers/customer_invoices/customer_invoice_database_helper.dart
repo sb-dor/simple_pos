@@ -174,6 +174,7 @@ final class CustomerInvoiceDatabaseHelper {
         _appDatabase.orderTableDbTable,
       )..where((element) => element.id.equals(each.tableId ?? ''))).getSingleOrNull();
 
+      if (tableData == null) continue;
       customerInvoicesList.add(
         CustomerInvoiceModel.fromDb(
           each,

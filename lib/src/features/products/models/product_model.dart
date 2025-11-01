@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
+import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
 import 'package:test_pos_app/src/features/products/models/product_type.dart';
 
@@ -18,6 +20,42 @@ class ProductModel {
     this.imageData,
     this.updatedAt,
   });
+
+  factory ProductModel.fromJson(Map<String, Object?> json) {
+    return ProductModel(
+      id: json['id'] as String?,
+      productType: json['product_type'] == null
+          ? ProductType.regular
+          : ProductType.fromType(json['product_type'] as String?),
+      name: json['name'] as String?,
+      price: double.tryParse("${json['price']}"),
+      wholesalePrice: double.tryParse("${json['wholesale_price']}"),
+      packQty: json['pack_qty'] as double?,
+      barcode: json['barcode'] as String?,
+      visible: bool.tryParse("${json['visible']}") ?? false,
+      changed: bool.tryParse("${json['changed']}") ?? false,
+      imageData: json['image_data'] != null
+          ? Uint8List.fromList((json['image_data'] as List).cast())
+          : null,
+      updatedAt: json['updated_at'] == null ? null : DateTime.tryParse("${json['updated_at']}"),
+    );
+  }
+
+  factory ProductModel.fromDbTable(ProductsTableData db) {
+    return ProductModel(
+      id: db.id,
+      name: db.name,
+      productType: db.productType == null ? ProductType.regular : ProductType.fromType(db.productType!),
+      price: db.price,
+      wholesalePrice: db.wholesalePrice,
+      packQty: db.packQty,
+      barcode: db.barcode,
+      visible: db.visible,
+      changed: db.changed,
+      imageData: db.imageData,
+      updatedAt: db.updatedAt,
+    );
+  }
 
   final String? id;
   final CategoryModel? category;
@@ -116,17 +154,32 @@ class ProductModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'category': category,
-      'productType': productType,
+      'category_id': category?.id,
+      'product_type': productType.type,
       'name': name,
       'price': price,
-      'wholesalePrice': wholesalePrice,
-      'packQty': packQty,
+      'wholesale_price': wholesalePrice,
+      'pack_qty': packQty,
       'barcode': barcode,
       'visible': visible,
       'changed': changed,
-      'imageData': imageData,
-      'updatedAt': updatedAt,
+      'image_data': imageData,
+      'updated_at': updatedAt,
     };
   }
+
+
+  ProductsTableCompanion toDbProductCompanion() => ProductsTableCompanion(
+    id: Value.absentIfNull(id),
+    productType: Value(productType.type),
+    name: Value(name),
+    price: Value(price),
+    wholesalePrice: Value(wholesalePrice),
+    packQty: Value(packQty),
+    barcode: Value(barcode),
+    visible: Value(visible),
+    imageData: Value(imageData),
+    updatedAt: Value(updatedAt),
+    changed: Value(false),
+  );
 }

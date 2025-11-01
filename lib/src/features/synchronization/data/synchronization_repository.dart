@@ -28,7 +28,11 @@ final class SynchronizationRepositoryImpl implements ISynchronizationRepository 
     final categorySync = await _synchronizationDatasource.categorySync(
       establishment: currentEstablishment,
     );
+    if (!categorySync) return false;
+    final productsSync = await _synchronizationDatasource.productsSync(
+      establishment: currentEstablishment,
+    );
 
-    return categorySync;
+    return productsSync;
   }
 }

@@ -28,20 +28,20 @@ class TableModel {
   final Color? color;
   final bool changed;
 
-  factory TableModel.fromDbTable(OrderTableDbTableData? db) {
+  factory TableModel.fromDbTable(OrderTableDbTableData db) {
     Color? color;
-    if (db?.colorValue != null) {
-      color = Color(db!.colorValue!);
+    if (db.colorValue != null) {
+      color = Color(db.colorValue!);
     }
     return TableModel(
-      id: db?.id,
-      establishmentId: db?.establishmentId,
-      name: db?.name,
-      vip: db?.vip,
-      updatedAt: db?.updatedAt,
-      imageData: db?.image,
+      id: db.id,
+      establishmentId: db.establishmentId,
+      name: db.name,
+      vip: db.vip,
+      updatedAt: db.updatedAt,
+      imageData: db.image,
       color: color,
-      changed: db?.changed ?? false,
+      changed: db.changed,
     );
   }
 
@@ -86,16 +86,17 @@ class TableModel {
     );
   }
 
-  OrderTableDbTableCompanion toDbTableCompanion({bool changed = false}) => OrderTableDbTableCompanion(
-    id: Value.absentIfNull(id),
-    establishmentId: Value.absentIfNull(establishmentId),
-    name: Value(name),
-    vip: Value(vip),
-    updatedAt: Value(updatedAt),
-    image: Value(imageData),
-    colorValue: Value(color?.toARGB32()),
-    changed: Value(changed),
-  );
+  OrderTableDbTableCompanion toDbTableCompanion({bool changed = false}) =>
+      OrderTableDbTableCompanion(
+        id: Value.absentIfNull(id),
+        establishmentId: Value.absentIfNull(establishmentId),
+        name: Value(name),
+        vip: Value(vip),
+        updatedAt: Value(updatedAt),
+        image: Value(imageData),
+        colorValue: Value(color?.toARGB32()),
+        changed: Value(changed),
+      );
 
   Map<String, Object?> toMap() => {
     'id': id,

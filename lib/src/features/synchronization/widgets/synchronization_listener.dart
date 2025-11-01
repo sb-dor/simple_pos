@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_pos_app/src/common/utils/database/tables/products_table.dart';
 import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
+import 'package:test_pos_app/src/features/products/bloc/products_bloc.dart';
 import 'package:test_pos_app/src/features/synchronization/bloc/synchronization_bloc.dart';
 import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
 
@@ -19,6 +21,7 @@ class SynchronizationListener extends StatefulWidget {
 class _SynchronizationListenerState extends State<SynchronizationListener> {
   late final TablesBloc _tablesBloc;
   late final CategoriesBloc _categoriesBloc;
+  late final ProductsBloc _productsBloc;
   late final SynchronizationBloc _synchronizationBloc;
   bool _showingSyncLoading = false;
 
@@ -39,6 +42,7 @@ class _SynchronizationListenerState extends State<SynchronizationListener> {
   void _loadLocalData() {
     _tablesBloc.add(TablesEvent.refresh());
     _categoriesBloc.add(CategoriesEvent.refresh());
+    _productsBloc.add(ProductsEvent.load());
   }
 
   @override
@@ -47,6 +51,7 @@ class _SynchronizationListenerState extends State<SynchronizationListener> {
     final dependencies = DependenciesScope.of(context, listen: false);
     _tablesBloc = dependencies.tablesBloc;
     _categoriesBloc = dependencies.categoriesBloc;
+    _productsBloc = dependencies.productsBloc;
     _synchronizationBloc = dependencies.synchronizationBloc;
   }
 
