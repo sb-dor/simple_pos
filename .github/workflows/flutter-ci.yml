@@ -1,6 +1,8 @@
 # https://firebase.google.com/docs/cli?hl=ru#cli-ci-systems
 # https://www.youtube.com/watch?v=OUqPB-DAWIg - about base64
 
+# Some code was taken from - https://github.com/PlugFox/template/tree/master/.github
+
 name: Flutter CI/CD
 
 on:
