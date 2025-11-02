@@ -6,7 +6,7 @@
 #  твоего проекта (npm, composer, pub, pip, Gradle, Docker и др.) и присылает pull-request’ы,
 #  когда выходит новая версия пакета или найдена уязвимость.
 
-#  Dependabot следит за версиями библиотек в твоём pubspec.yaml, Dockerfile, etc.
+#  Dependabot следит за версиями библиотек в твоём pubspec.yaml, flutter_web_nginx.dockerfile, etc.
 #  Если выходит новая версия — он создаёт PR:
 
 #

@@ -1,5 +1,8 @@
 # install docker then run this command in terminal
-#docker build -t flutter-pos-web-nginx .
+#   docker build \
+  #  --file ./dockerfiles/flutter_web_nginx.dockerfile \
+  #  -t flutter-pos-web-nginx \
+  #  .
 #docker run --rm -p 8080:80 flutter-pos-web-nginx
 
 # Stage 1: Build Flutter Web
@@ -16,7 +19,7 @@ RUN cd $FLUTTER_SDK && git fetch --tags && git checkout $FLUTTER_VERSION
 ENV PATH="$FLUTTER_SDK/bin:$FLUTTER_SDK/bin/cache/dart-sdk/bin:${PATH}"
 
 WORKDIR $APP
-COPY . $APP
+COPY .. $APP
 
 RUN flutter doctor -v
 RUN flutter precache web
