@@ -1,4 +1,5 @@
-ARG VERSION="stable"
+ARG VERSION="3.35.7"
+# ARG VERSION="stable"
 
 # ------------------------------
 # Build minifier binary
@@ -17,18 +18,57 @@ RUN apk add --no-cache git && \
 # ------------------------------
 # Flutter web development image
 # ------------------------------
-FROM plugfox/flutter:${VERSION}
+FROM plugfox/flutter:${VERSION} AS build-flutter-web
+
+# https://hub.docker.com/r/plugfox/flutter
+ARG MAIN_FOLDER=/main_folder
+ARG APP=/app
 
 USER root
-WORKDIR /app
 
-# Copy the minify binary from the builder stage
+# Создать корневую папку
+RUN mkdir -p $MAIN_FOLDER
+
+WORKDIR $MAIN_FOLDER
+
+# Copy minify binary
 COPY --from=minifier-builder /out/ /bin/
 
-# Setup flutter tools for web developement
-RUN set -eux; flutter config --enable-web \
-    && flutter precache --web
+# Создать папку приложения
+RUN mkdir -p $APP
 
-CMD [ "flutter", "doctor" ]
+# Перейти в папку приложения
+WORKDIR $APP
 
-EXPOSE 8080
+# Скопировать проект внутрь
+COPY . .
+
+# CMD для проверки
+RUN flutter clean && \
+    flutter pub get && \
+    flutter build web --release && \
+    cd build/web && \
+    mv index.html index.src.html && \
+    minify --output index.html index.src.html
+
+# ------------------------------
+# Stage 3: Nginx to serve Flutter Web
+# ------------------------------
+FROM nginx:alpine
+
+# Копируем готовый web из build-flutter-web
+COPY --from=build-flutter-web /app/build/web /usr/share/nginx/html
+
+# Expose порт
+EXPOSE 80
+
+# Запуск Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+# OPTIONAL FOR CHECKING FOLDERS OR FLUTTER VERSION
+#CMD ["bash", "-c", "\
+#    echo PWD=$(pwd); \
+#    ls -la; \
+#    echo 'Directories:'; \
+#    ls -d */ 2>/dev/null || echo 'No dirs found'; \
+#"]

@@ -177,6 +177,7 @@ class _TableWidgetState extends State<_TableWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text("test"),
               SizedBox(
                 height: 60,
                 child: widget.table.imageData != null
