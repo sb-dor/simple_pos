@@ -11,9 +11,7 @@ final class CategoriesBlocFactory extends Factory<CategoriesBloc> {
 
   @override
   CategoriesBloc create() {
-    final ICategoriesDatasource categoriesDatasource = CategoriesDatasourceImpl(
-      _appDatabase,
-    );
+    final ICategoriesDatasource categoriesDatasource = CategoriesDatasourceImpl(_appDatabase);
     final ICategoriesRepository categoriesRepository = CategoriesRepositoryImpl(
       categoriesDatasource,
     );

@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
 
 class CategoryTable extends Table {
-
   TextColumn get id => text()();
 
   TextColumn get establishmentId => text().nullable()();

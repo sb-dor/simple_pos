@@ -1,5 +1,4 @@
 // Import necessary packages
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart'; // Bloc package for state management
 import 'package:freezed_annotation/freezed_annotation.dart'; // Freezed package for immutable classes
 import 'package:test_pos_app/src/features/authentication/models/establishment.dart'; // Model representing an establishment

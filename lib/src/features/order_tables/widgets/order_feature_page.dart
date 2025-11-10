@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/uikit/circular_progress_indicator_widget.dart';
 import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_bar.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
-import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';

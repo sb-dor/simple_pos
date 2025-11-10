@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_pos_app/src/common/utils/database/tables/products_table.dart';
 import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/products/bloc/products_bloc.dart';

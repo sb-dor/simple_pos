@@ -39,7 +39,7 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
   final IProductsOfCategoryRepository _iProductsOfCategoryRepository;
 
   void _productsOfCategory$LoadEvent(
-      _ProductsOfCategory$LoadEvent event,
+    _ProductsOfCategory$LoadEvent event,
     Emitter<ProductsOfCategoryState> emit,
   ) async {
     try {

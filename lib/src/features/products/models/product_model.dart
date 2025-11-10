@@ -45,7 +45,9 @@ class ProductModel {
     return ProductModel(
       id: db.id,
       name: db.name,
-      productType: db.productType == null ? ProductType.regular : ProductType.fromType(db.productType!),
+      productType: db.productType == null
+          ? ProductType.regular
+          : ProductType.fromType(db.productType!),
       price: db.price,
       wholesalePrice: db.wholesalePrice,
       packQty: db.packQty,
@@ -167,7 +169,6 @@ class ProductModel {
       'updated_at': updatedAt,
     };
   }
-
 
   ProductsTableCompanion toDbProductCompanion() => ProductsTableCompanion(
     id: Value.absentIfNull(id),
