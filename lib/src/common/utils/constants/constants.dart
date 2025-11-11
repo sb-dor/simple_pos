@@ -21,6 +21,7 @@ abstract class Constants {
   static const String tableCreation = "Создание столиков";
   static const String categoryCreation = "Создание категоии";
   static const String productCreation = "Создание товара";
+  static const String productsOfCategory = "Products of category";
 
   //
   static const String pending = "PENDING";

@@ -1,19 +1,21 @@
-import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/features/products/models/product_model.dart';
+import 'package:test_pos_app/src/features/products_of_category/data/products_of_category_datasource.dart';
 
 abstract interface class IProductsOfCategoryRepository {
-  Future<List<ProductModel>> productsOfCategory(final String? categoryId);
+  Future<List<ProductModel>> productsOfCategory(final String categoryId);
 }
 
 final class ProductsOfCategoryRepositoryImpl implements IProductsOfCategoryRepository {
-  ProductsOfCategoryRepositoryImpl({required final AppDatabase appDatabase})
-    : _appDatabase = appDatabase;
+  ProductsOfCategoryRepositoryImpl({
+    required final IProductsOfCategoryDatasource productsOfCategoryDatasource,
+  }) : _iProductsOfCategoryDatasource = productsOfCategoryDatasource;
 
-  final AppDatabase _appDatabase;
+  final IProductsOfCategoryDatasource _iProductsOfCategoryDatasource;
 
   @override
-  Future<List<ProductModel>> productsOfCategory(final String? categoryId) {
-    // TODO: implement productsOfCategory
-    throw UnimplementedError();
+  Future<List<ProductModel>> productsOfCategory(final String categoryId) async {
+    final products = await _iProductsOfCategoryDatasource.productsOfCategory(categoryId);
+
+    return products.map(ProductModel.fromDbTable).toList();
   }
 }

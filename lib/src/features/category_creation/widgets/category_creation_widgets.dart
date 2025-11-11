@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/uikit/app_bar_back.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
+import 'package:test_pos_app/src/common/uikit/text_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
@@ -11,6 +12,8 @@ import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/category_creation/bloc/category_creation_bloc.dart';
 import 'package:test_pos_app/src/features/category_creation/widgets/controllers/category_creation_widget_controller.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
+import 'package:test_pos_app/src/features/products_of_category/bloc/products_of_category_bloc.dart';
+import 'package:test_pos_app/src/features/products_of_category/widgets/products_of_category_config_widget.dart';
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
 
 class CategoryCreationWidgets extends StatefulWidget {
@@ -42,12 +45,13 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CategoryCreationBloc, CategoryCreationState>(
-      listener: (context, state) {
-        if (state is CategoryCreation$InitialState && state.category != null) {
-          _categoryCreationWidgetController.init(state.category!);
+    return BlocConsumer<CategoryCreationBloc, CategoryCreationState>(
+      listener: (context, categoryCreationState) {
+        if (categoryCreationState is CategoryCreation$InitialState &&
+            categoryCreationState.category != null) {
+          _categoryCreationWidgetController.init(categoryCreationState.category!);
         }
-        if (state is CategoryCreation$CompletedState) {
+        if (categoryCreationState is CategoryCreation$CompletedState) {
           DependenciesScope.of(
             context,
             listen: false,
@@ -55,7 +59,7 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
           context.go(AppRoutesName.categories);
         }
       },
-      child: AuthenticationListener(
+      builder: (context, categoryCreationState) => AuthenticationListener(
         child: (context) => SynchronizationListener(
           child: (context) => Scaffold(
             drawer: MainAppDrawer(),
@@ -145,6 +149,28 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
                                             ),
                                           ],
                                         ),
+                                        if (categoryCreationState.category != null)
+                                          TextButton(
+                                            onPressed: () {
+                                              final productsOfCategoryBloc = context
+                                                  .read<ProductsOfCategoryBloc>();
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    ProductsOfCategoryConfigWidget(
+                                                      categoryId:
+                                                          categoryCreationState.category?.id,
+                                                    ),
+                                              ).whenComplete(
+                                                () => productsOfCategoryBloc.add(
+                                                  ProductsOfCategoryEvent.load(
+                                                    categoryId: categoryCreationState.category?.id,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: TextWidget(text: Constants.productsOfCategory),
+                                          ),
                                       ],
                                     ),
                                   ),

@@ -30,7 +30,7 @@ class ProductModel {
       name: json['name'] as String?,
       price: double.tryParse("${json['price']}"),
       wholesalePrice: double.tryParse("${json['wholesale_price']}"),
-      packQty: json['pack_qty'] as double?,
+      packQty: double.tryParse("${json['pack_qty']}"),
       barcode: json['barcode'] as String?,
       visible: bool.tryParse("${json['visible']}") ?? false,
       changed: bool.tryParse("${json['changed']}") ?? false,

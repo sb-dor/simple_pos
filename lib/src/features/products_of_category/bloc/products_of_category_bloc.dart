@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:test_pos_app/src/features/products/models/product_model.dart';
 import 'package:test_pos_app/src/features/products_of_category/data/products_of_category_repository.dart';
@@ -45,7 +45,12 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
     try {
       emit(ProductsOfCategoryState.inProgress());
 
-      final products = await _iProductsOfCategoryRepository.productsOfCategory(event.categoryId);
+      if (event.categoryId == null) {
+        emit(ProductsOfCategoryState.completed(<ProductModel>[]));
+        return;
+      }
+
+      final products = await _iProductsOfCategoryRepository.productsOfCategory(event.categoryId!);
 
       emit(ProductsOfCategoryState.completed(products));
     } catch (error, stackTrace) {
