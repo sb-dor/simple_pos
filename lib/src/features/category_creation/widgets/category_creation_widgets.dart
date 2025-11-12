@@ -156,11 +156,17 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
                                                   .read<ProductsOfCategoryBloc>();
                                               showDialog(
                                                 context: context,
-                                                builder: (context) =>
-                                                    ProductsOfCategoryConfigWidget(
+                                                builder: (context) => AlertDialog(
+                                                  contentPadding: EdgeInsets.zero,
+                                                  insetPadding: EdgeInsets.zero,
+                                                  content: SizedBox(
+                                                    width: MediaQuery.of(context).size.height * 0.4,
+                                                    child: ProductsOfCategoryConfigWidget(
                                                       categoryId:
                                                           categoryCreationState.category?.id,
                                                     ),
+                                                  ),
+                                                ),
                                               ).whenComplete(
                                                 () => productsOfCategoryBloc.add(
                                                   ProductsOfCategoryEvent.load(

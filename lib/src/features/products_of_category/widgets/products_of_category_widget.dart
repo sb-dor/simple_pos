@@ -17,53 +17,97 @@ class ProductsOfCategoryWidget extends StatefulWidget {
 }
 
 class _ProductsOfCategoryWidgetState extends State<ProductsOfCategoryWidget> {
+  late final List<Tab> _tabs;
+  late final List<Widget> _children;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabs = [Tab(text: "Selected products"), Tab(text: "All products")];
+    _children = [_ProdudctsOfCategory(categoryId: widget.categoryId), _AllProductsWidget()];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: _tabs.length,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          scrolledUnderElevation: 0.0,
+          elevation: 0.0,
+          title: TextWidget(
+            text: Constants.productsOfCategory,
+            size: 22,
+            fontWeight: FontWeight.w500,
+          ),
+          bottom: TabBar(tabs: _tabs),
+        ),
+        body: TabBarView(children: _children),
+      ),
+    );
+  }
+}
+
+class _ProdudctsOfCategory extends StatefulWidget {
+  const _ProdudctsOfCategory({required this.categoryId});
+
+  final String? categoryId;
+
+  @override
+  State<_ProdudctsOfCategory> createState() => __ProdudctsOfCategoryState();
+}
+
+class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsOfCategoryBloc, ProductsOfCategoryState>(
       builder: (context, productsOfCategoryState) {
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: false,
-            scrolledUnderElevation: 0.0,
-            elevation: 0.0,
-            title: TextWidget(
-              text: Constants.productsOfCategory,
-              size: 22,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          body: CustomScrollView(
-            slivers: [
-              switch (productsOfCategoryState) {
-                ProductsOfCategory$InitialState() => SliverToBoxAdapter(child: SizedBox.shrink()),
-                ProductsOfCategory$InProgressState() => SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicatorWidget()),
-                ),
-                ProductsOfCategory$ErrorState() => SliverFillRemaining(
-                  child: Center(
-                    child: ErrorButtonWidget(
-                      label: Constants.reloadLabel,
-                      onTap: () {
-                        context.read<ProductsOfCategoryBloc>().add(
-                          ProductsOfCategoryEvent.load(categoryId: widget.categoryId),
-                        );
-                      },
-                    ),
+        return CustomScrollView(
+          slivers: [
+            switch (productsOfCategoryState) {
+              ProductsOfCategory$InitialState() => SliverToBoxAdapter(child: SizedBox.shrink()),
+              ProductsOfCategory$InProgressState() => SliverFillRemaining(
+                child: Center(child: CircularProgressIndicatorWidget()),
+              ),
+              ProductsOfCategory$ErrorState() => SliverFillRemaining(
+                child: Center(
+                  child: ErrorButtonWidget(
+                    label: Constants.reloadLabel,
+                    onTap: () {
+                      context.read<ProductsOfCategoryBloc>().add(
+                        ProductsOfCategoryEvent.load(categoryId: widget.categoryId),
+                      );
+                    },
                   ),
                 ),
-                ProductsOfCategory$CompletedState() => SliverList.separated(
-                  separatorBuilder: (context, index) => SizedBox(height: 10),
-                  itemCount: productsOfCategoryState.productsOfCategory.length,
-                  itemBuilder: (context, index) {
-                    final product = productsOfCategoryState.productsOfCategory[index];
-                    return ProductItemTile(product: product);
-                  },
-                ),
-              },
-            ],
-          ),
+              ),
+              ProductsOfCategory$CompletedState() => SliverList.separated(
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: productsOfCategoryState.productsOfCategory.length,
+                itemBuilder: (context, index) {
+                  final product = productsOfCategoryState.productsOfCategory[index];
+                  return ProductItemTile(product: product);
+                },
+              ),
+            },
+          ],
         );
       },
     );
+  }
+}
+
+class _AllProductsWidget extends StatefulWidget {
+  const _AllProductsWidget({super.key});
+
+  @override
+  State<_AllProductsWidget> createState() => __AllProductsWidgetState();
+}
+
+class __AllProductsWidgetState extends State<_AllProductsWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
