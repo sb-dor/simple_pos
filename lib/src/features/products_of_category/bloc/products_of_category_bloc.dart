@@ -9,6 +9,11 @@ part 'products_of_category_bloc.freezed.dart';
 sealed class ProductsOfCategoryEvent with _$ProductsOfCategoryEvent {
   const factory ProductsOfCategoryEvent.load({required final String? categoryId}) =
       _ProductsOfCategory$LoadEvent;
+
+  const factory ProductsOfCategoryEvent.saveProducts(
+    final List<ProductModel> selectedProducts, {
+    final void Function(String message)? onMessage,
+  }) = _ProductsOfCategory$SaveProductsEvent;
 }
 
 @freezed
@@ -32,6 +37,10 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
     on<ProductsOfCategoryEvent>(
       (event, emit) => switch (event) {
         final _ProductsOfCategory$LoadEvent event => _productsOfCategory$LoadEvent(event, emit),
+        final _ProductsOfCategory$SaveProductsEvent event => _productsOfCategory$SaveProductsEvent(
+          event,
+          emit,
+        ),
       },
     );
   }
@@ -56,6 +65,17 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
     } catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(const ProductsOfCategoryState.error());
+    }
+  }
+
+  void _productsOfCategory$SaveProductsEvent(
+    _ProductsOfCategory$SaveProductsEvent event,
+    Emitter<ProductsOfCategoryState> emit,
+  ) async {
+    try {
+      if (state is! ProductsOfCategory$CompletedState) {}
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
     }
   }
 }

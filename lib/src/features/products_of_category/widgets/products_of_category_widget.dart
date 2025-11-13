@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_pos_app/src/common/uikit/circular_progress_indicator_widget.dart';
 import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
+import 'package:test_pos_app/src/common/uikit/refresh_indicator_widget.dart';
 import 'package:test_pos_app/src/common/uikit/text_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
+import 'package:test_pos_app/src/features/products/bloc/products_bloc.dart';
+import 'package:test_pos_app/src/features/products/models/product_model.dart';
 import 'package:test_pos_app/src/features/products/widgets/product_widget.dart';
 import 'package:test_pos_app/src/features/products_of_category/bloc/products_of_category_bloc.dart';
 
@@ -60,10 +65,17 @@ class _ProdudctsOfCategory extends StatefulWidget {
 
 class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
   @override
+  void initState() {
+    super.initState();
+    context.read<ProductsBloc>().add(ProductsEvent.load());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsOfCategoryBloc, ProductsOfCategoryState>(
       builder: (context, productsOfCategoryState) {
         return CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             switch (productsOfCategoryState) {
               ProductsOfCategory$InitialState() => SliverToBoxAdapter(child: SizedBox.shrink()),
@@ -99,15 +111,97 @@ class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
 }
 
 class _AllProductsWidget extends StatefulWidget {
-  const _AllProductsWidget({super.key});
+  const _AllProductsWidget();
 
   @override
   State<_AllProductsWidget> createState() => __AllProductsWidgetState();
 }
 
 class __AllProductsWidgetState extends State<_AllProductsWidget> {
+  final Map<String, ProductModel> _selectedProducts = {};
+  late final StreamSubscription<ProductsOfCategoryState> _productsOfCategoryStateSubs;
+
+  @override
+  void initState() {
+    super.initState();
+    _productsOfCategoryStateSubs = context.read<ProductsOfCategoryBloc>().stream.listen((state) {
+      if (state is ProductsOfCategory$CompletedState) {
+        _selectedProducts.clear();
+        for (final each in state.productsOfCategory) {
+          if (each.id == null) continue;
+          _selectedProducts[each.id!] = each;
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _productsOfCategoryStateSubs.cancel();
+    super.dispose();
+  }
+
+  bool _selected(final String? id) {
+    return _selectedProducts[id] != null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return BlocBuilder<ProductsBloc, ProductsState>(
+      builder: (context, productsState) {
+        return Scaffold(
+          floatingActionButton: FloatingActionButton(onPressed: () {}, child: Icon(Icons.save)),
+          body: RefreshIndicatorWidget(
+            onRefresh: () async => context.read<ProductsBloc>().add(ProductsEvent.load()),
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                switch (productsState) {
+                  Products$InitialState() => SliverToBoxAdapter(child: SizedBox()),
+                  Products$InProgressState() => SliverFillRemaining(
+                    child: Center(child: CircularProgressIndicatorWidget()),
+                  ),
+                  Products$ErrorState() => SliverFillRemaining(
+                    child: Center(
+                      child: ErrorButtonWidget(
+                        label: Constants.reloadLabel,
+                        onTap: () {
+                          context.read<ProductsBloc>().add(ProductsEvent.load());
+                        },
+                      ),
+                    ),
+                  ),
+                  Products$CompletedState() => SliverList.builder(
+                    itemCount: productsState.products.length,
+                    itemBuilder: (context, index) {
+                      final product = productsState.products[index];
+                      final selected = _selected(product.id);
+                      return Row(
+                        children: [
+                          Checkbox(
+                            value: selected,
+                            onChanged: (value) {
+                              if (product.id == null) return;
+                              setState(() {
+                                if (_selectedProducts[product.id!] != null) {
+                                  _selectedProducts.remove(product.id!);
+                                  return;
+                                }
+                                _selectedProducts[product.id!] = product;
+                              });
+                            },
+                          ),
+                          Expanded(child: ProductItemTile(product: product)),
+                        ],
+                      );
+                    },
+                  ),
+                },
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
