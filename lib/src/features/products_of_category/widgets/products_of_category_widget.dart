@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/common/uikit/circular_progress_indicator_widget.dart';
 import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
 import 'package:test_pos_app/src/common/uikit/refresh_indicator_widget.dart';
 import 'package:test_pos_app/src/common/uikit/text_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
+import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/products/bloc/products_bloc.dart';
 import 'package:test_pos_app/src/features/products/models/product_model.dart';
 import 'package:test_pos_app/src/features/products/widgets/product_widget.dart';
@@ -77,36 +79,37 @@ class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsOfCategoryBloc, ProductsOfCategoryState>(
       builder: (context, productsOfCategoryState) {
-        return CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            switch (productsOfCategoryState) {
-              ProductsOfCategory$InitialState() => SliverToBoxAdapter(child: SizedBox.shrink()),
-              ProductsOfCategory$InProgressState() => SliverFillRemaining(
-                child: Center(child: CircularProgressIndicatorWidget()),
-              ),
-              ProductsOfCategory$ErrorState() => SliverFillRemaining(
-                child: Center(
-                  child: ErrorButtonWidget(
-                    label: Constants.reloadLabel,
-                    onTap: () {
-                      context.read<ProductsOfCategoryBloc>().add(
-                        ProductsOfCategoryEvent.load(categoryId: widget.categoryId),
-                      );
-                    },
+        return RefreshIndicatorWidget(
+          onRefresh: () async => context.read<ProductsBloc>().add(ProductsEvent.load()),
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              switch (productsOfCategoryState) {
+                ProductsOfCategory$InitialState() => SliverToBoxAdapter(child: SizedBox.shrink()),
+                ProductsOfCategory$InProgressState() => SliverFillRemaining(
+                  child: Center(child: CircularProgressIndicatorWidget()),
+                ),
+                ProductsOfCategory$ErrorState() => SliverFillRemaining(
+                  child: Center(
+                    child: ErrorButtonWidget(
+                      label: Constants.reloadLabel,
+                      onTap: () {
+                        context.read<ProductsBloc>().add(ProductsEvent.load());
+                      },
+                    ),
                   ),
                 ),
-              ),
-              ProductsOfCategory$CompletedState() => SliverList.separated(
-                separatorBuilder: (context, index) => SizedBox(height: 10),
-                itemCount: productsOfCategoryState.productsOfCategory.length,
-                itemBuilder: (context, index) {
-                  final product = productsOfCategoryState.productsOfCategory[index];
-                  return ProductItemTile(product: product);
-                },
-              ),
-            },
-          ],
+                ProductsOfCategory$CompletedState() => SliverList.separated(
+                  separatorBuilder: (context, index) => SizedBox(height: 10),
+                  itemCount: productsOfCategoryState.productsOfCategory.length,
+                  itemBuilder: (context, index) {
+                    final product = productsOfCategoryState.productsOfCategory[index];
+                    return ProductItemTile(product: product);
+                  },
+                ),
+              },
+            ],
+          ),
         );
       },
     );
@@ -129,6 +132,7 @@ class __AllProductsWidgetState extends State<_AllProductsWidget> {
   @override
   void initState() {
     super.initState();
+
     _productsOfCategoryStateSubs = context.read<ProductsOfCategoryBloc>().stream.listen((state) {
       if (state is ProductsOfCategory$CompletedState) {
         _selectedProducts.clear();
@@ -136,8 +140,13 @@ class __AllProductsWidgetState extends State<_AllProductsWidget> {
           if (each.id == null) continue;
           _selectedProducts[each.id!] = each;
         }
+        setState(() {});
       }
     });
+
+    context.read<ProductsOfCategoryBloc>().add(
+      ProductsOfCategoryEvent.load(categoryId: widget.categoryId),
+    );
   }
 
   @override
@@ -167,7 +176,9 @@ class __AllProductsWidgetState extends State<_AllProductsWidget> {
             child: Icon(Icons.save),
           ),
           body: RefreshIndicatorWidget(
-            onRefresh: () async => context.read<ProductsBloc>().add(ProductsEvent.load()),
+            onRefresh: () async => context.read<ProductsOfCategoryBloc>().add(
+              ProductsOfCategoryEvent.load(categoryId: widget.categoryId),
+            ),
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
@@ -181,7 +192,9 @@ class __AllProductsWidgetState extends State<_AllProductsWidget> {
                       child: ErrorButtonWidget(
                         label: Constants.reloadLabel,
                         onTap: () {
-                          context.read<ProductsBloc>().add(ProductsEvent.load());
+                          context.read<ProductsOfCategoryBloc>().add(
+                            ProductsOfCategoryEvent.load(categoryId: widget.categoryId),
+                          );
                         },
                       ),
                     ),

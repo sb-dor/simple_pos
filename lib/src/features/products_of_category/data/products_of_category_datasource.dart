@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/features/products/models/product_model.dart';
+import 'package:uuid/uuid.dart';
 
 abstract interface class IProductsOfCategoryDatasource {
   Future<List<ProductsTableData>> productsOfCategory(final String categoryId);
@@ -38,6 +39,7 @@ final class ProductsOfCategoryDatasourceImpl implements IProductsOfCategoryDatas
     final rows = products
         .map(
           (p) => ProductsCategoriesTableCompanion(
+            id: Value(Uuid().v4()),
             productId: Value(p.id),
             categoryId: Value(categoryId),
           ),

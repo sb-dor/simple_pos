@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/features/initialization/logic/dependency_composition/dependency_composition.dart';
 import 'package:test_pos_app/src/features/products_of_category/bloc/products_of_category_bloc.dart';
@@ -5,9 +6,14 @@ import 'package:test_pos_app/src/features/products_of_category/data/products_of_
 import 'package:test_pos_app/src/features/products_of_category/data/products_of_category_repository.dart';
 
 final class ProductsOfCategoryBlocFactory extends Factory<ProductsOfCategoryBloc> {
-  ProductsOfCategoryBlocFactory({required AppDatabase appDatabase}) : _appDatabase = appDatabase;
+  ProductsOfCategoryBlocFactory({
+    required final AppDatabase appDatabase,
+    required final Logger logger,
+  }) : _appDatabase = appDatabase,
+       _logger = logger;
 
-  late final AppDatabase _appDatabase;
+  final AppDatabase _appDatabase;
+  final Logger _logger;
 
   @override
   ProductsOfCategoryBloc create() {
@@ -18,6 +24,9 @@ final class ProductsOfCategoryBlocFactory extends Factory<ProductsOfCategoryBloc
     final IProductsOfCategoryRepository productsOfCategoryRepository =
         ProductsOfCategoryRepositoryImpl(productsOfCategoryDatasource: datasource);
 
-    return ProductsOfCategoryBloc(productsOfCategoryRepository: productsOfCategoryRepository);
+    return ProductsOfCategoryBloc(
+      productsOfCategoryRepository: productsOfCategoryRepository,
+      logger: _logger,
+    );
   }
 }

@@ -26,8 +26,11 @@ class _ProductsOfCategoryConfigWidgetState extends State<ProductsOfCategoryConfi
     final dependencies = DependenciesScope.of(context, listen: false);
     _productsOfCategoryBloc = ProductsOfCategoryBlocFactory(
       appDatabase: dependencies.appDatabase,
+      logger: dependencies.logger,
     ).create();
     _productsBloc = ProductsBlocFactory(dependencies.appDatabase).create();
+
+    _productsOfCategoryBloc.add(ProductsOfCategoryEvent.load(categoryId: widget.categoryId));
   }
 
   @override

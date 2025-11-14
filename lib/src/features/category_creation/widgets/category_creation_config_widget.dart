@@ -34,6 +34,7 @@ class _CategoryCreationConfigWidgetState extends State<CategoryCreationConfigWid
 
     _productsCategoriesBloc = ProductsOfCategoryBlocFactory(
       appDatabase: dependencies.appDatabase,
+      logger: dependencies.logger,
     ).create();
 
     _categoryId = widget.categoryId ?? Uuid().v4();
