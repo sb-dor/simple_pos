@@ -19,7 +19,7 @@ import 'package:test_pos_app/src/features/synchronization/widgets/synchronizatio
 class CategoryCreationWidgets extends StatefulWidget {
   const CategoryCreationWidgets({super.key, required this.categoryId});
 
-  final String? categoryId;
+  final String categoryId;
 
   @override
   State<CategoryCreationWidgets> createState() => _CategoryCreationWidgetsState();
@@ -34,6 +34,7 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
     super.initState();
     _categoryCreationWidgetController = CategoryCreationWidgetController(
       nameController: _nameController,
+      categoryId: widget.categoryId,
     );
   }
 
@@ -162,15 +163,14 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
                                                   content: SizedBox(
                                                     width: MediaQuery.of(context).size.height * 0.4,
                                                     child: ProductsOfCategoryConfigWidget(
-                                                      categoryId:
-                                                          categoryCreationState.category?.id,
+                                                      categoryId: widget.categoryId,
                                                     ),
                                                   ),
                                                 ),
                                               ).whenComplete(
                                                 () => productsOfCategoryBloc.add(
                                                   ProductsOfCategoryEvent.load(
-                                                    categoryId: categoryCreationState.category?.id,
+                                                    categoryId: widget.categoryId,
                                                   ),
                                                 ),
                                               );

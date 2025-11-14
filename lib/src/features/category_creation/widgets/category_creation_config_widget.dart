@@ -6,6 +6,7 @@ import 'package:test_pos_app/src/features/initialization/logic/factories/categor
 import 'package:test_pos_app/src/features/initialization/logic/factories/products_of_category_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/products_of_category/bloc/products_of_category_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class CategoryCreationConfigWidget extends StatefulWidget {
   const CategoryCreationConfigWidget({super.key, this.categoryId});
@@ -18,8 +19,8 @@ class CategoryCreationConfigWidget extends StatefulWidget {
 
 class _CategoryCreationConfigWidgetState extends State<CategoryCreationConfigWidget> {
   late final CategoryCreationBloc _categoryCreationBloc;
-
   late final ProductsOfCategoryBloc _productsCategoriesBloc;
+  late String _categoryId;
 
   @override
   void initState() {
@@ -35,8 +36,9 @@ class _CategoryCreationConfigWidgetState extends State<CategoryCreationConfigWid
       appDatabase: dependencies.appDatabase,
     ).create();
 
-    _categoryCreationBloc.add(CategoryCreationEvent.init(categoryId: widget.categoryId));
-    _productsCategoriesBloc.add(ProductsOfCategoryEvent.load(categoryId: widget.categoryId));
+    _categoryId = widget.categoryId ?? Uuid().v4();
+    _categoryCreationBloc.add(CategoryCreationEvent.init(categoryId: _categoryId));
+    _productsCategoriesBloc.add(ProductsOfCategoryEvent.load(categoryId: _categoryId));
   }
 
   @override
@@ -53,7 +55,7 @@ class _CategoryCreationConfigWidgetState extends State<CategoryCreationConfigWid
         BlocProvider.value(value: _categoryCreationBloc),
         BlocProvider.value(value: _productsCategoriesBloc),
       ],
-      child: CategoryCreationWidgets(categoryId: widget.categoryId),
+      child: CategoryCreationWidgets(categoryId: _categoryId),
     );
   }
 }

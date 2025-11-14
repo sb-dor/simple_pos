@@ -4,22 +4,30 @@ import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
 
 class CategoryCreationData {
-  CategoryCreationData({required this.name, required this.color});
+  CategoryCreationData({required this.categoryId, required this.name, required this.color});
 
+  final String categoryId;
   final String name;
   final Color color;
 }
 
 class CategoryCreationWidgetController extends ChangeNotifier {
-  CategoryCreationWidgetController({required final TextEditingController nameController})
-    : _nameController = nameController {
+  CategoryCreationWidgetController({
+    required final TextEditingController nameController,
+    required final String categoryId,
+  }) : _nameController = nameController,
+       _categoryId = categoryId {
     _nameController.addListener(_nameListener);
   }
 
   final TextEditingController _nameController;
 
+  final String _categoryId;
+
   CategoryCreationData get categoryCreationData =>
-      CategoryCreationData(name: name, color: _selectedColor);
+      CategoryCreationData(categoryId: _categoryId, name: name, color: _selectedColor);
+
+  String get categoryId => _categoryId;
 
   Color _selectedColor = Colors.white;
 

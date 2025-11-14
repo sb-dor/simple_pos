@@ -15,7 +15,7 @@ import 'package:test_pos_app/src/features/products_of_category/bloc/products_of_
 class ProductsOfCategoryWidget extends StatefulWidget {
   const ProductsOfCategoryWidget({super.key, required this.categoryId});
 
-  final String? categoryId;
+  final String categoryId;
 
   @override
   State<ProductsOfCategoryWidget> createState() => _ProductsOfCategoryWidgetState();
@@ -29,7 +29,10 @@ class _ProductsOfCategoryWidgetState extends State<ProductsOfCategoryWidget> {
   void initState() {
     super.initState();
     _tabs = [Tab(text: "Selected products"), Tab(text: "All products")];
-    _children = [_ProdudctsOfCategory(categoryId: widget.categoryId), _AllProductsWidget()];
+    _children = [
+      _ProdudctsOfCategory(categoryId: widget.categoryId),
+      _AllProductsWidget(categoryId: widget.categoryId),
+    ];
   }
 
   @override
@@ -57,7 +60,7 @@ class _ProductsOfCategoryWidgetState extends State<ProductsOfCategoryWidget> {
 class _ProdudctsOfCategory extends StatefulWidget {
   const _ProdudctsOfCategory({required this.categoryId});
 
-  final String? categoryId;
+  final String categoryId;
 
   @override
   State<_ProdudctsOfCategory> createState() => __ProdudctsOfCategoryState();
@@ -111,7 +114,9 @@ class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
 }
 
 class _AllProductsWidget extends StatefulWidget {
-  const _AllProductsWidget();
+  const _AllProductsWidget({required this.categoryId});
+
+  final String categoryId;
 
   @override
   State<_AllProductsWidget> createState() => __AllProductsWidgetState();
@@ -150,7 +155,17 @@ class __AllProductsWidgetState extends State<_AllProductsWidget> {
     return BlocBuilder<ProductsBloc, ProductsState>(
       builder: (context, productsState) {
         return Scaffold(
-          floatingActionButton: FloatingActionButton(onPressed: () {}, child: Icon(Icons.save)),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              context.read<ProductsOfCategoryBloc>().add(
+                ProductsOfCategoryEvent.saveProducts(
+                  widget.categoryId,
+                  _selectedProducts.values.toList(),
+                ),
+              );
+            },
+            child: Icon(Icons.save),
+          ),
           body: RefreshIndicatorWidget(
             onRefresh: () async => context.read<ProductsBloc>().add(ProductsEvent.load()),
             child: CustomScrollView(

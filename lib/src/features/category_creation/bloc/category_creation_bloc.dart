@@ -4,8 +4,6 @@ import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
 import 'package:test_pos_app/src/features/category_creation/data/category_creation_repository.dart';
 import 'package:test_pos_app/src/features/category_creation/widgets/controllers/category_creation_widget_controller.dart';
-import 'package:uuid/uuid.dart';
-
 part 'category_creation_bloc.freezed.dart';
 
 @freezed
@@ -77,7 +75,7 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
       emit(CategoryCreationState.inProgress(state.category));
 
       final category = (state.category ?? CategoryModel()).copyWith(
-        id: state.category?.id ?? const Uuid().v4(),
+        id: state.category?.id ?? event.categoryCreationData.categoryId,
         name: () => event.categoryCreationData.name,
         updatedAt: DateTime.now,
         color: () => event.categoryCreationData.color,

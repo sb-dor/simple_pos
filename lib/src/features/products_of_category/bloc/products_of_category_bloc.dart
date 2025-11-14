@@ -7,10 +7,11 @@ part 'products_of_category_bloc.freezed.dart';
 
 @freezed
 sealed class ProductsOfCategoryEvent with _$ProductsOfCategoryEvent {
-  const factory ProductsOfCategoryEvent.load({required final String? categoryId}) =
+  const factory ProductsOfCategoryEvent.load({required final String categoryId}) =
       _ProductsOfCategory$LoadEvent;
 
   const factory ProductsOfCategoryEvent.saveProducts(
+    final String categoryId,
     final List<ProductModel> selectedProducts, {
     final void Function(String message)? onMessage,
   }) = _ProductsOfCategory$SaveProductsEvent;
@@ -54,12 +55,7 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
     try {
       emit(ProductsOfCategoryState.inProgress());
 
-      if (event.categoryId == null) {
-        emit(ProductsOfCategoryState.completed(<ProductModel>[]));
-        return;
-      }
-
-      final products = await _iProductsOfCategoryRepository.productsOfCategory(event.categoryId!);
+      final products = await _iProductsOfCategoryRepository.productsOfCategory(event.categoryId);
 
       emit(ProductsOfCategoryState.completed(products));
     } catch (error, stackTrace) {
@@ -73,7 +69,17 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
     Emitter<ProductsOfCategoryState> emit,
   ) async {
     try {
-      if (state is! ProductsOfCategory$CompletedState) {}
+      if (state is! ProductsOfCategory$CompletedState) return;
+
+      final saveProducts = await _iProductsOfCategoryRepository.saveProdouctsToCategory(
+        categoryId: event.categoryId,
+        products: event.selectedProducts,
+      );
+
+      if (saveProducts) {
+        final products = await _iProductsOfCategoryRepository.productsOfCategory(event.categoryId);
+        emit(ProductsOfCategoryState.completed(products));
+      }
     } catch (error, stackTrace) {
       addError(error, stackTrace);
     }

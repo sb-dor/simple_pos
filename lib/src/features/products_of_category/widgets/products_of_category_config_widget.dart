@@ -10,7 +10,7 @@ import 'package:test_pos_app/src/features/products_of_category/widgets/products_
 class ProductsOfCategoryConfigWidget extends StatefulWidget {
   const ProductsOfCategoryConfigWidget({super.key, required this.categoryId});
 
-  final String? categoryId;
+  final String categoryId;
 
   @override
   State<ProductsOfCategoryConfigWidget> createState() => _ProductsOfCategoryConfigWidgetState();

@@ -3,6 +3,11 @@ import 'package:test_pos_app/src/features/products_of_category/data/products_of_
 
 abstract interface class IProductsOfCategoryRepository {
   Future<List<ProductModel>> productsOfCategory(final String categoryId);
+
+  Future<bool> saveProdouctsToCategory({
+    required final String categoryId,
+    required final List<ProductModel> products,
+  });
 }
 
 final class ProductsOfCategoryRepositoryImpl implements IProductsOfCategoryRepository {
@@ -18,4 +23,13 @@ final class ProductsOfCategoryRepositoryImpl implements IProductsOfCategoryRepos
 
     return products.map(ProductModel.fromDbTable).toList();
   }
+
+  @override
+  Future<bool> saveProdouctsToCategory({
+    required final String categoryId,
+    required final List<ProductModel> products,
+  }) => _iProductsOfCategoryDatasource.saveProdouctsToCategory(
+    categoryId: categoryId,
+    products: products,
+  );
 }
