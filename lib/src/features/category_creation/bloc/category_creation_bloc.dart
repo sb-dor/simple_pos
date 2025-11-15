@@ -4,37 +4,58 @@ import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
 import 'package:test_pos_app/src/features/category_creation/data/category_creation_repository.dart';
 import 'package:test_pos_app/src/features/category_creation/widgets/controllers/category_creation_widget_controller.dart';
+
 part 'category_creation_bloc.freezed.dart';
 
+/// Events for the [CategoryCreationBloc].
+/// Used to initialize and save a category.
 @freezed
 sealed class CategoryCreationEvent with _$CategoryCreationEvent {
+  /// Event to initialize category creation with a specific category ID.
   const factory CategoryCreationEvent.init({required String categoryId}) =
       _CategoryCreation$InitEvent;
 
+  /// Event to save category data.
+  ///
+  /// [categoryCreationData] — the data to save.
+  /// [onSave] — callback function invoked after successful save.
   const factory CategoryCreationEvent.save({
     required final CategoryCreationData categoryCreationData,
     required final void Function() onSave,
   }) = _CategoryCreation$SaveEvent;
 }
 
+/// States for the [CategoryCreationBloc].
+/// Represents different stages of category creation or editing.
 @freezed
 sealed class CategoryCreationState with _$CategoryCreationState {
+  /// Initial state, optionally contains a category if loaded.
   const factory CategoryCreationState.initial(final CategoryModel? category) =
       CategoryCreation$InitialState;
 
+  /// State indicating that category creation or saving is in progress.
   const factory CategoryCreationState.inProgress(final CategoryModel? category) =
       CategoryCreation$InProgressState;
 
+  /// State indicating an error occurred during category creation or saving.
   const factory CategoryCreationState.error(final CategoryModel? category) =
       CategoryCreation$ErrorState;
 
+  /// State indicating category creation or update completed successfully.
   const factory CategoryCreationState.completed(final CategoryModel? category) =
       CategoryCreation$CompletedState;
 
+  /// Static getter for the initial state of the bloc.
   static CategoryCreationState get initialState => CategoryCreationState.initial(null);
 }
 
+/// Bloc responsible for managing category creation and editing.
 class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationState> {
+  /// Constructs the bloc with the required repository and logger.
+  ///
+  /// [repository] — used to fetch and save category data.
+  /// [logger] — used for debug logging.
+  /// [initialState] — optional initial state.
   CategoryCreationBloc({
     required final ICategoryCreationRepository repository,
     required final Logger logger,
@@ -51,9 +72,15 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
     );
   }
 
+  /// Repository used to fetch and save category data.
   final ICategoryCreationRepository _iCategoryCreationRepository;
+
+  /// Logger used for debug messages.
   final Logger _logger;
 
+  /// Handles [CategoryCreationEvent.init] to load category data by ID.
+  ///
+  /// Emits [CategoryCreationState.initial] with the loaded or temporary category.
   void _categoryCreation$InitEvent(
     _CategoryCreation$InitEvent event,
     Emitter<CategoryCreationState> emit,
@@ -74,6 +101,13 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
     }
   }
 
+  /// Handles [CategoryCreationEvent.save] to save or update category data.
+  ///
+  /// Emits:
+  /// - [CategoryCreationState.inProgress] while saving.
+  /// - [CategoryCreationState.completed] if save is successful.
+  /// - [CategoryCreationState.initial] if save fails.
+  /// - [CategoryCreationState.error] if an exception occurs.
   void _categoryCreation$SaveEvent(
     _CategoryCreation$SaveEvent event,
     Emitter<CategoryCreationState> emit,
@@ -102,6 +136,7 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
     }
   }
 
+  /// Clears products associated with the category when the bloc is closed.
   @override
   Future<void> close() async {
     await _iCategoryCreationRepository.clearProducts(state.category?.id ?? '');
