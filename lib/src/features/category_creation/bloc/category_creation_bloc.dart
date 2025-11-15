@@ -60,7 +60,14 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
   ) async {
     try {
       final category = await _iCategoryCreationRepository.category(event.categoryId);
-      _logger.d("Found category on init: $category");
+      if (category == null) {
+        _logger.d(
+          "Category was not found\n"
+          "Was added temp category with temp id: ${event.categoryId}",
+        );
+      } else {
+        _logger.d("Found category on init: $category");
+      }
       emit(CategoryCreationState.initial(category ?? CategoryModel(id: event.categoryId)));
     } catch (error, stackTrace) {
       addError(error, stackTrace);
