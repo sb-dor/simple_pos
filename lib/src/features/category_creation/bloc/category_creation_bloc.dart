@@ -8,7 +8,7 @@ part 'category_creation_bloc.freezed.dart';
 
 @freezed
 sealed class CategoryCreationEvent with _$CategoryCreationEvent {
-  const factory CategoryCreationEvent.init({@Default(null) String? categoryId}) =
+  const factory CategoryCreationEvent.init({required String categoryId}) =
       _CategoryCreation$InitEvent;
 
   const factory CategoryCreationEvent.save({
@@ -61,7 +61,7 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
     try {
       final category = await _iCategoryCreationRepository.category(event.categoryId);
       _logger.d("Found category on init: $category");
-      emit(CategoryCreationState.initial(category));
+      emit(CategoryCreationState.initial(category ?? CategoryModel(id: event.categoryId)));
     } catch (error, stackTrace) {
       addError(error, stackTrace);
     }
@@ -93,5 +93,11 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
       addError(error, stackTrace);
       emit(CategoryCreationState.error(state.category));
     }
+  }
+
+  @override
+  Future<void> close() async {
+    await _iCategoryCreationRepository.clearProducts(state.category?.id ?? '');
+    return super.close();
   }
 }

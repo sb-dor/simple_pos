@@ -150,33 +150,32 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
                                             ),
                                           ],
                                         ),
-                                        if (categoryCreationState.category != null)
-                                          TextButton(
-                                            onPressed: () {
-                                              final productsOfCategoryBloc = context
-                                                  .read<ProductsOfCategoryBloc>();
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) => AlertDialog(
-                                                  contentPadding: EdgeInsets.zero,
-                                                  insetPadding: EdgeInsets.zero,
-                                                  content: SizedBox(
-                                                    width: MediaQuery.of(context).size.height * 0.4,
-                                                    child: ProductsOfCategoryConfigWidget(
-                                                      categoryId: widget.categoryId,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ).whenComplete(
-                                                () => productsOfCategoryBloc.add(
-                                                  ProductsOfCategoryEvent.load(
+                                        TextButton(
+                                          onPressed: () {
+                                            final productsOfCategoryBloc = context
+                                                .read<ProductsOfCategoryBloc>();
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                contentPadding: EdgeInsets.zero,
+                                                insetPadding: EdgeInsets.zero,
+                                                content: SizedBox(
+                                                  width: MediaQuery.of(context).size.height * 0.4,
+                                                  child: ProductsOfCategoryConfigWidget(
                                                     categoryId: widget.categoryId,
                                                   ),
                                                 ),
-                                              );
-                                            },
-                                            child: TextWidget(text: Constants.productsOfCategory),
-                                          ),
+                                              ),
+                                            ).whenComplete(
+                                              () => productsOfCategoryBloc.add(
+                                                ProductsOfCategoryEvent.load(
+                                                  categoryId: widget.categoryId,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: TextWidget(text: Constants.productsOfCategory),
+                                        ),
                                       ],
                                     ),
                                   ),

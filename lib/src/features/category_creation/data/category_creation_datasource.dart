@@ -6,6 +6,8 @@ abstract interface class ICategoryCreationDatasource {
   Future<CategoryTableData?> category(final String? categoryId);
 
   Future<bool> save(final CategoryModel category);
+
+  Future<void> clearProducts(final String categoryId);
 }
 
 final class CategoryCreationDatasourceImpl implements ICategoryCreationDatasource {
@@ -57,5 +59,12 @@ final class CategoryCreationDatasourceImpl implements ICategoryCreationDatasourc
     }
 
     return false;
+  }
+
+  @override
+  Future<void> clearProducts(final String categoryId) async {
+    await (_appDatabase.delete(
+      _appDatabase.productsCategoriesTable,
+    )..where((el) => el.categoryId.equals(categoryId))).go();
   }
 }
