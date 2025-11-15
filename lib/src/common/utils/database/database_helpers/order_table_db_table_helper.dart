@@ -1,13 +1,12 @@
 import 'package:drift/drift.dart';
-import 'package:logger/logger.dart';
+
 import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 
 final class OrderTableDbTableHelper {
-  OrderTableDbTableHelper(this._appDatabase, this._logger);
+  OrderTableDbTableHelper(this._appDatabase);
 
   final AppDatabase _appDatabase;
-  final Logger _logger;
 
   Future<TableModel?> table(String tableId) async {
     final findTable = await _findTable(tableId);

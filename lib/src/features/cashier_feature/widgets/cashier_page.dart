@@ -6,7 +6,7 @@ import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_bar.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
-import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
+
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/cashier_feature/bloc/cashier_feature_bloc.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
@@ -24,14 +24,12 @@ class CashierPage extends StatefulWidget {
 
 class _CashierPageState extends State<CashierPage> {
   late CashierFeatureBloc _cashierFeatureBloc;
-  late final AuthenticationBloc _authenticationBloc;
 
   @override
   void initState() {
     super.initState();
     final dependencies = DependenciesScope.of(context, listen: false);
     _cashierFeatureBloc = dependencies.cashierFeatureBloc;
-    _authenticationBloc = dependencies.authenticationBloc;
     _cashierFeatureBloc.add(CashierFeatureEvents.initial());
   }
 

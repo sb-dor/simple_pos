@@ -148,12 +148,6 @@ class LocalDatabaseService {
 
     if (invoice.isEmpty) return <CustomerInvoiceDetailModel>[];
 
-    final customerInvoiceDetails = await database.query(
-      customerInvoicesDetailsTable,
-      where: "customer_invoice_id = ?",
-      whereArgs: [invoice.first['id']],
-    );
-
     // return customerInvoiceDetails.map(CustomerInvoiceDetailModel.fromDb).toList();
     return <CustomerInvoiceDetailModel>[];
   }

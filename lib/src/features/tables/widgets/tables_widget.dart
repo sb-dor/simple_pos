@@ -10,7 +10,7 @@ import 'package:test_pos_app/src/common/uikit/refresh_indicator_widget.dart';
 import 'package:test_pos_app/src/common/uikit/text_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
-import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
+
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
@@ -26,14 +26,14 @@ class TablesWidget extends StatefulWidget {
 
 class _TablesWidgetState extends State<TablesWidget> {
   late final TablesBloc _tablesBloc;
-  late final AuthenticationBloc _authenticationBloc;
+  
 
   @override
   void initState() {
     super.initState();
     final dependencies = DependenciesScope.of(context, listen: false);
     _tablesBloc = dependencies.tablesBloc;
-    _authenticationBloc = dependencies.authenticationBloc;
+    
     _tablesBloc.add(TablesEvent.refresh());
   }
 
@@ -145,14 +145,11 @@ class _TableWidget extends StatefulWidget {
 }
 
 class _TableWidgetState extends State<_TableWidget> {
-  late final TablesBloc _tablesBloc;
   bool _hovered = false;
 
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
-    _tablesBloc = dependencies.tablesBloc;
   }
 
   @override

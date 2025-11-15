@@ -6,7 +6,7 @@ import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_bar.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
-import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
+
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/order_tables/bloc/order_tables_bloc.dart';
@@ -22,9 +22,8 @@ class OrderFeaturePage extends StatefulWidget {
   State<OrderFeaturePage> createState() => _OrderFeaturePageState();
 }
 
-class _OrderFeaturePageState extends State<OrderFeaturePage> {
+class _OrderFeaturePageState extends State<OrderFeaturePage> { 
   late final OrderTablesBloc _orderTablesBloc;
-  late final AuthenticationBloc _authenticationBloc;
   late final SynchronizationBloc _synchronizationBloc;
 
   @override
@@ -32,7 +31,6 @@ class _OrderFeaturePageState extends State<OrderFeaturePage> {
     super.initState();
     final dependencies = DependenciesScope.of(context, listen: false);
     _orderTablesBloc = dependencies.orderTablesBloc;
-    _authenticationBloc = dependencies.authenticationBloc;
     _synchronizationBloc = dependencies.synchronizationBloc;
 
     _synchronizationBloc.add(

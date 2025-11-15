@@ -29,8 +29,8 @@ final class AuthenticationBlocFactory extends Factory<AuthenticationBloc> {
       logger: _logger,
       sharedPreferencesService: _sharedPreferencesService,
       appDatabase: _appDatabase,
-      establishmentDatabaseHelper: EstablishmentDatabaseHelper(_appDatabase, _logger),
-      orderTableDbTableHelper: OrderTableDbTableHelper(_appDatabase, _logger),
+      establishmentDatabaseHelper: EstablishmentDatabaseHelper(_appDatabase),
+      orderTableDbTableHelper: OrderTableDbTableHelper(_appDatabase),
     );
 
     final IAuthenticationRepository repository = AuthenticationRepositoryImpl(datasource);

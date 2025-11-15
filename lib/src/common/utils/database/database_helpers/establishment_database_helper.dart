@@ -1,13 +1,12 @@
 import 'package:drift/drift.dart';
-import 'package:logger/logger.dart';
+
 import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 
 final class EstablishmentDatabaseHelper {
-  EstablishmentDatabaseHelper(this._appDatabase, this._logger);
+  EstablishmentDatabaseHelper(this._appDatabase);
 
   final AppDatabase _appDatabase;
-  final Logger _logger;
 
   Future<void> saveEstablishment(Establishment establishment) async {
     if (establishment.id == null) return;
@@ -24,7 +23,7 @@ final class EstablishmentDatabaseHelper {
           ),
         );
 
-    _logger.log(Level.debug, await _appDatabase.select(_appDatabase.establishmentTable).get());
+
   }
 
   Future<Establishment?> getEstablishment() async {

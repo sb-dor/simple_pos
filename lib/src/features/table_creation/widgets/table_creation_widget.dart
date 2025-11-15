@@ -58,7 +58,6 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
     final dependencies = DependenciesScope.of(context, listen: false);
     _tableCreationBloc = TableCreationBlocFactory(
       appDatabase: dependencies.appDatabase,
-      logger: dependencies.logger,
     ).create();
     _authenticationBloc = dependencies.authenticationBloc;
     _tableCreationBloc.add(TableCreationEvent.init(tableId: widget.tableId));

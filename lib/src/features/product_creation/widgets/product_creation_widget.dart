@@ -23,8 +23,6 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
   late final TextControllerListener _barcodeControllerListener;
 
   ProductType? _productType;
-  final bool _visible = true;
-  Uint8List? _image;
 
   @override
   void initState() {

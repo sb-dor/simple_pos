@@ -19,7 +19,7 @@ final class OrderBlocFactory extends Factory<OrderFeatureBloc> {
   OrderFeatureBloc create() {
     final IOrderFeatureSource datasource = OrderFeatureSourceImpl(
       customerInvoiceDatabaseHelper: CustomerInvoiceDatabaseHelper(_appDatabase, _logger),
-      orderTableDbTableHelper: OrderTableDbTableHelper(_appDatabase, _logger),
+      orderTableDbTableHelper: OrderTableDbTableHelper(_appDatabase),
     );
 
     final IOrderFeatureRepo repo = OrderFeatureRepoImpl(datasource);
