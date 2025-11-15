@@ -7,42 +7,54 @@ import 'package:uuid/uuid.dart';
 
 part 'product_creation_bloc.freezed.dart';
 
+/// Represents the events that can be dispatched to the [ProductCreationBloc].
 @freezed
 sealed class ProductCreationEvent with _$ProductCreationEvent {
+  /// Initializes the bloc with a product ID, typically for editing an existing product.
   const factory ProductCreationEvent.init({@Default(null) String? productId}) =
       _ProductCreation$InitEvent;
 
+  /// Saves the product creation data.
   const factory ProductCreationEvent.save({
     required final ProductCreationData productCreationData,
     required final void Function() onSave,
   }) = _ProductCreation$SaveEvent;
 }
 
+/// Represents the different states of the product creation process.
 @freezed
 sealed class ProductCreationState with _$ProductCreationState {
+  /// The initial state of the bloc, optionally holding a product.
   const factory ProductCreationState.initial(final ProductModel? product) =
       ProductCreation$InitialState;
 
+  /// The state indicating that a product creation or update is in progress.
   const factory ProductCreationState.inProgress(final ProductModel? product) =
       ProductCreation$InProgressState;
 
+  /// The state indicating that an error has occurred.
   const factory ProductCreationState.error(final ProductModel? product) =
       ProductCreation$ErrorState;
 
+  /// The state indicating that the product has been successfully saved.
   const factory ProductCreationState.completed(final ProductModel? product) =
       ProductCreation$CompletedState;
 
+  /// The initial state of the product creation screen.
   static ProductCreationState get initialState => ProductCreationState.initial(null);
 }
 
+/// Manages the state and logic for creating and editing products.
 class ProductCreationBloc extends Bloc<ProductCreationEvent, ProductCreationState> {
   //
+  /// {@macro product_creation_bloc}
   ProductCreationBloc({
     required final IProductCreationRepository productCreationRepository,
     final ProductCreationState? initialState,
   }) : _productCreationRepository = productCreationRepository,
        super(initialState ?? ProductCreationState.initialState) {
     //
+    // Register the event handlers.
     on<ProductCreationEvent>(
       (event, emit) => switch (event) {
         final _ProductCreation$InitEvent event => _productCreation$InitEvent(event, emit),
@@ -51,8 +63,10 @@ class ProductCreationBloc extends Bloc<ProductCreationEvent, ProductCreationStat
     );
   }
 
+  /// The repository for product creation data operations.
   final IProductCreationRepository _productCreationRepository;
 
+  /// Handles the [_ProductCreation$InitEvent] by fetching a product from the repository.
   void _productCreation$InitEvent(
     _ProductCreation$InitEvent event,
     Emitter<ProductCreationState> emit,
@@ -65,6 +79,7 @@ class ProductCreationBloc extends Bloc<ProductCreationEvent, ProductCreationStat
     }
   }
 
+  /// Handles the [_ProductCreation$SaveEvent] by saving the product data.
   void _productCreation$SaveEvent(
     _ProductCreation$SaveEvent event,
     Emitter<ProductCreationState> emit,
