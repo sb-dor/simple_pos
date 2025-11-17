@@ -56,9 +56,7 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
   void initState() {
     super.initState();
     final dependencies = DependenciesScope.of(context);
-    _tableCreationBloc = TableCreationBlocFactory(
-      appDatabase: dependencies.appDatabase,
-    ).create();
+    _tableCreationBloc = TableCreationBlocFactory(appDatabase: dependencies.appDatabase).create();
     _authenticationBloc = dependencies.authenticationBloc;
     _tableCreationBloc.add(TableCreationEvent.init(tableId: widget.tableId));
     _tableCreationChangeNotifierController = TableCreationChangeNotifierController(
@@ -109,9 +107,7 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
                   establishment: establishment,
                   onSave: () {
                     if (!mounted) return;
-                    DependenciesScope.of(
-                      context,
-                    ).tablesBloc.add(TablesEvent.refresh());
+                    DependenciesScope.of(context).tablesBloc.add(TablesEvent.refresh());
                     context.go(AppRoutesName.tables);
                   },
                 ),

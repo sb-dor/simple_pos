@@ -3,7 +3,7 @@ import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 
 typedef TextControllerListenerRules = Map<String, bool Function(String value)>;
 
-class TextControllerListener extends ChangeNotifier {
+class TextControllerListener with ChangeNotifier {
   TextControllerListener(
     this._textEditingController, {
 

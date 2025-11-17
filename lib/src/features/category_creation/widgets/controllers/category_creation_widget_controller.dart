@@ -11,7 +11,7 @@ class CategoryCreationData {
   final Color color;
 }
 
-class CategoryCreationWidgetController extends ChangeNotifier {
+class CategoryCreationWidgetController with ChangeNotifier {
   CategoryCreationWidgetController({
     required final TextEditingController nameController,
     required final String categoryId,

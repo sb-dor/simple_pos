@@ -22,7 +22,7 @@ class OrderFeaturePage extends StatefulWidget {
   State<OrderFeaturePage> createState() => _OrderFeaturePageState();
 }
 
-class _OrderFeaturePageState extends State<OrderFeaturePage> { 
+class _OrderFeaturePageState extends State<OrderFeaturePage> {
   late final OrderTablesBloc _orderTablesBloc;
   late final SynchronizationBloc _synchronizationBloc;
 

@@ -22,8 +22,6 @@ final class EstablishmentDatabaseHelper {
             documentId: Value(establishment.documentId),
           ),
         );
-
-
   }
 
   Future<Establishment?> getEstablishment() async {

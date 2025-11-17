@@ -26,14 +26,13 @@ class TablesWidget extends StatefulWidget {
 
 class _TablesWidgetState extends State<TablesWidget> {
   late final TablesBloc _tablesBloc;
-  
 
   @override
   void initState() {
     super.initState();
     final dependencies = DependenciesScope.of(context);
     _tablesBloc = dependencies.tablesBloc;
-    
+
     _tablesBloc.add(TablesEvent.refresh());
   }
 

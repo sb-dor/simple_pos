@@ -105,9 +105,8 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
     appDatabase: dependencies.appDatabase,
     logger: dependencies.logger,
   ).create(),
-  "Tables bloc init": (dependencies) => dependencies.tablesBloc = TablesBlocFactory(
-    appDatabase: dependencies.appDatabase,
-  ).create(),
+  "Tables bloc init": (dependencies) =>
+      dependencies.tablesBloc = TablesBlocFactory(appDatabase: dependencies.appDatabase).create(),
   "Categories bloc init": (dependencies) => dependencies.categoriesBloc = CategoriesBlocFactory(
     appDatabase: dependencies.appDatabase,
   ).create(),
@@ -122,16 +121,12 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
   "Synchronization bloc init": (dependencies) {
     final ISynchronizationDatasource synchronizationDatasource = SynchronizationDatasourceImpl(
       firebaseStore: FirebaseFirestore.instance,
-      orderTableDbTableHelper: OrderTableDbTableHelper(
-        dependencies.appDatabase,
-      ),
+      orderTableDbTableHelper: OrderTableDbTableHelper(dependencies.appDatabase),
       logger: dependencies.logger,
       appDatabase: dependencies.appDatabase,
     );
     final ISynchronizationRepository synchronizationRepository = SynchronizationRepositoryImpl(
-      establishmentDatabaseHelper: EstablishmentDatabaseHelper(
-        dependencies.appDatabase,
-      ),
+      establishmentDatabaseHelper: EstablishmentDatabaseHelper(dependencies.appDatabase),
       logger: dependencies.logger,
       synchronizationDatasource: synchronizationDatasource,
     );
