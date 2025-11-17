@@ -27,7 +27,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _categoriesBloc = dependencies.categoriesBloc;
   }
 

@@ -23,7 +23,7 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
   @override
   void initState() {
     super.initState();
-    _authenticationBloc = DependenciesScope.of(context, listen: false).authenticationBloc;
+    _authenticationBloc = DependenciesScope.of(context).authenticationBloc;
   }
 
   @override

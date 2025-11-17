@@ -28,7 +28,7 @@ class _AuthenticationAuthCheckWidgetState extends State<AuthenticationAuthCheckW
   void initState() {
     super.initState();
 
-    _authenticationBloc = DependenciesScope.of(context, listen: false).authenticationBloc;
+    _authenticationBloc = DependenciesScope.of(context).authenticationBloc;
 
     _authenticationBloc.add(AuthenticationEvent.checkAuthentication(onMessage: _onMessage));
 

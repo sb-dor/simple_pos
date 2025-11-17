@@ -16,7 +16,7 @@ class _OrderedDetailsState extends State<OrderedDetails> {
   @override
   void initState() {
     super.initState();
-    _orderFeatureBloc = DependenciesScope.of(context, listen: false).orderFeatureBloc;
+    _orderFeatureBloc = DependenciesScope.of(context).orderFeatureBloc;
   }
 
   @override

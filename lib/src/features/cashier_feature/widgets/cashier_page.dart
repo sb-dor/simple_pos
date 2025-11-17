@@ -28,7 +28,7 @@ class _CashierPageState extends State<CashierPage> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _cashierFeatureBloc = dependencies.cashierFeatureBloc;
     _cashierFeatureBloc.add(CashierFeatureEvents.initial());
   }

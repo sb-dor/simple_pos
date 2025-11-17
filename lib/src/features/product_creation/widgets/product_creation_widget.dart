@@ -77,7 +77,7 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
         }
 
         if (state is ProductCreation$CompletedState) {
-          DependenciesScope.of(context, listen: false).productsBloc.add(ProductsEvent.load());
+          DependenciesScope.of(context).productsBloc.add(ProductsEvent.load());
           context.go(AppRoutesName.products);
         }
       },

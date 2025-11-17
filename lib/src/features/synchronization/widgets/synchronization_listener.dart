@@ -47,7 +47,7 @@ class _SynchronizationListenerState extends State<SynchronizationListener> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _tablesBloc = dependencies.tablesBloc;
     _categoriesBloc = dependencies.categoriesBloc;
     _productsBloc = dependencies.productsBloc;

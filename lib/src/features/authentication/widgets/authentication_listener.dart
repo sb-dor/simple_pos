@@ -20,7 +20,7 @@ class _AuthenticationListenerState extends State<AuthenticationListener> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _authenticationBloc = dependencies.authenticationBloc;
   }
 

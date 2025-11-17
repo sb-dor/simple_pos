@@ -35,7 +35,7 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _tabs = [
       Tab(text: "${Constants.products} (${GlobalData.products.length})"),
       const Tab(text: Constants.settings),

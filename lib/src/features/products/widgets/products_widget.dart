@@ -28,7 +28,7 @@ class _ProductsWidgetState extends State<ProductsWidget> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _productsBloc = dependencies.productsBloc;
     _productsBloc.add(ProductsEvent.load());
   }
@@ -57,7 +57,7 @@ class _ProductsWidgetState extends State<ProductsWidget> {
             decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
             child: Center(
               child: SizedBox(
-                width: WindowSizeScope.of(context, listen: false).expandedSize,
+                width: WindowSizeScope.of(context).expandedSize,
                 child: CustomScrollView(
                   slivers: [
                     BlocBuilder<ProductsBloc, ProductsState>(

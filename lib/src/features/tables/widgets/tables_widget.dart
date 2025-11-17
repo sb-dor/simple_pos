@@ -31,7 +31,7 @@ class _TablesWidgetState extends State<TablesWidget> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _tablesBloc = dependencies.tablesBloc;
     
     _tablesBloc.add(TablesEvent.refresh());

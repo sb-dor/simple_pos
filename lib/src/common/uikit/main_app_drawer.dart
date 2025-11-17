@@ -24,7 +24,7 @@ class _MainAppDrawerState extends State<MainAppDrawer> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _authenticationBloc = dependencies.authenticationBloc;
     _synchronizationBloc = dependencies.synchronizationBloc;
     _tablesBloc = dependencies.tablesBloc;

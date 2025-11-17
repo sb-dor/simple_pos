@@ -21,7 +21,7 @@ class _MainAppBarState extends State<MainAppBar> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _authenticationBloc = dependencies.authenticationBloc;
     if (_authenticationBloc.state is! Authentication$AuthenticatedState) {
       _authenticationBloc.add(

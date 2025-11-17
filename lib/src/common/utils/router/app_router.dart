@@ -39,7 +39,7 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
     super.initState();
     goRouter = GoRouter(
       redirect: (context, state) {
-        final authenticationBloc = DependenciesScope.of(context, listen: false).authenticationBloc;
+        final authenticationBloc = DependenciesScope.of(context).authenticationBloc;
         if (authenticationBloc.state is Authentication$AuthenticatedState) {
           if (state.name == AppRoutesName.login || state.name == AppRoutesName.register) {
             return AppRoutesName.orderTables;

@@ -25,7 +25,7 @@ class _SalesModeProductsScreenState extends State<SalesModeProductsScreen> {
   @override
   void initState() {
     super.initState();
-    _orderFeatureBloc = DependenciesScope.of(context, listen: false).orderFeatureBloc;
+    _orderFeatureBloc = DependenciesScope.of(context).orderFeatureBloc;
     _orderFeatureBloc.add(OrderFeatureEvents.addPlaceEvent(widget.tableId));
   }
 

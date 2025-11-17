@@ -29,7 +29,7 @@ class _OrderFeaturePageState extends State<OrderFeaturePage> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _orderTablesBloc = dependencies.orderTablesBloc;
     _synchronizationBloc = dependencies.synchronizationBloc;
 

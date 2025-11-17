@@ -55,7 +55,7 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _tableCreationBloc = TableCreationBlocFactory(
       appDatabase: dependencies.appDatabase,
     ).create();
@@ -111,7 +111,6 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
                     if (!mounted) return;
                     DependenciesScope.of(
                       context,
-                      listen: false,
                     ).tablesBloc.add(TablesEvent.refresh());
                     context.go(AppRoutesName.tables);
                   },

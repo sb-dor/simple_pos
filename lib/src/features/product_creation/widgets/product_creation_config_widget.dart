@@ -38,7 +38,7 @@ class _ProductCreationConfigWidgetState extends State<ProductCreationConfigWidge
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _productCreationBloc = ProductCreationBlocFactory(
       appDatabase: dependencies.appDatabase,
     ).create();

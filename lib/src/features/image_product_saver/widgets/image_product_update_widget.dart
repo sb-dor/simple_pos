@@ -22,7 +22,7 @@ class _ImageProductUpdateWidgetState extends State<ImageProductUpdateWidget> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _imageProductUpdateController = ImageProductUpdateController(dependencies.logger);
     _imageProductUpdateController.product(ImageProductConstant.tempProductId);
   }

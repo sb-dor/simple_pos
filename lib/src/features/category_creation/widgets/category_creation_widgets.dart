@@ -53,10 +53,7 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
           _categoryCreationWidgetController.init(categoryCreationState.category!);
         }
         if (categoryCreationState is CategoryCreation$CompletedState) {
-          DependenciesScope.of(
-            context,
-            listen: false,
-          ).categoriesBloc.add(CategoriesEvent.refresh());
+          DependenciesScope.of(context).categoriesBloc.add(CategoriesEvent.refresh());
           context.go(AppRoutesName.categories);
         }
       },

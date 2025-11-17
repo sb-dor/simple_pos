@@ -23,7 +23,7 @@ class _ProductsOfCategoryConfigWidgetState extends State<ProductsOfCategoryConfi
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context, listen: false);
+    final dependencies = DependenciesScope.of(context);
     _productsOfCategoryBloc = ProductsOfCategoryBlocFactory(
       appDatabase: dependencies.appDatabase,
       logger: dependencies.logger,
