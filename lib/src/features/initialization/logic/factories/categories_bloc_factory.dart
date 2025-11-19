@@ -2,7 +2,7 @@ import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/categories/data/categories_datasource.dart';
 import 'package:test_pos_app/src/features/categories/data/categories_repository.dart';
-import 'package:test_pos_app/src/features/initialization/logic/dependency_composition/dependency_composition.dart';
+import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
 
 final class CategoriesBlocFactory extends Factory<CategoriesBloc> {
   CategoriesBlocFactory({required final AppDatabase appDatabase}) : _appDatabase = appDatabase;

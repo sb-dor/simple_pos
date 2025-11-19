@@ -3,7 +3,7 @@ import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/features/category_creation/bloc/category_creation_bloc.dart';
 import 'package:test_pos_app/src/features/category_creation/data/category_creation_datasource.dart';
 import 'package:test_pos_app/src/features/category_creation/data/category_creation_repository.dart';
-import 'package:test_pos_app/src/features/initialization/logic/dependency_composition/dependency_composition.dart';
+import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
 
 final class CategoryCreationBlocFactory extends Factory<CategoryCreationBloc> {
   CategoryCreationBlocFactory({

@@ -28,6 +28,14 @@ import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart
 import 'factories/authentication_bloc_factory.dart';
 import 'factories/tables_bloc_factory.dart';
 
+abstract class AsyncFactory<T> {
+  Future<T> create();
+}
+
+abstract class Factory<T> {
+  T create();
+}
+
 Future<DependencyContainer> $initializeDependencies({
   required final Logger logger,
   required final ErrorReporter errorReporter,

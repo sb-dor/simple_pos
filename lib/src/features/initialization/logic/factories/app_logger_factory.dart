@@ -1,6 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/common/utils/reusable_functions.dart';
-import 'package:test_pos_app/src/features/initialization/logic/dependency_composition/dependency_composition.dart';
+import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
 
 final class AppLoggerFactory extends Factory<Logger> {
   //

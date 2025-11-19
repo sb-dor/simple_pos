@@ -7,7 +7,7 @@ import 'package:test_pos_app/src/common/utils/key_value_storage/shared_preferenc
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
 import 'package:test_pos_app/src/features/authentication/data/authentication_datasource.dart';
 import 'package:test_pos_app/src/features/authentication/data/authentication_repository.dart';
-import 'package:test_pos_app/src/features/initialization/logic/dependency_composition/dependency_composition.dart';
+import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
 
 final class AuthenticationBlocFactory extends Factory<AuthenticationBloc> {
   AuthenticationBlocFactory({

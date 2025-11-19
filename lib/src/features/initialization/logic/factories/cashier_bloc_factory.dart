@@ -5,7 +5,7 @@ import 'package:test_pos_app/src/common/utils/paginate_list_helper.dart';
 import 'package:test_pos_app/src/features/cashier_feature/bloc/cashier_feature_bloc.dart';
 import 'package:test_pos_app/src/features/cashier_feature/data/cashier_feature_data_source.dart';
 import 'package:test_pos_app/src/features/cashier_feature/data/cashier_feature_repo.dart';
-import 'package:test_pos_app/src/features/initialization/logic/dependency_composition/dependency_composition.dart';
+import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
 
 final class CashierBlocFactory extends Factory<CashierFeatureBloc> {
   CashierBlocFactory({
