@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:test_pos_app/firebase_options.dart';
@@ -12,13 +11,12 @@ import 'package:test_pos_app/src/common/utils/database/database_helpers/establis
 import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
 import 'package:test_pos_app/src/common/utils/key_value_storage/shared_preferences_service.dart';
 import 'package:test_pos_app/src/common/utils/paginate_list_helper.dart';
-import 'package:test_pos_app/src/common/utils/reusable_functions.dart';
-import 'package:test_pos_app/src/features/initialization/logic/desktop_initialization.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/cashier_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/categories_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/order_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/order_tables_bloc_factory.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/products_bloc_factory.dart';
+import 'package:test_pos_app/src/features/initialization/logic/platform/platform_initialization.dart';
 import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
 import 'package:test_pos_app/src/features/initialization/models/dependency_container.dart';
 import 'package:test_pos_app/src/features/synchronization/bloc/synchronization_bloc.dart';
@@ -70,14 +68,10 @@ Future<DependencyContainer> $initializeDependencies({
 typedef _InitializationStep = FutureOr<void> Function(DependencyContainer dependencies);
 
 final Map<String, _InitializationStep> _initializationSteps = <String, _InitializationStep>{
+  'Platform pre-initialization': (_) => $platformInitialization(),
   "Firebase init": (_) async {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     // other firebase initializations
-  },
-  "Desktop init": (_) async {
-    if (!foundation.kIsWeb && !foundation.kIsWasm && ReusableFunctions.instance.isDesktop) {
-      await DesktopInitialization().run();
-    }
   },
   "Bloc Configuration init": (dependencies) {
     Bloc.transformer = sequential();

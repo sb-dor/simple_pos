@@ -66,6 +66,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   rename: ^3.1.0
   bloc: ^9.1.0
+  web: ^1.1.1
 
 
   # The following adds the Cupertino Icons font to your application.
