@@ -27,14 +27,13 @@ class _AuthenticationSelectEstablishmentWidgetState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: SizedBox.shrink(),
+        leading: const SizedBox.shrink(),
       ),
       body: DecoratedBox(
         decoration: const BoxDecoration(
@@ -47,19 +46,15 @@ class _AuthenticationSelectEstablishmentWidgetState
         child: WindowSizeScope.of(context).maybeMap(
           orElse: () => _else(context, dividedBy: 3),
           expanded: () => _else(context),
-          compact: () => Padding(padding: const EdgeInsets.all(16.0), child: _compact(context)),
-          medium: () => Padding(padding: const EdgeInsets.all(16.0), child: _compact(context)),
+          compact: () => Padding(padding: const EdgeInsets.all(16), child: _compact(context)),
+          medium: () => Padding(padding: const EdgeInsets.all(16), child: _compact(context)),
         ),
       ),
     );
-  }
 
-  Widget _compact(BuildContext context) {
-    return Center(child: SingleChildScrollView(child: _establishmentListCard(context)));
-  }
+  Widget _compact(BuildContext context) => Center(child: SingleChildScrollView(child: _establishmentListCard(context)));
 
-  Widget _else(BuildContext context, {int dividedBy = 2}) {
-    return Align(
+  Widget _else(BuildContext context, {int dividedBy = 2}) => Align(
       alignment: Alignment.center,
       child: SingleChildScrollView(
         child: SizedBox(
@@ -68,10 +63,8 @@ class _AuthenticationSelectEstablishmentWidgetState
         ),
       ),
     );
-  }
 
-  Widget _establishmentListCard(BuildContext context) {
-    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+  Widget _establishmentListCard(BuildContext context) => BlocConsumer<AuthenticationBloc, AuthenticationState>(
       bloc: _authenticationBloc,
       listener: (context, state) {
         if (state is Authentication$AuthenticatedState && state.stateModel.establishment != null) {
@@ -88,21 +81,21 @@ class _AuthenticationSelectEstablishmentWidgetState
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.95),
             borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(color: Colors.black12, blurRadius: 20, offset: const Offset(0, 10)),
+            boxShadow: const [
+              BoxShadow(color: Colors.black12, blurRadius: 20, offset: Offset(0, 10)),
             ],
           ),
           child: Column(
             children: [
               const TextWidget(
-                text: "Choose Your Establishment 🏪",
+                text: 'Choose Your Establishment 🏪',
                 textAlign: TextAlign.center,
                 fontWeight: FontWeight.bold,
                 size: 22,
               ),
               const SizedBox(height: 10),
               const Text(
-                "Select one of your stores to continue",
+                'Select one of your stores to continue',
                 style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
               const SizedBox(height: 24),
@@ -111,7 +104,7 @@ class _AuthenticationSelectEstablishmentWidgetState
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
-                    "No establishments found.",
+                    'No establishments found.',
                     style: TextStyle(color: Colors.black54, fontSize: 16),
                   ),
                 )
@@ -154,7 +147,7 @@ class _AuthenticationSelectEstablishmentWidgetState
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    establishment.name ?? "Unnamed",
+                                    establishment.name ?? 'Unnamed',
                                     style: const TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w600,
@@ -183,7 +176,7 @@ class _AuthenticationSelectEstablishmentWidgetState
                   context.replace(AppRoutesName.authentication + AppRoutesName.login);
                 },
                 child: const Text(
-                  "Back to Login",
+                  'Back to Login',
                   style: TextStyle(fontSize: 15, color: Color(0xFF4C6EF5)),
                 ),
               ),
@@ -192,5 +185,4 @@ class _AuthenticationSelectEstablishmentWidgetState
         );
       },
     );
-  }
 }

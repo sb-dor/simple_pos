@@ -17,7 +17,7 @@ class DecimalTextInputSpaceFormatter extends TextInputFormatter {
 
     final formattedIntPart = ReusableFunctions.instance.separateNumbersRegex(int.tryParse(intPart));
 
-    String formattedText = formattedIntPart ?? '';
+    var formattedText = formattedIntPart ?? '';
     if (decimalPart != null) {
       formattedText += '.$decimalPart';
     }

@@ -10,9 +10,9 @@ import 'package:test_pos_app/src/features/image_product_saver/models/temp_varian
 import 'package:uuid/uuid.dart';
 
 class ImageProductUpdateController with ChangeNotifier {
-  final Logger _logger;
 
   ImageProductUpdateController(this._logger);
+  final Logger _logger;
 
   bool sending = false;
 
@@ -32,7 +32,7 @@ class ImageProductUpdateController with ChangeNotifier {
         ),
       );
 
-      final response = await dio.get("/products?product_id=$productId");
+      final response = await dio.get('/products?product_id=$productId');
 
       _logger.log(Level.debug, response.data);
 
@@ -40,7 +40,7 @@ class ImageProductUpdateController with ChangeNotifier {
 
       notifyListeners();
     } on DioException catch (error, stackTrace) {
-      _logger.log(Level.error, "error is: ${error.response}");
+      _logger.log(Level.error, 'error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);
@@ -72,11 +72,11 @@ class ImageProductUpdateController with ChangeNotifier {
 
       _logger.log(Level.debug, "message of product: ${map['variants']}");
 
-      final List<MultipartFile> files = [];
-      final List<String> pathImages = [];
-      final Map<String, int> productAndVariantImagesPosition = {};
+      final files = <MultipartFile>[];
+      final pathImages = <String>[];
+      final productAndVariantImagesPosition = <String, int>{};
 
-      for (int i = 0; i < tempProduct!.productImages.length; i++) {
+      for (var i = 0; i < tempProduct!.productImages.length; i++) {
         final each = tempProduct!.productImages[i];
         if (each.file != null) {
           files.add(await MultipartFile.fromFile(each.file!.path, filename: each.file?.name));
@@ -89,20 +89,20 @@ class ImageProductUpdateController with ChangeNotifier {
       }
 
       for (final each in tempProduct!.variants) {
-        final List<MultipartFile> files = [];
-        final List<String> pathImages = [];
-        for (int i = 0; i < (each.images ?? <TempImageModel>[]).length; i++) {
+        final files = <MultipartFile>[];
+        final pathImages = <String>[];
+        for (var i = 0; i < (each.images ?? <TempImageModel>[]).length; i++) {
           final eachImage = (each.images ?? <TempImageModel>[])[i];
           if (eachImage.file != null) {
             files.add(
               await MultipartFile.fromFile(eachImage.file!.path, filename: eachImage.file?.name),
             );
-            productAndVariantImagesPosition["variant_${each.localUUID}_image_file_${files.length - 1}"] =
+            productAndVariantImagesPosition['variant_${each.localUUID}_image_file_${files.length - 1}'] =
                 i;
           }
           if (eachImage.path != null) {
             pathImages.add(eachImage.path!);
-            productAndVariantImagesPosition["variant_${each.localUUID}_image_path_${eachImage.path!}"] =
+            productAndVariantImagesPosition['variant_${each.localUUID}_image_path_${eachImage.path!}'] =
                 i;
           }
         }
@@ -123,7 +123,7 @@ class ImageProductUpdateController with ChangeNotifier {
 
       final formData = FormData.fromMap(map);
 
-      final response = await dio.post("/products/update/${tempProduct?.id}", data: formData);
+      final response = await dio.post('/products/update/${tempProduct?.id}', data: formData);
 
       _logger.log(Level.debug, response.data);
 
@@ -132,7 +132,7 @@ class ImageProductUpdateController with ChangeNotifier {
     } on DioException catch (error, stackTrace) {
       sending = false;
       notifyListeners();
-      _logger.log(Level.error, "error is: ${error.response}");
+      _logger.log(Level.error, 'error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
     } catch (error, stackTrace) {
       sending = false;
@@ -188,11 +188,11 @@ class ImageProductUpdateController with ChangeNotifier {
 
   Future<void> addVariant() async {
     if (tempProduct == null) return;
-    final TempVariant variant = TempVariant(
-      localUUID: Uuid().v4(),
+    final variant = TempVariant(
+      localUUID: const Uuid().v4(),
       name: Faker().vehicle.model(),
       barcode: null,
-      price: 2490.00,
+      price: 2490,
       stock: 0,
       isActive: true,
       deletedAt: null,

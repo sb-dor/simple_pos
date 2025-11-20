@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/features/tables/data/tables_repository.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 part 'tables_bloc.freezed.dart';
 
@@ -24,7 +24,7 @@ sealed class TablesState with _$TablesState {
 
   const factory TablesState.completed(final List<TableModel> tables) = Tables$CompletedState;
 
-  static TablesState get initialState => TablesState.initial(<TableModel>[]);
+  static TablesState get initialState => const TablesState.initial(<TableModel>[]);
 }
 
 class TablesBloc extends Bloc<TablesEvent, TablesState> {
@@ -43,27 +43,27 @@ class TablesBloc extends Bloc<TablesEvent, TablesState> {
 
   final ITablesRepository _iTablesRepository;
 
-  void _tables$RefreshEvent(_Tables$RefreshEvent event, Emitter<TablesState> emit) async {
+  Future<void> _tables$RefreshEvent(_Tables$RefreshEvent event, Emitter<TablesState> emit) async {
     try {
-      emit(TablesState.inProgress(<TableModel>[]));
+      emit(const TablesState.inProgress(<TableModel>[]));
       final tables = await _iTablesRepository.tables();
       emit(TablesState.completed(tables));
     } catch (error, stackTrace) {
       addError(error, stackTrace);
-      emit(TablesState.error(<TableModel>[]));
+      emit(const TablesState.error(<TableModel>[]));
     }
   }
 
-  void _tables$PaginateEvent(_Tables$PaginateEvent event, Emitter<TablesState> emit) async {
+  Future<void> _tables$PaginateEvent(_Tables$PaginateEvent event, Emitter<TablesState> emit) async {
     //
   }
 
-  void _tables$ClearEvent(_Tables$ClearEvent event, Emitter<TablesState> emit) async {
+  Future<void> _tables$ClearEvent(_Tables$ClearEvent event, Emitter<TablesState> emit) async {
     try {
-      emit(TablesState.initial(<TableModel>[]));
+      emit(const TablesState.initial(<TableModel>[]));
     } catch (error, stackTrace) {
       addError(error, stackTrace);
-      emit(TablesState.error(<TableModel>[]));
+      emit(const TablesState.error(<TableModel>[]));
     }
   }
 }

@@ -1,7 +1,7 @@
 enum ImageSize {
-  original._("original"),
-  lg._("lg"),
-  md._("md"),
+  original._('original'),
+  lg._('lg'),
+  md._('md'),
   sm._('sm');
 
   final String value;

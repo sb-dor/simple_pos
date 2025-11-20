@@ -1,6 +1,6 @@
 enum Environment {
-  prod._("PROD"),
-  dev._("DEV");
+  prod._('PROD'),
+  dev._('DEV');
 
   const Environment._(this.value);
 

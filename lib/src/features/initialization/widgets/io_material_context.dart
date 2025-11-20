@@ -6,7 +6,7 @@ import 'package:test_pos_app/src/features/initialization/models/dependency_conta
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 
 class IoMaterialContext extends StatefulWidget {
-  const IoMaterialContext({super.key, required this.dependencyContainer});
+  const IoMaterialContext({required this.dependencyContainer, super.key});
 
   final DependencyContainer dependencyContainer;
 
@@ -16,12 +16,12 @@ class IoMaterialContext extends StatefulWidget {
 
 class _IoMaterialContextState extends State<IoMaterialContext> with AppRouter {
   final fadeTransitionPlatforms = {
-    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-    TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+    TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
+    TargetPlatform.macOS: const CupertinoPageTransitionsBuilder(),
     // you can add background color for below code
-    TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
-    TargetPlatform.fuchsia: FadeForwardsPageTransitionsBuilder(),
-    TargetPlatform.windows: FadeForwardsPageTransitionsBuilder(),
+    TargetPlatform.android: const FadeForwardsPageTransitionsBuilder(),
+    TargetPlatform.fuchsia: const FadeForwardsPageTransitionsBuilder(),
+    TargetPlatform.windows: const FadeForwardsPageTransitionsBuilder(),
   };
 
   @override

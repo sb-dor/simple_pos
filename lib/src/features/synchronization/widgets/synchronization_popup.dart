@@ -9,10 +9,8 @@ class SynchronizationPopup extends StatefulWidget {
 
 class _SynchronizationPopupState extends State<SynchronizationPopup> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       backgroundColor: Colors.black.withValues(alpha: 0.1),
-      body: Center(child: CircularProgressIndicator(color: Colors.white)),
+      body: const Center(child: CircularProgressIndicator(color: Colors.white)),
     );
-  }
 }

@@ -6,11 +6,11 @@ import 'package:test_pos_app/src/features/image_product_saver/controller/image_p
 // class represents only laravel-flutter 'string' encryption
 
 // these two should be in laravel too
-const String _secretKey = "b7xkP2veN3wQ9tR6mZ5uYf8HjLd1XpQ1"; // 32 chars
-const String _secretIv = "mv41nZqL8rT6x9eF"; // 16 chars
+const String _secretKey = 'b7xkP2veN3wQ9tR6mZ5uYf8HjLd1XpQ1'; // 32 chars
+const String _secretIv = 'mv41nZqL8rT6x9eF'; // 16 chars
 
-const String _url = "/third-party-integrations/chats/telegram";
-const String _telegramToken = "";
+const String _url = '/third-party-integrations/chats/telegram';
+const String _telegramToken = '';
 
 class EncryptionController {
   EncryptionController({required this.logger});
@@ -30,17 +30,17 @@ class EncryptionController {
           },
         ),
       );
-      logger.log(Level.debug, "sending url: ${dio.options.baseUrl}$_url");
+      logger.log(Level.debug, 'sending url: ${dio.options.baseUrl}$_url');
 
-      final botName = "TestAgainSbDor";
+      const botName = 'TestAgainSbDor';
 
       final encryptedToken = _encryptString(_telegramToken);
 
-      final response = await dio.post(_url, data: {"token": encryptedToken, "bot_name": botName});
+      final response = await dio.post(_url, data: {'token': encryptedToken, 'bot_name': botName});
 
       logger.log(Level.debug, response.data);
     } on DioException catch (error, stackTrace) {
-      logger.log(Level.error, "error is: ${error.response}");
+      logger.log(Level.error, 'error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);

@@ -1,11 +1,6 @@
 import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_model.dart';
 
 class CashierFeatureStateModel {
-  final bool hasMore;
-
-  final List<CustomerInvoiceModel> allCustomerInvoices;
-
-  final List<CustomerInvoiceModel> invoices;
 
   const CashierFeatureStateModel({
     required this.hasMore,
@@ -13,13 +8,16 @@ class CashierFeatureStateModel {
     required this.invoices,
   });
 
-  factory CashierFeatureStateModel.initial() {
-    return CashierFeatureStateModel(
+  factory CashierFeatureStateModel.initial() => const CashierFeatureStateModel(
       hasMore: true,
       allCustomerInvoices: <CustomerInvoiceModel>[],
       invoices: <CustomerInvoiceModel>[],
     );
-  }
+  final bool hasMore;
+
+  final List<CustomerInvoiceModel> allCustomerInvoices;
+
+  final List<CustomerInvoiceModel> invoices;
 
   @override
   bool operator ==(Object other) =>
@@ -34,23 +32,19 @@ class CashierFeatureStateModel {
   int get hashCode => hasMore.hashCode ^ allCustomerInvoices.hashCode ^ invoices.hashCode;
 
   @override
-  String toString() {
-    return 'CashierFeatureStateModel{'
+  String toString() => 'CashierFeatureStateModel{'
         ' hasMore: $hasMore,'
         ' allCustomerInvoices: $allCustomerInvoices,'
         ' invoices: $invoices,'
         '}';
-  }
 
   CashierFeatureStateModel copyWith({
     bool? hasMore,
     List<CustomerInvoiceModel>? allCustomerInvoices,
     List<CustomerInvoiceModel>? invoices,
-  }) {
-    return CashierFeatureStateModel(
+  }) => CashierFeatureStateModel(
       hasMore: hasMore ?? this.hasMore,
       allCustomerInvoices: allCustomerInvoices ?? this.allCustomerInvoices,
       invoices: invoices ?? this.invoices,
     );
-  }
 }

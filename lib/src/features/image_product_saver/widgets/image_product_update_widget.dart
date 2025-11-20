@@ -34,21 +34,20 @@ class _ImageProductUpdateWidgetState extends State<ImageProductUpdateWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         actions: [
           TextButton(
             onPressed: () {
               _imageProductUpdateController.addVariant();
             },
-            child: Text("Add variant"),
+            child: const Text('Add variant'),
           ),
           TextButton(
             onPressed: () {
               _imageProductUpdateController.update();
             },
-            child: Text("Save"),
+            child: const Text('Save'),
           ),
         ],
       ),
@@ -56,26 +55,26 @@ class _ImageProductUpdateWidgetState extends State<ImageProductUpdateWidget> {
         listenable: _imageProductUpdateController,
         builder: (context, child) {
           if (_imageProductUpdateController.tempProduct == null) {
-            return SizedBox();
+            return const SizedBox();
           } else {
             return ListView(
               children: [
                 Wrap(
                   children: [
                     _ProductPrice(product: _imageProductUpdateController.tempProduct!),
-                    Text("Product: ${_imageProductUpdateController.tempProduct!.name}"),
+                    Text('Product: ${_imageProductUpdateController.tempProduct!.name}'),
                     TextButton(
                       onPressed: () {
                         _imageProductUpdateController.pickImageForProduct();
                         // _imageProductSaverController.pickImageForProduct(tempProduct);
                       },
-                      child: Text("Pick image"),
+                      child: const Text('Pick image'),
                     ),
                   ],
                 ),
                 ReorderableListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: _imageProductUpdateController.tempProduct!.productImages.length,
                   onReorder: (oldIndex, newIndex) {
                     _imageProductUpdateController.reorderProductImages(oldIndex, newIndex);
@@ -92,14 +91,14 @@ class _ImageProductUpdateWidgetState extends State<ImageProductUpdateWidget> {
                               ? Image.file(File(image.file!.path))
                               : image.path != null
                               ? Image.network(image.imageURL(ImageSize.original))
-                              : ColoredBox(color: Colors.grey),
+                              : const ColoredBox(color: Colors.grey),
                         ),
                         Positioned(
                           child: IconButton(
                             onPressed: () {
                               _imageProductUpdateController.removeImageFromProduct(index);
                             },
-                            icon: Icon(Icons.delete, color: Colors.red),
+                            icon: const Icon(Icons.delete, color: Colors.red),
                           ),
                         ),
                       ],
@@ -120,7 +119,7 @@ class _ImageProductUpdateWidgetState extends State<ImageProductUpdateWidget> {
                                   onPressed: () {
                                     _imageProductUpdateController.removeVariant(variant.$1);
                                   },
-                                  child: Icon(Icons.delete),
+                                  child: const Icon(Icons.delete),
                                 ),
                                 TextButton(
                                   onPressed: () {
@@ -131,7 +130,7 @@ class _ImageProductUpdateWidgetState extends State<ImageProductUpdateWidget> {
                                     //   element,
                                     // );
                                   },
-                                  child: Text("Pick image"),
+                                  child: const Text('Pick image'),
                                 ),
                               ],
                             ),
@@ -184,7 +183,7 @@ class _ImageProductUpdateWidgetState extends State<ImageProductUpdateWidget> {
                                 );
                               },
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                           ],
                         ),
                       )
@@ -196,7 +195,6 @@ class _ImageProductUpdateWidgetState extends State<ImageProductUpdateWidget> {
         },
       ),
     );
-  }
 }
 
 class _ProductPrice extends StatefulWidget {
@@ -224,13 +222,12 @@ class __ProductPriceState extends State<_ProductPrice> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       width: 100,
       child: TextField(
         controller: _priceController,
         decoration: const InputDecoration(labelText: 'Price'),
-        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         onChanged: (value) {
           final parsedValue = double.tryParse(value);
           if (parsedValue != null) {
@@ -239,16 +236,15 @@ class __ProductPriceState extends State<_ProductPrice> {
             // Handle invalid input if necessary
             // For example, you could show a snackbar or reset the field
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('Invalid price input'),
-                duration: const Duration(milliseconds: 300),
+                duration: Duration(milliseconds: 300),
               ),
             );
           }
         },
       ),
     );
-  }
 }
 
 class _ProductVariantPrice extends StatefulWidget {
@@ -276,13 +272,12 @@ class __ProductVariantPriceState extends State<_ProductVariantPrice> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       width: 100,
       child: TextField(
         controller: _priceController,
         decoration: const InputDecoration(labelText: 'Price'),
-        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         onChanged: (value) {
           final parsedValue = double.tryParse(value);
           if (parsedValue != null) {
@@ -291,14 +286,13 @@ class __ProductVariantPriceState extends State<_ProductVariantPrice> {
             // Handle invalid input if necessary
             // For example, you could show a snackbar or reset the field
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('Invalid price input'),
-                duration: const Duration(milliseconds: 300),
+                duration: Duration(milliseconds: 300),
               ),
             );
           }
         },
       ),
     );
-  }
 }

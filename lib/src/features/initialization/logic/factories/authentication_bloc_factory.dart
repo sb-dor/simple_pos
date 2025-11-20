@@ -28,7 +28,6 @@ final class AuthenticationBlocFactory extends Factory<AuthenticationBloc> {
       firebaseStore: FirebaseFirestore.instance,
       logger: _logger,
       sharedPreferencesService: _sharedPreferencesService,
-      appDatabase: _appDatabase,
       establishmentDatabaseHelper: EstablishmentDatabaseHelper(_appDatabase),
       orderTableDbTableHelper: OrderTableDbTableHelper(_appDatabase),
     );

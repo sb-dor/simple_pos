@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/features/order_tables/data/order_tables_datasource.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 abstract interface class IOrderTablesRepository {
   FutureOr<List<TableModel>> tables({int page = 1});

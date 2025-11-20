@@ -20,8 +20,7 @@ class _OrderingProductsState extends State<OrderingProducts> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<OrderFeatureBloc, OrderFeatureStates>(
+  Widget build(BuildContext context) => BlocBuilder<OrderFeatureBloc, OrderFeatureStates>(
       bloc: _orderFeatureBloc,
       builder: (context, state) {
         switch (state) {
@@ -74,14 +73,14 @@ class _OrderingProductsState extends State<OrderingProducts> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      "${product.price}",
+                                      '${product.price}',
                                       style: const TextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
                                     const Text(
-                                      "Склад 999",
+                                      'Склад 999',
                                       style: TextStyle(fontSize: 11, color: Colors.grey),
                                     ),
                                   ],
@@ -92,7 +91,7 @@ class _OrderingProductsState extends State<OrderingProducts> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          "${product.name}",
+                          '${product.name}',
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -106,5 +105,4 @@ class _OrderingProductsState extends State<OrderingProducts> {
         }
       },
     );
-  }
 }

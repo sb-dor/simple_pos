@@ -4,11 +4,9 @@ class PaginateListHelper {
     required List<dynamic> wholeList,
     required List<dynamic> currentList,
     int perPage = 30,
-  }) {
-    return (currentList.length + perPage) > wholeList.length
+  }) => (currentList.length + perPage) > wholeList.length
         ? wholeList.length
         : (currentList.length + perPage);
-  }
 
   ///if you want to show any progress indicator, create bool variable.
   ///that bool variable that you created will equals this fun
@@ -18,9 +16,7 @@ class PaginateListHelper {
     required List<dynamic> wholeList,
     required List<dynamic> currentList,
     int perPage = 30,
-  }) {
-    return (currentList.length + perPage) > wholeList.length ? false : true;
-  }
+  }) => (currentList.length + perPage) > wholeList.length ? false : true;
 
   ///
   ///paginate any list using this way calling this class
@@ -38,15 +34,15 @@ class PaginateListHelper {
     //you should not use any check variable, this function parameter "showingCircularProgress" will know automatically
     //and it checks whether list still has items or not
     if (!showingCircularProgress) {
-      final bool hasMore = currentList.length >= wholeList.length ? false : true;
+      final hasMore = currentList.length >= wholeList.length ? false : true;
       if (!hasMore) return [];
     }
     //check in which list index we are at
-    final int check = (currentList.length + perPage) > wholeList.length
+    final check = (currentList.length + perPage) > wholeList.length
         ? wholeList.length
         : (currentList.length + perPage);
-    final List<T> pagList = [];
-    for (int i = currentList.length; i < check; i++) {
+    final pagList = <T>[];
+    for (var i = currentList.length; i < check; i++) {
       pagList.add(wholeList[i]);
     }
     return pagList;

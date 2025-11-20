@@ -19,9 +19,9 @@ abstract class IOrderFeatureRepo {
 }
 
 class OrderFeatureRepoImpl implements IOrderFeatureRepo {
-  final IOrderFeatureSource _iOrderFeatureSource;
 
   OrderFeatureRepoImpl(this._iOrderFeatureSource);
+  final IOrderFeatureSource _iOrderFeatureSource;
 
   @override
   Future<void> addToDb({required TableModel? table, required OrderItemModel? item}) =>

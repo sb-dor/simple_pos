@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
@@ -5,7 +6,6 @@ import 'package:test_pos_app/src/features/image_product_saver/controller/image_p
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_image_model.dart';
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_product.dart';
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_variant.dart';
-import 'package:dio/dio.dart';
 
 class ImageProductSaverController with ChangeNotifier {
   ImageProductSaverController(this._logger);
@@ -36,7 +36,7 @@ class ImageProductSaverController with ChangeNotifier {
 
       final map = product.toJson();
 
-      final List<MultipartFile> files = [];
+      final files = <MultipartFile>[];
 
       for (final each in product.productImages) {
         if (each.file != null) {
@@ -45,7 +45,7 @@ class ImageProductSaverController with ChangeNotifier {
       }
 
       for (final each in product.variants) {
-        final List<MultipartFile> files = [];
+        final files = <MultipartFile>[];
         for (final eachImage in (each.images ?? <TempImageModel>[])) {
           if (eachImage.file != null) {
             files.add(
@@ -62,7 +62,7 @@ class ImageProductSaverController with ChangeNotifier {
 
       final formData = FormData.fromMap(map);
 
-      final response = await dio.post("/products", data: formData);
+      final response = await dio.post('/products', data: formData);
 
       _logger.log(Level.debug, response.data);
 
@@ -71,7 +71,7 @@ class ImageProductSaverController with ChangeNotifier {
     } on DioException catch (error, stackTrace) {
       sending = false;
       notifyListeners();
-      _logger.log(Level.error, "error is: ${error.response}");
+      _logger.log(Level.error, 'error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
     } catch (error, stackTrace) {
       sending = false;

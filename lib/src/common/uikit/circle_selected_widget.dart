@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CircleSelectedWidget extends StatelessWidget {
-  const CircleSelectedWidget({super.key, required this.selected});
+  const CircleSelectedWidget({required this.selected, super.key});
 
   final bool selected;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: const EdgeInsets.all(10),
       color: Colors.transparent,
       child: Stack(
@@ -59,5 +58,4 @@ class CircleSelectedWidget extends StatelessWidget {
         ],
       ),
     );
-  }
 }

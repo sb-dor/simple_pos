@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_pos_app/src/features/initialization/models/dependency_container.dart';
 
 class DependenciesScope extends InheritedWidget {
-  const DependenciesScope({super.key, required super.child, required this.dependencies});
+  const DependenciesScope({required super.child, required this.dependencies, super.key});
 
   static DependencyContainer of(BuildContext context) {
     final result = context.getElementForInheritedWidgetOfExactType<DependenciesScope>()?.widget;
@@ -14,7 +14,5 @@ class DependenciesScope extends InheritedWidget {
   final DependencyContainer dependencies;
 
   @override
-  bool updateShouldNotify(DependenciesScope oldWidget) {
-    return false;
-  }
+  bool updateShouldNotify(DependenciesScope oldWidget) => false;
 }

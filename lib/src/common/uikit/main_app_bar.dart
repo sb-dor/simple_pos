@@ -7,7 +7,7 @@ import 'package:test_pos_app/src/features/authentication/bloc/authentication_blo
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 
 class MainAppBar extends StatefulWidget {
-  const MainAppBar({super.key, required this.label});
+  const MainAppBar({required this.label, super.key});
 
   final String label;
 
@@ -37,19 +37,18 @@ class _MainAppBarState extends State<MainAppBar> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+  Widget build(BuildContext context) => BlocBuilder<AuthenticationBloc, AuthenticationState>(
       bloc: _authenticationBloc,
       builder: (context, authState) {
         switch (authState) {
           case Authentication$InitialState():
           case Authentication$InProgressState():
           case Authentication$UnauthenticatedState():
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           case Authentication$AuthenticatedState():
             return DecoratedBox(
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: Constants.appGradientColor),
+                gradient: const LinearGradient(colors: Constants.appGradientColor),
                 color: Colors.white.withValues(alpha: 0.8),
               ),
               child: SafeArea(
@@ -70,9 +69,9 @@ class _MainAppBarState extends State<MainAppBar> {
                             onPressed: () {
                               Scaffold.of(context).openDrawer();
                             },
-                            child: Icon(Icons.menu, color: Colors.black),
+                            child: const Icon(Icons.menu, color: Colors.black),
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: TextWidget(
                               text: widget.label,
@@ -84,14 +83,14 @@ class _MainAppBarState extends State<MainAppBar> {
                               overFlow: TextOverflow.ellipsis,
                             ),
                           ),
-                          CircleAvatar(radius: 20),
-                          SizedBox(width: 10),
+                          const CircleAvatar(radius: 20),
+                          const SizedBox(width: 10),
                           TextWidget(
                             text: authState.stateModel.userModel?.name ?? '',
                             size: 16,
                             fontWeight: FontWeight.w500,
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           ElevatedButton(
                             style: ButtonStyle(
                               shape: WidgetStatePropertyAll(
@@ -99,7 +98,7 @@ class _MainAppBarState extends State<MainAppBar> {
                               ),
                             ),
                             onPressed: () {},
-                            child: Icon(Icons.settings, color: Colors.black),
+                            child: const Icon(Icons.settings, color: Colors.black),
                           ),
                         ],
                       ),
@@ -111,5 +110,4 @@ class _MainAppBarState extends State<MainAppBar> {
         }
       },
     );
-  }
 }

@@ -68,7 +68,7 @@ sealed class AuthenticationState with _$AuthenticationState {
 
   /// Provides the default initial state.
   static AuthenticationState get initialState =>
-      AuthenticationState.initial(AuthenticationStateModel());
+      const AuthenticationState.initial(AuthenticationStateModel());
 }
 
 /// Bloc responsible for handling authentication events and updating states.
@@ -98,14 +98,14 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   final IAuthenticationRepository _iAuthenticationRepository;
 
   /// Handles initial authentication event (currently empty).
-  void _authentication$InitEvent(
+  Future<void> _authentication$InitEvent(
     _Authentication$InitEvent event,
     Emitter<AuthenticationState> emit,
   ) async {}
 
   /// Handles checking the user's authentication status.
   /// Fetches user info and establishments from the repository.
-  void _authentication$CheckAuthEvent(
+  Future<void> _authentication$CheckAuthEvent(
     _Authentication$CheckAuthEvent event,
     Emitter<AuthenticationState> emit,
   ) async {
@@ -141,7 +141,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   }
 
   /// Handles user login logic.
-  void _authentication$LoginEvent(
+  Future<void> _authentication$LoginEvent(
     _Authentication$LoginEvent event,
     Emitter<AuthenticationState> emit,
   ) async {
@@ -191,16 +191,16 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   /// Handles user registration.
   /// Creates a new user and establishment before sending request.
-  void _authentication$RegisterEvent(
+  Future<void> _authentication$RegisterEvent(
     _Authentication$RegisterEvent event,
     Emitter<AuthenticationState> emit,
   ) async {
     try {
-      final establishmentId = Uuid().v4();
+      final establishmentId = const Uuid().v4();
       final establishment = Establishment(id: establishmentId, name: event.establishmentName);
 
       final user = UserModel(
-        id: Uuid().v4(),
+        id: const Uuid().v4(),
         name: event.name,
         email: event.email,
         password: event.password,
@@ -227,7 +227,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   }
 
   /// Handles selecting an establishment from the list.
-  void _authentication$SelectEstablishmentEvent(
+  Future<void> _authentication$SelectEstablishmentEvent(
     _Authentication$SelectEstablishmentEvent event,
     Emitter<AuthenticationState> emit,
   ) async {
@@ -244,7 +244,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   /// Handles user logout.
   /// Clears user-related data and switches to unauthenticated state.
-  void _authentication$LogoutEvent(
+  Future<void> _authentication$LogoutEvent(
     _Authentication$LogoutEvent event,
     Emitter<AuthenticationState> emit,
   ) async {

@@ -31,10 +31,9 @@ class _MainAppDrawerState extends State<MainAppDrawer> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
+  Widget build(BuildContext context) => DecoratedBox(
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: Constants.appGradientColor),
+        gradient: const LinearGradient(colors: Constants.appGradientColor),
         borderRadius: BorderRadius.circular(20),
       ),
       child: SafeArea(
@@ -44,12 +43,11 @@ class _MainAppDrawerState extends State<MainAppDrawer> {
             children: [
               BlocBuilder<AuthenticationBloc, AuthenticationState>(
                 bloc: _authenticationBloc,
-                builder: (context, state) {
-                  return SizedBox(
+                builder: (context, state) => SizedBox(
                     height: 100,
                     child: DrawerHeader(
                       margin: EdgeInsets.zero,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(colors: Constants.appGradientColor),
                       ),
                       child: Row(
@@ -83,13 +81,12 @@ class _MainAppDrawerState extends State<MainAppDrawer> {
                                 ),
                               );
                             },
-                            icon: Icon(Icons.sync, color: Colors.white),
+                            icon: const Icon(Icons.sync, color: Colors.white),
                           ),
                         ],
                       ),
                     ),
-                  );
-                },
+                  ),
               ),
               ListTile(
                 leading: const Icon(Icons.payment),
@@ -139,19 +136,19 @@ class _MainAppDrawerState extends State<MainAppDrawer> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: OutlinedButton(
                     onPressed: () {
                       _authenticationBloc.add(
                         AuthenticationEvent.logout(
                           onLogout: () {
-                            _synchronizationBloc.add(SynchronizationEvent.changeStateToInitial());
-                            _tablesBloc.add(TablesEvent.clear());
+                            _synchronizationBloc.add(const SynchronizationEvent.changeStateToInitial());
+                            _tablesBloc.add(const TablesEvent.clear());
                           },
                         ),
                       );
                     },
-                    child: Text(Constants.logout),
+                    child: const Text(Constants.logout),
                   ),
                 ),
               ),
@@ -160,5 +157,4 @@ class _MainAppDrawerState extends State<MainAppDrawer> {
         ),
       ),
     );
-  }
 }

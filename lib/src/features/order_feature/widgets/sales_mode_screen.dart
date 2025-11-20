@@ -15,9 +15,7 @@ import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
 
 class SalesModeScreen extends StatefulWidget {
   const SalesModeScreen({
-    super.key,
-    required this.statefulNavigationShell,
-    required this.goRouterState,
+    required this.statefulNavigationShell, required this.goRouterState, super.key,
   });
 
   final StatefulNavigationShell statefulNavigationShell;
@@ -37,7 +35,7 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
     super.initState();
     final dependencies = DependenciesScope.of(context);
     _tabs = [
-      Tab(text: "${Constants.products} (${GlobalData.products.length})"),
+      Tab(text: '${Constants.products} (${GlobalData.products.length})'),
       const Tab(text: Constants.settings),
     ];
     _tabController = TabController(length: _tabs.length, vsync: this);
@@ -86,10 +84,10 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
         child: (context) => Scaffold(
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: AppBarBack(label: Constants.salesMode, backPath: AppRoutesName.orderTables),
+            child: const AppBarBack(label: Constants.salesMode, backPath: AppRoutesName.orderTables),
           ),
           body: DecoratedBox(
-            decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
+            decoration: const BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
             child: SafeArea(
               child: Center(
                 child: SizedBox(
@@ -118,12 +116,12 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
                                     widget.statefulNavigationShell.goBranch(0);
                                   },
                                   child: TextWidget(
-                                    text: "Товары",
+                                    text: 'Товары',
                                     color: currentTabIndex == 0 ? Colors.white : null,
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Expanded(
                                 child: ElevatedButton(
                                   style: ButtonStyle(
@@ -140,7 +138,7 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
                                     widget.statefulNavigationShell.goBranch(1);
                                   },
                                   child: TextWidget(
-                                    text: "Настройки",
+                                    text: 'Настройки',
                                     color: currentTabIndex == 1 ? Colors.white : null,
                                   ),
                                 ),

@@ -33,14 +33,14 @@ class _SynchronizationListenerState extends State<SynchronizationListener> {
   void _showPopup() {
     if (!_showingSyncLoading) {
       _showingSyncLoading = true;
-      showDialog(context: context, builder: (context) => SynchronizationPopup());
+      showDialog(context: context, builder: (context) => const SynchronizationPopup());
     }
   }
 
   void _loadLocalData() {
-    _tablesBloc.add(TablesEvent.refresh());
-    _categoriesBloc.add(CategoriesEvent.refresh());
-    _productsBloc.add(ProductsEvent.load());
+    _tablesBloc.add(const TablesEvent.refresh());
+    _categoriesBloc.add(const CategoriesEvent.refresh());
+    _productsBloc.add(const ProductsEvent.load());
   }
 
   @override
@@ -54,8 +54,7 @@ class _SynchronizationListenerState extends State<SynchronizationListener> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocListener<SynchronizationBloc, SynchronizationState>(
+  Widget build(BuildContext context) => BlocListener<SynchronizationBloc, SynchronizationState>(
       bloc: _synchronizationBloc,
       listener: (context, synchronizationState) {
         switch (synchronizationState) {
@@ -67,7 +66,7 @@ class _SynchronizationListenerState extends State<SynchronizationListener> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  synchronizationState.message ?? "Something went wrong with synchronization",
+                  synchronizationState.message ?? 'Something went wrong with synchronization',
                 ),
               ),
             );
@@ -78,8 +77,8 @@ class _SynchronizationListenerState extends State<SynchronizationListener> {
           case Synchronization$CompletedState():
             _closePopup();
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text("Synchronization completed!!!"),
+              const SnackBar(
+                content: Text('Synchronization completed!!!'),
                 backgroundColor: Colors.green,
               ),
             );
@@ -89,5 +88,4 @@ class _SynchronizationListenerState extends State<SynchronizationListener> {
       },
       child: widget.child(context),
     );
-  }
 }

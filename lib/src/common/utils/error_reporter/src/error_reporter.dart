@@ -21,10 +21,10 @@ final class ErrorReporterWithLog {
   void log({final Error? error, final StackTrace? stackTrace}) {
     if (!_reporter.isInitialized) return;
 
-    _logger.log(Level.error, "Error reporter:", error: error, stackTrace: stackTrace);
+    _logger.log(Level.error, 'Error reporter:', error: error, stackTrace: stackTrace);
 
     _reporter.captureException(
-      error: error ?? ReportMessageException("Error reporter log exception"),
+      error: error ?? const ReportMessageException('Error reporter log exception'),
       stackTrace: stackTrace ?? StackTrace.current,
     );
   }

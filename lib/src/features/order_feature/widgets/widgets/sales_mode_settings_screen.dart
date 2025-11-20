@@ -4,7 +4,5 @@ class SalesModeSettingsScreen extends StatelessWidget {
   const SalesModeSettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox.shrink();
-  }
+  Widget build(BuildContext context) => const SizedBox.shrink();
 }

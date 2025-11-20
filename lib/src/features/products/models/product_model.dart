@@ -21,8 +21,7 @@ class ProductModel {
     this.updatedAt,
   });
 
-  factory ProductModel.fromJson(Map<String, Object?> json) {
-    return ProductModel(
+  factory ProductModel.fromJson(Map<String, Object?> json) => ProductModel(
       id: json['id'] as String?,
       productType: json['product_type'] == null
           ? ProductType.regular
@@ -39,10 +38,8 @@ class ProductModel {
           : null,
       updatedAt: json['updated_at'] == null ? null : DateTime.tryParse("${json['updated_at']}"),
     );
-  }
 
-  factory ProductModel.fromDbTable(ProductsTableData db) {
-    return ProductModel(
+  factory ProductModel.fromDbTable(ProductsTableData db) => ProductModel(
       id: db.id,
       name: db.name,
       productType: db.productType == null
@@ -57,7 +54,6 @@ class ProductModel {
       imageData: db.imageData,
       updatedAt: db.updatedAt,
     );
-  }
 
   final String? id;
   final CategoryModel? category;
@@ -106,8 +102,7 @@ class ProductModel {
       updatedAt.hashCode;
 
   @override
-  String toString() {
-    return 'ProductModel{'
+  String toString() => 'ProductModel{'
         ' id: $id,'
         ' category: $category,'
         ' productType: $productType,'
@@ -121,7 +116,6 @@ class ProductModel {
         ' imageData: $imageData,'
         ' updatedAt: $updatedAt,'
         '}';
-  }
 
   ProductModel copyWith({
     String? id,
@@ -136,8 +130,7 @@ class ProductModel {
     bool? changed,
     ValueGetter<Uint8List?>? imageData,
     ValueGetter<DateTime?>? updatedAt,
-  }) {
-    return ProductModel(
+  }) => ProductModel(
       id: id ?? this.id,
       category: category != null ? category() : this.category,
       name: name != null ? name() : this.name,
@@ -151,10 +144,8 @@ class ProductModel {
       imageData: imageData != null ? imageData() : this.imageData,
       updatedAt: updatedAt != null ? updatedAt() : this.updatedAt,
     );
-  }
 
-  Map<String, dynamic> toMap() {
-    return {
+  Map<String, dynamic> toMap() => {
       'id': id,
       'category_id': category?.id,
       'product_type': productType.type,
@@ -168,7 +159,6 @@ class ProductModel {
       'image_data': imageData,
       'updated_at': updatedAt,
     };
-  }
 
   ProductsTableCompanion toDbProductCompanion() => ProductsTableCompanion(
     id: Value.absentIfNull(id),
@@ -181,6 +171,6 @@ class ProductModel {
     visible: Value(visible),
     imageData: Value(imageData),
     updatedAt: Value(updatedAt),
-    changed: Value(false),
+    changed: const Value(false),
   );
 }

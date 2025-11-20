@@ -29,25 +29,24 @@ class _ImageProductSaverWidgetState extends State<ImageProductSaverWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: Text("Image saver"),
+        title: const Text('Image saver'),
         actions: [
           TextButton(
             onPressed: () {
               _imageProductSaverController.setImagesWithProduct(tempProduct);
             },
-            child: Text("Send images"),
+            child: const Text('Send images'),
           ),
           TextButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ImageProductUpdateWidget()),
+                MaterialPageRoute(builder: (context) => const ImageProductUpdateWidget()),
               );
             },
-            child: Text("Get product"),
+            child: const Text('Get product'),
           ),
         ],
       ),
@@ -55,19 +54,18 @@ class _ImageProductSaverWidgetState extends State<ImageProductSaverWidget> {
         children: [
           Row(
             children: [
-              Text("Product: ${tempProduct.name}"),
+              Text('Product: ${tempProduct.name}'),
               TextButton(
                 onPressed: () {
                   _imageProductSaverController.pickImageForProduct(tempProduct);
                 },
-                child: Text("Pick image"),
+                child: const Text('Pick image'),
               ),
             ],
           ),
           ListenableBuilder(
             listenable: _imageProductSaverController,
-            builder: (context, child) {
-              return Column(
+            builder: (context, child) => Column(
                 children: tempProduct.productImages
                     .map(
                       (element) => SizedBox(
@@ -77,17 +75,15 @@ class _ImageProductSaverWidgetState extends State<ImageProductSaverWidget> {
                             ? Image.file(File(element.file!.path))
                             : element.path != null
                             ? Image.network(element.imageURL(ImageSize.original))
-                            : ColoredBox(color: Colors.grey),
+                            : const ColoredBox(color: Colors.grey),
                       ),
                     )
                     .toList(),
-              );
-            },
+              ),
           ),
           ListenableBuilder(
             listenable: _imageProductSaverController,
-            builder: (context, child) {
-              return Column(
+            builder: (context, child) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: product.variants
                     .map(
@@ -100,7 +96,7 @@ class _ImageProductSaverWidgetState extends State<ImageProductSaverWidget> {
                                 onPressed: () {
                                   _imageProductSaverController.pickImageForProductVariant(element);
                                 },
-                                child: Text("Pick image"),
+                                child: const Text('Pick image'),
                               ),
                             ],
                           ),
@@ -114,21 +110,19 @@ class _ImageProductSaverWidgetState extends State<ImageProductSaverWidget> {
                                         ? Image.file(File(element.file!.path))
                                         : element.path != null
                                         ? Image.network(element.imageURL(ImageSize.original))
-                                        : ColoredBox(color: Colors.grey),
+                                        : const ColoredBox(color: Colors.grey),
                                   ),
                                 )
                                 .toList(),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     )
                     .toList(),
-              );
-            },
+              ),
           ),
         ],
       ),
     );
-  }
 }

@@ -1,21 +1,12 @@
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
-import 'package:test_pos_app/src/features/products/models/product_model.dart';
 import 'package:test_pos_app/src/features/order_feature/models/order_item_model.dart';
+import 'package:test_pos_app/src/features/products/models/product_model.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 // GlobalData.categories.first
 
 //GlobalData.products.where((e) => e.category?.id == GlobalData.categories.first.id).toList()
 class OrderFeatureStateModel {
-  final List<ProductModel> productsForShow;
-
-  final List<OrderItemModel> orderItems;
-
-  final OrderItemModel? orderItemForChange;
-
-  final TableModel? table;
-
-  final CategoryModel? category;
 
   const OrderFeatureStateModel({
     required this.productsForShow,
@@ -25,12 +16,19 @@ class OrderFeatureStateModel {
     this.category,
   });
 
-  factory OrderFeatureStateModel.initial() {
-    return OrderFeatureStateModel(
+  factory OrderFeatureStateModel.initial() => const OrderFeatureStateModel(
       productsForShow: <ProductModel>[],
       orderItems: <OrderItemModel>[],
     );
-  }
+  final List<ProductModel> productsForShow;
+
+  final List<OrderItemModel> orderItems;
+
+  final OrderItemModel? orderItemForChange;
+
+  final TableModel? table;
+
+  final CategoryModel? category;
 
   @override
   bool operator ==(Object other) =>
@@ -52,15 +50,13 @@ class OrderFeatureStateModel {
       category.hashCode;
 
   @override
-  String toString() {
-    return 'OrderFeatureStateModel{'
+  String toString() => 'OrderFeatureStateModel{'
         ' productsForShow: $productsForShow,'
         ' orderItems: $orderItems,'
         ' orderItemForChange: $orderItemForChange,'
         ' table: $table,'
         ' category: $category,'
         '}';
-  }
 
   OrderFeatureStateModel copyWith({
     List<ProductModel>? productsForShow,
@@ -68,13 +64,11 @@ class OrderFeatureStateModel {
     OrderItemModel? orderItemForChange,
     TableModel? table,
     CategoryModel? category,
-  }) {
-    return OrderFeatureStateModel(
+  }) => OrderFeatureStateModel(
       productsForShow: productsForShow ?? this.productsForShow,
       orderItems: orderItems ?? this.orderItems,
       orderItemForChange: orderItemForChange ?? this.orderItemForChange,
       table: table ?? this.table,
       category: category ?? this.category,
     );
-  }
 }

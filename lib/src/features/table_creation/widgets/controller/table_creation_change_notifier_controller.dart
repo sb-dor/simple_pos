@@ -1,12 +1,13 @@
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/common/utils/compress_image.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 class TableModelDataChange {
   bool isVip = false;
@@ -40,7 +41,7 @@ class TableCreationChangeNotifierController with ChangeNotifier {
     return error == null;
   }
 
-  void init(TableModel tableModel) async {
+  Future<void> init(TableModel tableModel) async {
     _nameController.text = tableModel.name ?? '';
     tableModelDataChange.isVip = tableModel.vip ?? false;
     tableModelDataChange.selectedColor = tableModel.color ?? Colors.blue;
@@ -76,7 +77,7 @@ class TableCreationChangeNotifierController with ChangeNotifier {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Pick a color"),
+        title: const Text('Pick a color'),
         content: SingleChildScrollView(
           child: ColorPicker(
             pickerColor: tableModelDataChange.selectedColor,
@@ -86,7 +87,7 @@ class TableCreationChangeNotifierController with ChangeNotifier {
             },
           ),
         ),
-        actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text("Done"))],
+        actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Done'))],
       ),
     ).ignore();
   }

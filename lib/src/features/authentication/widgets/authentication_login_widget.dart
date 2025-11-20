@@ -39,8 +39,7 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
@@ -58,20 +57,16 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
         ),
         child: WindowSizeScope.of(context).maybeMap(
           orElse: () => _else(context, dividedBy: 3),
-          compact: () => Padding(padding: const EdgeInsets.all(16.0), child: _compact(context)),
-          medium: () => Padding(padding: const EdgeInsets.all(16.0), child: _compact(context)),
+          compact: () => Padding(padding: const EdgeInsets.all(16), child: _compact(context)),
+          medium: () => Padding(padding: const EdgeInsets.all(16), child: _compact(context)),
           expanded: () => _else(context),
         ),
       ),
     );
-  }
 
-  Widget _compact(BuildContext context) {
-    return Center(child: SingleChildScrollView(child: _authCard(context)));
-  }
+  Widget _compact(BuildContext context) => Center(child: SingleChildScrollView(child: _authCard(context)));
 
-  Widget _else(BuildContext context, {final double dividedBy = 2}) {
-    return Align(
+  Widget _else(BuildContext context, {final double dividedBy = 2}) => Align(
       alignment: Alignment.center,
       child: SingleChildScrollView(
         child: SizedBox(
@@ -80,26 +75,24 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
         ),
       ),
     );
-  }
 
-  Widget _authCard(BuildContext context) {
-    return AnimatedContainer(
+  Widget _authCard(BuildContext context) => AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, offset: const Offset(0, 10))],
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 20, offset: Offset(0, 10))],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-            "Welcome Back 👋",
+            'Welcome Back 👋',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF334155)),
           ),
           const SizedBox(height: 8),
-          const Text("Login to continue", style: TextStyle(fontSize: 16, color: Colors.black54)),
+          const Text('Login to continue', style: TextStyle(fontSize: 16, color: Colors.black54)),
           const SizedBox(height: 30),
           _buildTextField(_emailController, 'Email', Icons.email_outlined, false),
           const SizedBox(height: 16),
@@ -123,8 +116,7 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
             width: 200,
             child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
               bloc: _authenticationBloc,
-              builder: (context, state) {
-                return ElevatedButton(
+              builder: (context, state) => ElevatedButton(
                   onPressed: () {
                     _authenticationBloc.add(
                       AuthenticationEvent.login(
@@ -141,7 +133,7 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
                     elevation: 4,
                   ),
                   child: state is Authentication$InProgressState
-                      ? Center(child: CircularProgressIndicator(color: Colors.white))
+                      ? const Center(child: CircularProgressIndicator(color: Colors.white))
                       : const Text(
                           'Login',
                           style: TextStyle(
@@ -150,8 +142,7 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
                             color: Colors.white,
                           ),
                         ),
-                );
-              },
+                ),
             ),
           ),
           const SizedBox(height: 12),
@@ -167,7 +158,6 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
         ],
       ),
     );
-  }
 
   Widget _buildTextField(
     TextEditingController controller,
@@ -175,8 +165,7 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
     IconData icon,
     bool obscure, {
     void Function()? onDone,
-  }) {
-    return TextField(
+  }) => TextField(
       controller: controller,
       obscureText: obscure,
       autocorrect: false,
@@ -201,5 +190,4 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
         FocusScope.of(context).nextFocus();
       },
     );
-  }
 }

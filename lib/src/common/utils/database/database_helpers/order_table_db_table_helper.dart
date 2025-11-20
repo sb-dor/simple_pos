@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
-
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 final class OrderTableDbTableHelper {
   OrderTableDbTableHelper(this._appDatabase);
@@ -20,9 +19,9 @@ final class OrderTableDbTableHelper {
     try {
       final findTable = await _findTable(tableModel.id!);
       if (findTable == null) {
-        await (_appDatabase
+        await _appDatabase
             .into(_appDatabase.orderTableDbTable)
-            .insert(tableModel.toDbTableCompanion(changed: tableModel.changed)));
+            .insert(tableModel.toDbTableCompanion(changed: tableModel.changed));
       } else {
         await (_appDatabase.update(_appDatabase.orderTableDbTable)
               ..where((element) => element.id.equals(tableModel.id!)))
@@ -46,16 +45,14 @@ final class OrderTableDbTableHelper {
     return allTablesDataResult.map(TableModel.fromDbTable).toList();
   }
 
-  Future<OrderTableDbTableData?> _findTable(final String tableId) async {
-    return (_appDatabase.select(
+  Future<OrderTableDbTableData?> _findTable(final String tableId) async => (_appDatabase.select(
       _appDatabase.orderTableDbTable,
     )..where((element) => element.id.equals(tableId))).getSingleOrNull();
-  }
 
   Future<void> markAsSynced(List<String> ids) async {
     await (_appDatabase.update(
       _appDatabase.orderTableDbTable,
-    )..where((t) => t.id.isIn(ids))).write(OrderTableDbTableCompanion(changed: const Value(true)));
+    )..where((t) => t.id.isIn(ids))).write(const OrderTableDbTableCompanion(changed: Value(true)));
   }
 
   Future<void> deleteAllTables() async =>

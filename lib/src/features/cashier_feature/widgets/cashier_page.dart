@@ -13,7 +13,7 @@ import 'package:test_pos_app/src/features/initialization/widgets/dependencies_sc
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
 
 class CashierPage extends StatefulWidget {
-  const CashierPage({super.key, required this.cashierId});
+  const CashierPage({required this.cashierId, super.key});
 
   final String cashierId;
 
@@ -29,24 +29,23 @@ class _CashierPageState extends State<CashierPage> {
     super.initState();
     final dependencies = DependenciesScope.of(context);
     _cashierFeatureBloc = dependencies.cashierFeatureBloc;
-    _cashierFeatureBloc.add(CashierFeatureEvents.initial());
+    _cashierFeatureBloc.add(const CashierFeatureEvents.initial());
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AuthenticationListener(
+  Widget build(BuildContext context) => AuthenticationListener(
       child: (context) => SynchronizationListener(
         child: (context) => Scaffold(
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: MainAppBar(label: Constants.cashier),
+            child: const MainAppBar(label: Constants.cashier),
           ),
           drawer: const MainAppDrawer(),
           body: DecoratedBox(
-            decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
+            decoration: const BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
             child: SafeArea(
               child: RefreshIndicator(
-                onRefresh: () async => _cashierFeatureBloc.add(CashierFeatureEvents.initial()),
+                onRefresh: () async => _cashierFeatureBloc.add(const CashierFeatureEvents.initial()),
                 child: Center(
                   child: SizedBox(
                     width: WindowSizeScope.of(context).expandedSize,
@@ -59,9 +58,9 @@ class _CashierPageState extends State<CashierPage> {
                           builder: (context, state) {
                             switch (state) {
                               case Cashier$InititalState():
-                                return SizedBox.shrink();
+                                return const SizedBox.shrink();
                               case Cashier$InProgressState():
-                                return CircularProgressIndicatorWidget();
+                                return const CircularProgressIndicatorWidget();
                               case Cashier$ErrorState():
                                 return ErrorButtonWidget(
                                   label: Constants.reloadLabel,
@@ -94,5 +93,4 @@ class _CashierPageState extends State<CashierPage> {
         ),
       ),
     );
-  }
 }

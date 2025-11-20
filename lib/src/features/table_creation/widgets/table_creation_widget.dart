@@ -20,7 +20,7 @@ import 'package:test_pos_app/src/features/table_creation/widgets/controller/tabl
 import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
 
 class TableCreationWidget extends StatefulWidget {
-  const TableCreationWidget({super.key, required this.tableId});
+  const TableCreationWidget({required this.tableId, super.key});
 
   final String? tableId;
 
@@ -83,13 +83,12 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AuthenticationListener(
+  Widget build(BuildContext context) => AuthenticationListener(
       child: (context) => SynchronizationListener(
         child: (context) => Scaffold(
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: AppBarBack(label: Constants.tableCreation, backPath: AppRoutesName.tables),
+            child: const AppBarBack(label: Constants.tableCreation, backPath: AppRoutesName.tables),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -98,7 +97,7 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
               if (establishment == null) {
                 ScaffoldMessenger.of(
                   context,
-                ).showSnackBar(SnackBar(content: Text("No establishment")));
+                ).showSnackBar(const SnackBar(content: Text('No establishment')));
                 return;
               }
               _tableCreationBloc.add(
@@ -107,20 +106,20 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
                   establishment: establishment,
                   onSave: () {
                     if (!mounted) return;
-                    DependenciesScope.of(context).tablesBloc.add(TablesEvent.refresh());
+                    DependenciesScope.of(context).tablesBloc.add(const TablesEvent.refresh());
                     context.go(AppRoutesName.tables);
                   },
                 ),
               );
             },
-            child: Icon(Icons.save),
+            child: const Icon(Icons.save),
           ),
           floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
             orElse: () => FloatingActionButtonLocation.centerFloat,
             compact: () => FloatingActionButtonLocation.endFloat,
           ),
           body: DecoratedBox(
-            decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
+            decoration: const BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
             child: SafeArea(
               child: Center(
                 child: SizedBox(
@@ -137,9 +136,9 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
                         builder: (context, state) {
                           switch (state) {
                             case TableCreation$InitialState():
-                              return SizedBox.shrink();
+                              return const SizedBox.shrink();
                             case TableCreation$InProgressState():
-                              return CircularProgressIndicatorWidget();
+                              return const CircularProgressIndicatorWidget();
                             case TableCreation$ErrorState():
                               return ErrorButtonWidget(
                                 label: Constants.reloadLabel,
@@ -152,21 +151,20 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
                             case TableCreation$CompletedState():
                               return ListenableBuilder(
                                 listenable: _tableCreationChangeNotifierController,
-                                builder: (context, child) {
-                                  return Column(
+                                builder: (context, child) => Column(
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(8),
                                         child: TextField(
                                           controller: _nameController,
                                           decoration: InputDecoration(
-                                            labelText: "Table Name",
+                                            labelText: 'Table Name',
                                             errorText: _tableCreationChangeNotifierController.error,
                                           ),
                                         ),
                                       ),
                                       SwitchListTile(
-                                        title: Text("VIP Table"),
+                                        title: const Text('VIP Table'),
                                         value: _tableCreationChangeNotifierController
                                             .tableModelDataChange
                                             .isVip,
@@ -175,7 +173,7 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
                                         },
                                       ),
                                       ListTile(
-                                        title: Text("Pick Table Color"),
+                                        title: const Text('Pick Table Color'),
                                         trailing: CircleAvatar(
                                           backgroundColor: _tableCreationChangeNotifierController
                                               .tableModelDataChange
@@ -192,22 +190,21 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
                                         ElevatedButton(
                                           onPressed:
                                               _tableCreationChangeNotifierController.deleteImage,
-                                          child: Text("Delete Image"),
+                                          child: const Text('Delete Image'),
                                         )
                                       else
                                         ElevatedButton(
                                           onPressed:
                                               _tableCreationChangeNotifierController.pickImage,
-                                          child: Text("Pick Image"),
+                                          child: const Text('Pick Image'),
                                         ),
-                                      _tableCreationChangeNotifierController
+                                      if (_tableCreationChangeNotifierController
                                                   .tableModelDataChange
                                                   .imageData !=
-                                              null
-                                          ? SizedBox(
+                                              null) SizedBox(
                                               height: 200,
                                               child: Padding(
-                                                padding: EdgeInsets.symmetric(vertical: 10),
+                                                padding: const EdgeInsets.symmetric(vertical: 10),
                                                 child: kIsWeb
                                                     ? Image.network(
                                                         _tableCreationChangeNotifierController
@@ -228,12 +225,10 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
                                                         fit: BoxFit.cover,
                                                       ),
                                               ),
-                                            )
-                                          : SizedBox.shrink(),
-                                      SizedBox(height: 20),
+                                            ) else const SizedBox.shrink(),
+                                      const SizedBox(height: 20),
                                     ],
-                                  );
-                                },
+                                  ),
                               );
                           }
                         },
@@ -247,5 +242,4 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
         ),
       ),
     );
-  }
 }

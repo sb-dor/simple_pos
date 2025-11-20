@@ -1,11 +1,11 @@
 import 'package:test_pos_app/src/common/global_data/global_data.dart';
-import 'package:test_pos_app/src/features/categories/models/category_model.dart';
-import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_detail_model.dart';
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
-import 'package:test_pos_app/src/features/products/models/product_model.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/customer_invoices/customer_invoice_database_helper.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
+import 'package:test_pos_app/src/features/categories/models/category_model.dart';
+import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_detail_model.dart';
 import 'package:test_pos_app/src/features/order_feature/models/order_item_model.dart';
+import 'package:test_pos_app/src/features/products/models/product_model.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 abstract class IOrderFeatureSource {
   Future<void> addToDb({required TableModel? table, required OrderItemModel? item});
@@ -54,9 +54,7 @@ class OrderFeatureSourceImpl implements IOrderFeatureSource {
       _customerInvoiceDatabaseHelper.deleteOrderItemFromOrder(item, table);
 
   @override
-  Future<List<ProductModel>> categoriesProducts(CategoryModel category) async {
-    return GlobalData.products.where((e) => e.category?.id == category.id).toList();
-  }
+  Future<List<ProductModel>> categoriesProducts(CategoryModel category) async => GlobalData.products.where((e) => e.category?.id == category.id).toList();
 
   @override
   Future<TableModel?> table(String id) => _orderTableDbTableHelper.table(id);

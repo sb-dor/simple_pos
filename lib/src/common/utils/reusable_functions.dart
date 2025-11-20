@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 final class ReusableFunctions {
+
+  ReusableFunctions._();
   static ReusableFunctions? _instance;
 
   static ReusableFunctions get instance => _instance ??= ReusableFunctions._();
-
-  ReusableFunctions._();
 
   bool get isDesktop =>
       defaultTargetPlatform == TargetPlatform.linux ||
@@ -23,12 +23,10 @@ final class ReusableFunctions {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  TextInputType get numberInputType {
-    return defaultTargetPlatform == TargetPlatform.macOS ||
+  TextInputType get numberInputType => defaultTargetPlatform == TargetPlatform.macOS ||
             defaultTargetPlatform == TargetPlatform.iOS
         ? const TextInputType.numberWithOptions(decimal: true, signed: true)
         : TextInputType.number;
-  }
 
   String? separateNumbersRegex(num? number) {
     if (number == null) return null;
@@ -39,8 +37,8 @@ final class ReusableFunctions {
   }
 
   String clearSeparatedNumbers(String value) {
-    String res = '';
-    for (int i = 0; i < value.length; i++) {
+    var res = '';
+    for (var i = 0; i < value.length; i++) {
       if (value[i] == ' ') continue;
       res += value[i];
     }

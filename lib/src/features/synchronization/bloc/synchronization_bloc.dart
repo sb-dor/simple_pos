@@ -42,32 +42,32 @@ class SynchronizationBloc extends Bloc<SynchronizationEvent, SynchronizationStat
 
   final ISynchronizationRepository _iSynchronizationRepository;
 
-  void _synchronizationEvent(
+  Future<void> _synchronizationEvent(
     _Synchronization$SyncEvent event,
     Emitter<SynchronizationState> emit,
   ) async {
     if (state is Synchronization$CompletedState && !event.refresh) return;
     try {
-      emit(SynchronizationState.inProgress());
+      emit(const SynchronizationState.inProgress());
 
       final sync = await _iSynchronizationRepository.sync();
 
       if (!sync) {
         emit(
-          SynchronizationState.error(message: "Something went wrong with table synchronization"),
+          const SynchronizationState.error(message: 'Something went wrong with table synchronization'),
         );
         return;
       }
 
       event.onSyncDone?.call();
-      emit(SynchronizationState.completed());
+      emit(const SynchronizationState.completed());
     } catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(const SynchronizationState.error());
     }
   }
 
-  void _synchronization$ChangeStateToInitialEvent(
+  Future<void> _synchronization$ChangeStateToInitialEvent(
     _Synchronization$ChangeStateToInitialEvent event,
     Emitter<SynchronizationState> emit,
   ) async => emit(const SynchronizationState.initial());

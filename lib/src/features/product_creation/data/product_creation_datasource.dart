@@ -47,7 +47,7 @@ final class ProductCreationDatasource implements IProductCreationDatasource {
       );
       return true;
     } else if (product.id != null) {
-      await (_appDatabase
+      await _appDatabase
           .into(_appDatabase.productsTable)
           .insert(
             ProductsTableData(
@@ -63,7 +63,7 @@ final class ProductCreationDatasource implements IProductCreationDatasource {
               imageData: product.imageData,
               updatedAt: product.updatedAt,
             ),
-          ));
+          );
       return true;
     }
 

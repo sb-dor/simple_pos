@@ -5,5 +5,5 @@ class EstablishmentTable extends Table {
 
   TextColumn get name => text().nullable()();
 
-  TextColumn get documentId => text().named("document_id").nullable()();
+  TextColumn get documentId => text().named('document_id').nullable()();
 }

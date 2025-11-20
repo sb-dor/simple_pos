@@ -52,12 +52,12 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
   final IProductsOfCategoryRepository _iProductsOfCategoryRepository;
   final Logger _logger;
 
-  void _productsOfCategory$LoadEvent(
+  Future<void> _productsOfCategory$LoadEvent(
     _ProductsOfCategory$LoadEvent event,
     Emitter<ProductsOfCategoryState> emit,
   ) async {
     try {
-      emit(ProductsOfCategoryState.inProgress());
+      emit(const ProductsOfCategoryState.inProgress());
 
       final products = await _iProductsOfCategoryRepository.productsOfCategory(event.categoryId);
 
@@ -68,12 +68,12 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
     }
   }
 
-  void _productsOfCategory$SaveProductsEvent(
+  Future<void> _productsOfCategory$SaveProductsEvent(
     _ProductsOfCategory$SaveProductsEvent event,
     Emitter<ProductsOfCategoryState> emit,
   ) async {
     try {
-      _logger.log(Level.debug, "Trying to save products for category");
+      _logger.log(Level.debug, 'Trying to save products for category');
 
       if (state is! ProductsOfCategory$CompletedState) return;
 
@@ -82,7 +82,7 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
         products: event.selectedProducts,
       );
 
-      _logger.log(Level.debug, "Products for category was saved with result: $saveProducts");
+      _logger.log(Level.debug, 'Products for category was saved with result: $saveProducts');
 
       if (saveProducts) {
         final products = await _iProductsOfCategoryRepository.productsOfCategory(event.categoryId);

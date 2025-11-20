@@ -67,16 +67,14 @@ class CategoryModel {
     changed: changed ?? this.changed,
   );
 
-  Map<String, Object?> toJson() {
-    return <String, Object?>{
+  Map<String, Object?> toJson() => <String, Object?>{
       'id': id,
       'establishment_id': establishmentId,
       'name': name,
       'updated_at': updatedAt,
       'color': color?.toARGB32(),
-      "changed": changed,
+      'changed': changed,
     };
-  }
 
   CategoryTableCompanion toDbCategoryCompanion() => CategoryTableCompanion(
     id: Value.absentIfNull(id),
@@ -84,6 +82,6 @@ class CategoryModel {
     name: Value(name),
     updatedAt: Value(updatedAt),
     colorValue: Value(color?.toARGB32()),
-    changed: Value(false),
+    changed: const Value(false),
   );
 }

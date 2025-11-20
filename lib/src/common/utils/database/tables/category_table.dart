@@ -11,5 +11,5 @@ class CategoryTable extends Table {
 
   IntColumn get colorValue => integer().nullable()();
 
-  BoolColumn get changed => boolean().withDefault(Variable(false))();
+  BoolColumn get changed => boolean().withDefault(const Variable(false))();
 }

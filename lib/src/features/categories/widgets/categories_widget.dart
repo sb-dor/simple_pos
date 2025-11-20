@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/uikit/circular_progress_indicator_widget.dart';
 import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
@@ -8,7 +9,6 @@ import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
 import 'package:test_pos_app/src/common/uikit/text_widget.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
-import 'package:go_router/go_router.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
@@ -32,39 +32,38 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AuthenticationListener(
+  Widget build(BuildContext context) => AuthenticationListener(
       child: (context) => SynchronizationListener(
         child: (context) => Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
               context.go(AppRoutesName.categories + AppRoutesName.creation);
             },
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
           floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
             orElse: () => FloatingActionButtonLocation.centerFloat,
             compact: () => FloatingActionButtonLocation.endFloat,
           ),
-          drawer: MainAppDrawer(),
-          appBar: PreferredSize(
+          drawer: const MainAppDrawer(),
+          appBar: const PreferredSize(
             preferredSize: Size(double.infinity, kToolbarHeight),
             child: MainAppBar(label: Constants.categories),
           ),
           body: DecoratedBox(
-            decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
+            decoration: const BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
             child: SafeArea(
               child: CustomScrollView(
                 slivers: [
-                  SliverToBoxAdapter(child: SizedBox(height: 10)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 10)),
                   BlocBuilder<CategoriesBloc, CategoriesState>(
                     bloc: _categoriesBloc,
                     builder: (context, categoriesState) {
                       switch (categoriesState) {
                         case Categories$InitialState():
-                          return SliverToBoxAdapter(child: SizedBox.shrink());
+                          return const SliverToBoxAdapter(child: SizedBox.shrink());
                         case Categories$InProgressState():
-                          return SliverFillRemaining(
+                          return const SliverFillRemaining(
                             child: Center(child: CircularProgressIndicatorWidget()),
                           );
                         case Categories$ErrorState():
@@ -73,7 +72,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                               child: ErrorButtonWidget(
                                 label: Constants.reloadLabel,
                                 onTap: () {
-                                  _categoriesBloc.add(CategoriesEvent.refresh());
+                                  _categoriesBloc.add(const CategoriesEvent.refresh());
                                 },
                               ),
                             ),
@@ -101,7 +100,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                                     return GestureDetector(
                                       onTap: () async {
                                         context.go(
-                                          "${AppRoutesName.categories}${AppRoutesName.creation}?categoryId=${category.id}",
+                                          '${AppRoutesName.categories}${AppRoutesName.creation}?categoryId=${category.id}',
                                         );
                                       },
                                       child: Column(
@@ -145,5 +144,4 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
         ),
       ),
     );
-  }
 }

@@ -14,6 +14,23 @@ class UserModel {
     this.establishmentIds,
   });
 
+  factory UserModel.fromMap(final Map<String, Object?> map, {final String? documentId}) => UserModel(
+      id: map['id'] as String?,
+      name: map['name'] as String?,
+      email: map['email'] as String?,
+      password: map['password'] as String?,
+      documentId: documentId ?? (map['document_id'] as String?),
+      userRole: map['user_role_id'] == null
+          ? null
+          : UserRoleEx.fromId(int.tryParse("${map['user_role_id']}")),
+      establishmentIds: map['establishment_ids'] == null
+          ? null
+          : (map['establishment_ids'] as List<dynamic>)
+                .map((element) => element.toString())
+                .toList(),
+      // establishment: map['establishment'] == null ? null : Establishment.fromMap(map),
+    );
+
   final String? id;
   final String? name;
   final String? email;
@@ -48,8 +65,7 @@ class UserModel {
       establishmentIds.hashCode;
 
   @override
-  String toString() {
-    return 'UserModel{'
+  String toString() => 'UserModel{'
         ' id: $id,'
         ' name: $name,'
         ' email: $email,'
@@ -58,7 +74,6 @@ class UserModel {
         // ' establishment: $establishment,'
         ' establishmentIds: $establishmentIds'
         '}';
-  }
 
   UserModel copyWith({
     String? id,
@@ -69,8 +84,7 @@ class UserModel {
     UserRole? userRole,
     // Establishment? establishment,
     List<String>? establishmentIds,
-  }) {
-    return UserModel(
+  }) => UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
@@ -80,36 +94,14 @@ class UserModel {
       // establishment: establishment ?? this.establishment,
       establishmentIds: establishmentIds ?? this.establishmentIds,
     );
-  }
 
-  Map<String, dynamic> toMap() {
-    return {
+  Map<String, dynamic> toMap() => {
       'id': id,
       'name': name,
       'email': email,
       'password': password,
-      "document_id": documentId,
-      "user_role_id": userRole?.userRoleId,
+      'document_id': documentId,
+      'user_role_id': userRole?.userRoleId,
       'establishment_ids': establishmentIds,
     };
-  }
-
-  factory UserModel.fromMap(final Map<String, Object?> map, {final String? documentId}) {
-    return UserModel(
-      id: map['id'] as String?,
-      name: map['name'] as String?,
-      email: map['email'] as String?,
-      password: map['password'] as String?,
-      documentId: documentId ?? (map['document_id'] as String?),
-      userRole: map['user_role_id'] == null
-          ? null
-          : UserRoleEx.fromId(int.tryParse("${map['user_role_id']}")),
-      establishmentIds: map['establishment_ids'] == null
-          ? null
-          : (map['establishment_ids'] as List<dynamic>)
-                .map((element) => element.toString())
-                .toList(),
-      // establishment: map['establishment'] == null ? null : Establishment.fromMap(map),
-    );
-  }
 }

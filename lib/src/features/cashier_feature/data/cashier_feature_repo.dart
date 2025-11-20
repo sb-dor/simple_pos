@@ -6,9 +6,9 @@ abstract interface class ICashierFeatureRepo {
 }
 
 class CashierFeatureRepoImpl implements ICashierFeatureRepo {
-  final ICashierFeatureDataSource _cashierFeatureDataSource;
 
   CashierFeatureRepoImpl(this._cashierFeatureDataSource);
+  final ICashierFeatureDataSource _cashierFeatureDataSource;
 
   @override
   Future<List<CustomerInvoiceModel>> invoices() => _cashierFeatureDataSource.invoices();

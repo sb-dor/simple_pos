@@ -5,16 +5,16 @@ class AppConfig {
   const AppConfig();
 
   Environment get environment {
-    final mode = const String.fromEnvironment("MODE");
+    const mode = String.fromEnvironment('MODE');
     switch (mode) {
-      case "PRODUCTION":
+      case 'PRODUCTION':
         return Environment.prod;
       default:
         return Environment.dev;
     }
   }
 
-  String get sentryDsn => const String.fromEnvironment("SENTRY_DSN");
+  String get sentryDsn => const String.fromEnvironment('SENTRY_DSN');
 
   bool get enableSentry => sentryDsn.isNotEmpty;
 }
@@ -22,7 +22,5 @@ class AppConfig {
 @visibleForTesting
 final class TestAppConfig extends AppConfig {
   @override
-  noSuchMethod(Invocation invocation) {
-    return super.noSuchMethod(invocation);
-  }
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

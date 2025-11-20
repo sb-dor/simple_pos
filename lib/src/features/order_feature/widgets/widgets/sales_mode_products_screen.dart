@@ -11,7 +11,7 @@ import 'package:test_pos_app/src/features/order_feature/widgets/widgets/ordered_
 import 'package:test_pos_app/src/features/order_feature/widgets/widgets/ordering_products.dart';
 
 class SalesModeProductsScreen extends StatefulWidget {
-  const SalesModeProductsScreen({super.key, required this.tableId});
+  const SalesModeProductsScreen({required this.tableId, super.key});
 
   final String tableId;
 
@@ -30,15 +30,14 @@ class _SalesModeProductsScreenState extends State<SalesModeProductsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<OrderFeatureBloc, OrderFeatureStates>(
+  Widget build(BuildContext context) => BlocBuilder<OrderFeatureBloc, OrderFeatureStates>(
       bloc: _orderFeatureBloc,
       builder: (context, state) {
         switch (state) {
           case InitialOrderState():
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           case InProgressOrderState():
-            return CircularProgressIndicatorWidget();
+            return const CircularProgressIndicatorWidget();
           case ErrorOrderState():
             return ErrorButtonWidget(
               label: Constants.reloadLabel,
@@ -49,14 +48,14 @@ class _SalesModeProductsScreenState extends State<SalesModeProductsScreen> {
           case CompletedOrderState():
             final currentStateModel = state.orderFeatureStateModel;
             return Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
                   if (currentStateModel.orderItems.isNotEmpty)
                     GestureDetector(
                       onTap: () => _orderFeatureBloc.add(
                         OrderFeatureEvents.finishCustomerInvoice(
-                          onMessage: (String message) {
+                          onMessage: (message) {
                             if (!mounted) return;
                             ScaffoldMessenger.of(
                               context,
@@ -73,7 +72,7 @@ class _SalesModeProductsScreenState extends State<SalesModeProductsScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            "${Constants.pay} - ${currentStateModel.orderItems.total()}",
+                            '${Constants.pay} - ${currentStateModel.orderItems.total()}',
                             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -93,5 +92,4 @@ class _SalesModeProductsScreenState extends State<SalesModeProductsScreen> {
         }
       },
     );
-  }
 }

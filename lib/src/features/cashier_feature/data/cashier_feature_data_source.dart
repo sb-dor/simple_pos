@@ -1,5 +1,5 @@
-import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_model.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/customer_invoices/customer_invoice_database_helper.dart';
+import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_model.dart';
 
 abstract class ICashierFeatureDataSource {
   Future<List<CustomerInvoiceModel>> invoices();

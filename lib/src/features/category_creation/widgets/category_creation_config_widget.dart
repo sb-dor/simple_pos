@@ -37,7 +37,7 @@ class _CategoryCreationConfigWidgetState extends State<CategoryCreationConfigWid
       logger: dependencies.logger,
     ).create();
 
-    _categoryId = widget.categoryId ?? Uuid().v4();
+    _categoryId = widget.categoryId ?? const Uuid().v4();
     _categoryCreationBloc.add(CategoryCreationEvent.init(categoryId: _categoryId));
     _productsCategoriesBloc.add(ProductsOfCategoryEvent.load(categoryId: _categoryId));
   }
@@ -50,13 +50,11 @@ class _CategoryCreationConfigWidgetState extends State<CategoryCreationConfigWid
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
+  Widget build(BuildContext context) => MultiBlocProvider(
       providers: [
         BlocProvider.value(value: _categoryCreationBloc),
         BlocProvider.value(value: _productsCategoriesBloc),
       ],
       child: CategoryCreationWidgets(categoryId: _categoryId),
     );
-  }
 }

@@ -16,5 +16,5 @@ class CustomerInvoicesTable extends Table {
   TextColumn get invoiceDatetime => text().nullable()();
 
   @override
-  String? get tableName => "customer_invoices";
+  String? get tableName => 'customer_invoices';
 }

@@ -3,12 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CircularProgressIndicatorWidget extends StatelessWidget {
-  final double strokeWidth;
-  final Color? color;
-  final Color? backgroundColor;
-  final double? value;
-  final bool useAndroidIndicator;
-  final Size? size;
 
   const CircularProgressIndicatorWidget({
     super.key,
@@ -19,10 +13,15 @@ class CircularProgressIndicatorWidget extends StatelessWidget {
     this.useAndroidIndicator = false,
     this.size,
   });
+  final double strokeWidth;
+  final Color? color;
+  final Color? backgroundColor;
+  final double? value;
+  final bool useAndroidIndicator;
+  final Size? size;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
+  Widget build(BuildContext context) => Center(
       child: (defaultTargetPlatform == TargetPlatform.iOS && !useAndroidIndicator)
           ? CupertinoActivityIndicator(color: color)
           : SizedBox(
@@ -36,5 +35,4 @@ class CircularProgressIndicatorWidget extends StatelessWidget {
               ),
             ),
     );
-  }
 }

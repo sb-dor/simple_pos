@@ -33,31 +33,30 @@ class _TablesWidgetState extends State<TablesWidget> {
     final dependencies = DependenciesScope.of(context);
     _tablesBloc = dependencies.tablesBloc;
 
-    _tablesBloc.add(TablesEvent.refresh());
+    _tablesBloc.add(const TablesEvent.refresh());
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AuthenticationListener(
+  Widget build(BuildContext context) => AuthenticationListener(
       child: (context) => SynchronizationListener(
         child: (context) => Scaffold(
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: MainAppBar(label: Constants.tables),
+            child: const MainAppBar(label: Constants.tables),
           ),
-          drawer: MainAppDrawer(),
+          drawer: const MainAppDrawer(),
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
               context.go(AppRoutesName.tables + AppRoutesName.creation);
             },
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
           floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
             orElse: () => FloatingActionButtonLocation.centerFloat,
             compact: () => FloatingActionButtonLocation.endFloat,
           ),
           body: DecoratedBox(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -66,14 +65,13 @@ class _TablesWidgetState extends State<TablesWidget> {
             ),
             child: SafeArea(
               child: RefreshIndicatorWidget(
-                onRefresh: () async => _tablesBloc.add(TablesEvent.refresh()),
+                onRefresh: () async => _tablesBloc.add(const TablesEvent.refresh()),
                 child: CustomScrollView(
                   slivers: [
-                    SliverToBoxAdapter(child: SizedBox(height: 10)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 10)),
                     BlocBuilder<TablesBloc, TablesState>(
                       bloc: _tablesBloc,
-                      builder: (context, state) {
-                        return WindowSizeScope.of(context).maybeMap(
+                      builder: (context, state) => WindowSizeScope.of(context).maybeMap(
                           orElse: () => SliverFillRemaining(
                             child: Align(
                               alignment: Alignment.topCenter,
@@ -83,8 +81,7 @@ class _TablesWidgetState extends State<TablesWidget> {
                               ),
                             ),
                           ),
-                        );
-                      },
+                        ),
                     ),
                   ],
                 ),
@@ -94,26 +91,25 @@ class _TablesWidgetState extends State<TablesWidget> {
         ),
       ),
     );
-  }
 
   Widget _buildContent({required final TablesState state, required final int gridCount}) {
     switch (state) {
       case Tables$InitialState():
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
       case Tables$InProgressState():
-        return CircularProgressIndicatorWidget();
+        return const CircularProgressIndicatorWidget();
       case Tables$ErrorState():
         return Center(
           child: ErrorButtonWidget(
             label: Constants.reloadLabel,
             onTap: () {
-              _tablesBloc.add(TablesEvent.refresh());
+              _tablesBloc.add(const TablesEvent.refresh());
             },
           ),
         );
       case Tables$CompletedState():
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -152,10 +148,9 @@ class _TableWidgetState extends State<_TableWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: () async {
-        final path = "${AppRoutesName.tables}${AppRoutesName.creation}?tableId=${widget.table.id}";
+        final path = '${AppRoutesName.tables}${AppRoutesName.creation}?tableId=${widget.table.id}';
         context.go(path);
       },
       child: MouseRegion(
@@ -173,29 +168,29 @@ class _TableWidgetState extends State<_TableWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("test"),
+              const Text('test'),
               SizedBox(
                 height: 60,
                 child: widget.table.imageData != null
                     ? ClipRRect(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(6),
                           topRight: Radius.circular(6),
                         ),
                         child: Image.memory(widget.table.imageData!, height: 60, fit: BoxFit.cover),
                       )
-                    : widget.table.icon ?? Icon(Icons.table_chart, size: 40),
+                    : widget.table.icon ?? const Icon(Icons.table_chart, size: 40),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextWidget(
-                text: widget.table.name ?? "Unnamed Table",
+                text: widget.table.name ?? 'Unnamed Table',
                 textAlign: TextAlign.center,
                 fontWeight: FontWeight.bold,
                 maxLines: 1,
               ),
               if (widget.table.vip == true)
-                TextWidget(
-                  text: "VIP Table",
+                const TextWidget(
+                  text: 'VIP Table',
                   color: Colors.red,
                   size: 12,
                   fontWeight: FontWeight.bold,
@@ -205,5 +200,4 @@ class _TableWidgetState extends State<_TableWidget> {
         ),
       ),
     );
-  }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/features/table_creation/data/table_creation_repository.dart';
 import 'package:test_pos_app/src/features/table_creation/widgets/controller/table_creation_change_notifier_controller.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:uuid/uuid.dart';
 
 part 'table_creation_bloc.freezed.dart';
@@ -50,11 +50,11 @@ class TableCreationBloc extends Bloc<TableCreationEvent, TableCreationState> {
 
   final ITableCreationRepository _iTableCreationRepository;
 
-  void _tableCreation$RefreshEvent(
+  Future<void> _tableCreation$RefreshEvent(
     _TableCreation$RefreshEvent event,
     Emitter<TableCreationState> emit,
   ) async {
-    emit(TableCreationState.inProgress());
+    emit(const TableCreationState.inProgress());
 
     TableModel? table;
 
@@ -65,18 +65,18 @@ class TableCreationBloc extends Bloc<TableCreationEvent, TableCreationState> {
     emit(TableCreationState.completed(tableModel: table));
   }
 
-  void _tableCreation$SaveEvent(
+  Future<void> _tableCreation$SaveEvent(
     _TableCreation$SaveEvent event,
     Emitter<TableCreationState> emit,
   ) async {
-    var table = state.tableModel ?? TableModel();
+    var table = state.tableModel ?? const TableModel();
 
     final datetime = DateTime.now();
 
     final bytes = await event.tableData.imageData?.readAsBytes();
 
     table = table.copyWith(
-      id: table.id ?? Uuid().v4(),
+      id: table.id ?? const Uuid().v4(),
       establishmentId: () => event.establishment.id,
       name: () => event.tableData.name,
       vip: () => event.tableData.isVip,

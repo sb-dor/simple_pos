@@ -36,16 +36,16 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
   final IProductsRepository _iProductsRepository;
 
-  void _products$LoadEvent(_Products$LoadEvent event, Emitter<ProductsState> emit) async {
+  Future<void> _products$LoadEvent(_Products$LoadEvent event, Emitter<ProductsState> emit) async {
     try {
-      emit(ProductsState.inProgress());
+      emit(const ProductsState.inProgress());
 
       final products = await _iProductsRepository.products();
 
       emit(ProductsState.completed(products));
     } catch (error, stackTrace) {
       addError(error, stackTrace);
-      emit(ProductsState.error());
+      emit(const ProductsState.error());
     }
   }
 }

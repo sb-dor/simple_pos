@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
-import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
-import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
-import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/establishment_database_helper.dart';
+import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
 import 'package:test_pos_app/src/common/utils/key_value_storage/shared_preferences_service.dart';
 import 'package:test_pos_app/src/features/authentication/models/authentication_response_model.dart';
+import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/features/authentication/models/user_model.dart';
 
 abstract interface class IAuthenticationDatasource {
@@ -33,7 +32,6 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
     required final SharedPreferencesService sharedPreferencesService,
     required final EstablishmentDatabaseHelper establishmentDatabaseHelper,
     required final OrderTableDbTableHelper orderTableDbTableHelper,
-    required final AppDatabase appDatabase,
     required final Logger logger,
   }) : _logger = logger,
        _sharedPreferencesService = sharedPreferencesService,
@@ -74,7 +72,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
       return AuthenticationResponseModel(message: Constants.messageUserDoesNotExist);
     }
 
-    final List<Establishment> establishments = [];
+    final establishments = <Establishment>[];
 
     final users = await _usersRef.where('id', isEqualTo: userId).limit(1).get();
 
@@ -96,9 +94,9 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
       establishments.add(localEstablishment);
     }
 
-    _logger.log(Level.debug, "login establishemnt: $localEstablishment | $establishments");
+    _logger.log(Level.debug, 'login establishemnt: $localEstablishment | $establishments');
 
-    final String? message = user == null ? Constants.messageUserDoesNotExist : null;
+    final message = user == null ? Constants.messageUserDoesNotExist : null;
 
     return AuthenticationResponseModel(
       message: message,
@@ -118,9 +116,9 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
         .limit(1)
         .get();
 
-    _logger.log(Level.debug, "finding user in server: ${findUser.docs.firstOrNull}");
+    _logger.log(Level.debug, 'finding user in server: ${findUser.docs.firstOrNull}');
 
-    final List<String> establishmentIds = [...user.establishmentIds!];
+    final establishmentIds = <String>[...user.establishmentIds!];
 
     if (findUser.docs.isNotEmpty) {
       establishmentIds.insertAll(0, findUser.docs.first.data().establishmentIds ?? <String>[]);
@@ -153,7 +151,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
     required final String email,
     required final String password,
   }) async {
-    final List<Establishment> establishments = [];
+    final establishments = <Establishment>[];
 
     final users = await _usersRef
         .where('email', isEqualTo: email.trim())
@@ -174,13 +172,13 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
       );
     }
 
-    _logger.log(Level.debug, "login data: $user | establishements: ${establishments.length}");
+    _logger.log(Level.debug, 'login data: $user | establishements: ${establishments.length}');
 
     if (user?.id != null) {
       await _sharedPreferencesService.saveString(Constants.userUUIDKey, user!.id!);
     }
 
-    final String? message = user == null ? Constants.messageUserDoesNotExist : null;
+    final message = user == null ? Constants.messageUserDoesNotExist : null;
 
     return AuthenticationResponseModel(
       message: message,

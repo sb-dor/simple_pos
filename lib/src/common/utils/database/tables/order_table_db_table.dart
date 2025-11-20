@@ -15,5 +15,5 @@ class OrderTableDbTable extends Table {
 
   BlobColumn get image => blob().nullable()();
 
-  BoolColumn get changed => boolean().withDefault(Variable(false))();
+  BoolColumn get changed => boolean().withDefault(const Variable(false))();
 }

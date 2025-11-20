@@ -41,7 +41,7 @@ sealed class ProductCreationState with _$ProductCreationState {
       ProductCreation$CompletedState;
 
   /// The initial state of the product creation screen.
-  static ProductCreationState get initialState => ProductCreationState.initial(null);
+  static ProductCreationState get initialState => const ProductCreationState.initial(null);
 }
 
 /// Manages the state and logic for creating and editing products.
@@ -67,7 +67,7 @@ class ProductCreationBloc extends Bloc<ProductCreationEvent, ProductCreationStat
   final IProductCreationRepository _productCreationRepository;
 
   /// Handles the [_ProductCreation$InitEvent] by fetching a product from the repository.
-  void _productCreation$InitEvent(
+  Future<void> _productCreation$InitEvent(
     _ProductCreation$InitEvent event,
     Emitter<ProductCreationState> emit,
   ) async {
@@ -80,14 +80,14 @@ class ProductCreationBloc extends Bloc<ProductCreationEvent, ProductCreationStat
   }
 
   /// Handles the [_ProductCreation$SaveEvent] by saving the product data.
-  void _productCreation$SaveEvent(
+  Future<void> _productCreation$SaveEvent(
     _ProductCreation$SaveEvent event,
     Emitter<ProductCreationState> emit,
   ) async {
     try {
       emit(ProductCreationState.inProgress(state.product));
 
-      final product = (state.product ?? ProductModel()).copyWith(
+      final product = (state.product ?? const ProductModel()).copyWith(
         id: state.product?.id ?? const Uuid().v4(),
         name: () => event.productCreationData.name,
         price: () => event.productCreationData.price,

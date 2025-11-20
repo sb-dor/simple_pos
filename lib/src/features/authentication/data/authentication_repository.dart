@@ -1,6 +1,6 @@
-import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/features/authentication/data/authentication_datasource.dart';
 import 'package:test_pos_app/src/features/authentication/models/authentication_response_model.dart';
+import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/features/authentication/models/user_model.dart';
 
 /// Abstract interface for the authentication repository.

@@ -28,30 +28,9 @@ class TempProduct {
     this.colors,
   });
 
-  final int? id;
-  final String? localUUID; // temp only for image update
-  final String name;
-  final String description;
-  final String type;
-  final bool isActive;
-  final bool hasVariants;
-  double price;
-  final double? costPrice;
-  final int stockQuantity;
-  final String? barcode;
-  final bool isNew;
-  final double discountPrice;
-  final double? weight;
-  final double? length;
-  final double? width;
-  final double? height;
-  final List<TempImageModel> productImages;
-  final List<TempVariant> variants;
-  final List<TempColorModel>? colors;
-
   factory TempProduct.fromJson(Map<String, Object?> json) => TempProduct(
     id: json['id'] as int?,
-    localUUID: Uuid().v4(),
+    localUUID: const Uuid().v4(),
     name: json['name'] as String,
     description: json['description'] as String,
     type: json['type'] as String,
@@ -78,6 +57,27 @@ class TempProduct {
         .toList(),
   );
 
+  final int? id;
+  final String? localUUID; // temp only for image update
+  final String name;
+  final String description;
+  final String type;
+  final bool isActive;
+  final bool hasVariants;
+  double price;
+  final double? costPrice;
+  final int stockQuantity;
+  final String? barcode;
+  final bool isNew;
+  final double discountPrice;
+  final double? weight;
+  final double? length;
+  final double? width;
+  final double? height;
+  final List<TempImageModel> productImages;
+  final List<TempVariant> variants;
+  final List<TempColorModel>? colors;
+
   Map<String, dynamic> toJson() => {
     'name': name,
     'local_uuid': localUUID,
@@ -87,7 +87,7 @@ class TempProduct {
     'is_active': isActive ? 1 : 0,
     'has_variants': hasVariants ? 1 : 0,
     'price': price,
-    "cost_price": costPrice,
+    'cost_price': costPrice,
     'stock_quantity': stockQuantity,
     'barcode': barcode,
     'discount_price': discountPrice,
@@ -96,7 +96,7 @@ class TempProduct {
     'width': width,
     'height': height,
     'variants': variants.map((v) => v.toJson()).toList(),
-    "colors": colors?.map((v) => v.toMap()).toList(),
+    'colors': colors?.map((v) => v.toMap()).toList(),
   };
 
   TempProduct copyWith({

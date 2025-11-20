@@ -44,7 +44,7 @@ final class CategoryCreationDatasourceImpl implements ICategoryCreationDatasourc
       );
       return true;
     } else if (category.id != null) {
-      await (_appDatabase
+      await _appDatabase
           .into(_appDatabase.categoryTable)
           .insert(
             CategoryTableCompanion(
@@ -54,7 +54,7 @@ final class CategoryCreationDatasourceImpl implements ICategoryCreationDatasourc
               updatedAt: Value(category.updatedAt),
               changed: Value(category.changed),
             ),
-          ));
+          );
       return true;
     }
 

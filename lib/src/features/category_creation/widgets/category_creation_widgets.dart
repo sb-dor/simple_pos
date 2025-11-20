@@ -17,7 +17,7 @@ import 'package:test_pos_app/src/features/products_of_category/widgets/products_
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
 
 class CategoryCreationWidgets extends StatefulWidget {
-  const CategoryCreationWidgets({super.key, required this.categoryId});
+  const CategoryCreationWidgets({required this.categoryId, super.key});
 
   final String categoryId;
 
@@ -45,23 +45,22 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<CategoryCreationBloc, CategoryCreationState>(
+  Widget build(BuildContext context) => BlocConsumer<CategoryCreationBloc, CategoryCreationState>(
       listener: (context, categoryCreationState) {
         if (categoryCreationState is CategoryCreation$InitialState &&
             categoryCreationState.category != null) {
           _categoryCreationWidgetController.init(categoryCreationState.category!);
         }
         if (categoryCreationState is CategoryCreation$CompletedState) {
-          DependenciesScope.of(context).categoriesBloc.add(CategoriesEvent.refresh());
+          DependenciesScope.of(context).categoriesBloc.add(const CategoriesEvent.refresh());
           context.go(AppRoutesName.categories);
         }
       },
       builder: (context, categoryCreationState) => AuthenticationListener(
         child: (context) => SynchronizationListener(
           child: (context) => Scaffold(
-            drawer: MainAppDrawer(),
-            appBar: PreferredSize(
+            drawer: const MainAppDrawer(),
+            appBar: const PreferredSize(
               preferredSize: Size(double.infinity, kToolbarHeight),
               child: AppBarBack(
                 label: Constants.categoryCreation,
@@ -78,14 +77,14 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
                   ),
                 );
               },
-              child: Icon(Icons.save),
+              child: const Icon(Icons.save),
             ),
             floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
               orElse: () => FloatingActionButtonLocation.centerFloat,
               compact: () => FloatingActionButtonLocation.endFloat,
             ),
             body: DecoratedBox(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: Constants.appGradientColor),
               ),
               child: SafeArea(
@@ -93,7 +92,7 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
                   child: SizedBox(
                     width: WindowSizeScope.of(context).expandedSize,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 20),
+                      padding: const EdgeInsets.only(top: 20),
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -101,18 +100,17 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
                         ),
                         child: ListenableBuilder(
                           listenable: _categoryCreationWidgetController,
-                          builder: (context, child) {
-                            return CustomScrollView(
+                          builder: (context, child) => CustomScrollView(
                               physics: const AlwaysScrollableScrollPhysics(),
                               slivers: [
                                 SliverToBoxAdapter(
                                   child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
+                                    padding: const EdgeInsets.all(16),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const Text(
-                                          "Create Category",
+                                          'Create Category',
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -122,15 +120,15 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
                                         TextField(
                                           controller: _nameController,
                                           decoration: InputDecoration(
-                                            labelText: "Category Name",
-                                            border: OutlineInputBorder(),
+                                            labelText: 'Category Name',
+                                            border: const OutlineInputBorder(),
                                             errorText: _categoryCreationWidgetController.error,
                                           ),
                                         ),
                                         const SizedBox(height: 12),
                                         Row(
                                           children: [
-                                            const Text("Color: "),
+                                            const Text('Color: '),
                                             GestureDetector(
                                               onTap: () => _categoryCreationWidgetController
                                                   .pickColor(context),
@@ -171,15 +169,14 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
                                               ),
                                             );
                                           },
-                                          child: TextWidget(text: Constants.productsOfCategory),
+                                          child: const TextWidget(text: Constants.productsOfCategory),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
                               ],
-                            );
-                          },
+                            ),
                         ),
                       ),
                     ),
@@ -191,5 +188,4 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
         ),
       ),
     );
-  }
 }

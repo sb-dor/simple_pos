@@ -13,7 +13,7 @@ import 'package:test_pos_app/src/features/products/widgets/product_widget.dart';
 import 'package:test_pos_app/src/features/products_of_category/bloc/products_of_category_bloc.dart';
 
 class ProductsOfCategoryWidget extends StatefulWidget {
-  const ProductsOfCategoryWidget({super.key, required this.categoryId});
+  const ProductsOfCategoryWidget({required this.categoryId, super.key});
 
   final String categoryId;
 
@@ -28,7 +28,7 @@ class _ProductsOfCategoryWidgetState extends State<ProductsOfCategoryWidget> {
   @override
   void initState() {
     super.initState();
-    _tabs = [Tab(text: "Selected products"), Tab(text: "All products")];
+    _tabs = [const Tab(text: 'Selected products'), const Tab(text: 'All products')];
     _children = [
       _ProdudctsOfCategory(categoryId: widget.categoryId),
       _AllProductsWidget(categoryId: widget.categoryId),
@@ -36,15 +36,14 @@ class _ProductsOfCategoryWidgetState extends State<ProductsOfCategoryWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
+  Widget build(BuildContext context) => DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
         appBar: AppBar(
           centerTitle: false,
-          scrolledUnderElevation: 0.0,
-          elevation: 0.0,
-          title: TextWidget(
+          scrolledUnderElevation: 0,
+          elevation: 0,
+          title: const TextWidget(
             text: Constants.productsOfCategory,
             size: 22,
             fontWeight: FontWeight.w500,
@@ -54,7 +53,6 @@ class _ProductsOfCategoryWidgetState extends State<ProductsOfCategoryWidget> {
         body: TabBarView(children: _children),
       ),
     );
-  }
 }
 
 class _ProdudctsOfCategory extends StatefulWidget {
@@ -70,21 +68,19 @@ class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
   @override
   void initState() {
     super.initState();
-    context.read<ProductsBloc>().add(ProductsEvent.load());
+    context.read<ProductsBloc>().add(const ProductsEvent.load());
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProductsOfCategoryBloc, ProductsOfCategoryState>(
-      builder: (context, productsOfCategoryState) {
-        return RefreshIndicatorWidget(
-          onRefresh: () async => context.read<ProductsBloc>().add(ProductsEvent.load()),
+  Widget build(BuildContext context) => BlocBuilder<ProductsOfCategoryBloc, ProductsOfCategoryState>(
+      builder: (context, productsOfCategoryState) => RefreshIndicatorWidget(
+          onRefresh: () async => context.read<ProductsBloc>().add(const ProductsEvent.load()),
           child: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               switch (productsOfCategoryState) {
-                ProductsOfCategory$InitialState() => SliverToBoxAdapter(child: SizedBox.shrink()),
-                ProductsOfCategory$InProgressState() => SliverFillRemaining(
+                ProductsOfCategory$InitialState() => const SliverToBoxAdapter(child: SizedBox.shrink()),
+                ProductsOfCategory$InProgressState() => const SliverFillRemaining(
                   child: Center(child: CircularProgressIndicatorWidget()),
                 ),
                 ProductsOfCategory$ErrorState() => SliverFillRemaining(
@@ -92,13 +88,13 @@ class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
                     child: ErrorButtonWidget(
                       label: Constants.reloadLabel,
                       onTap: () {
-                        context.read<ProductsBloc>().add(ProductsEvent.load());
+                        context.read<ProductsBloc>().add(const ProductsEvent.load());
                       },
                     ),
                   ),
                 ),
                 ProductsOfCategory$CompletedState() => SliverList.separated(
-                  separatorBuilder: (context, index) => SizedBox(height: 10),
+                  separatorBuilder: (context, index) => const SizedBox(height: 10),
                   itemCount: productsOfCategoryState.productsOfCategory.length,
                   itemBuilder: (context, index) {
                     final product = productsOfCategoryState.productsOfCategory[index];
@@ -108,10 +104,8 @@ class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
               },
             ],
           ),
-        );
-      },
+        ),
     );
-  }
 }
 
 class _AllProductsWidget extends StatefulWidget {
@@ -153,15 +147,11 @@ class __AllProductsWidgetState extends State<_AllProductsWidget> {
     super.dispose();
   }
 
-  bool _selected(final String? id) {
-    return _selectedProducts[id] != null;
-  }
+  bool _selected(final String? id) => _selectedProducts[id] != null;
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProductsBloc, ProductsState>(
-      builder: (context, productsState) {
-        return Scaffold(
+  Widget build(BuildContext context) => BlocBuilder<ProductsBloc, ProductsState>(
+      builder: (context, productsState) => Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               context.read<ProductsOfCategoryBloc>().add(
@@ -171,7 +161,7 @@ class __AllProductsWidgetState extends State<_AllProductsWidget> {
                 ),
               );
             },
-            child: Icon(Icons.save),
+            child: const Icon(Icons.save),
           ),
           body: RefreshIndicatorWidget(
             onRefresh: () async => context.read<ProductsOfCategoryBloc>().add(
@@ -181,8 +171,8 @@ class __AllProductsWidgetState extends State<_AllProductsWidget> {
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
                 switch (productsState) {
-                  Products$InitialState() => SliverToBoxAdapter(child: SizedBox()),
-                  Products$InProgressState() => SliverFillRemaining(
+                  Products$InitialState() => const SliverToBoxAdapter(child: SizedBox()),
+                  Products$InProgressState() => const SliverFillRemaining(
                     child: Center(child: CircularProgressIndicatorWidget()),
                   ),
                   Products$ErrorState() => SliverFillRemaining(
@@ -226,8 +216,6 @@ class __AllProductsWidgetState extends State<_AllProductsWidget> {
               ],
             ),
           ),
-        );
-      },
+        ),
     );
-  }
 }

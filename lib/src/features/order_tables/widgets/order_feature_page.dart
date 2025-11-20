@@ -33,19 +33,18 @@ class _OrderFeaturePageState extends State<OrderFeaturePage> {
     _synchronizationBloc = dependencies.synchronizationBloc;
 
     _synchronizationBloc.add(
-      SynchronizationEvent.sync(onSyncDone: () => _orderTablesBloc.add(OrderTablesEvent.refresh())),
+      SynchronizationEvent.sync(onSyncDone: () => _orderTablesBloc.add(const OrderTablesEvent.refresh())),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AuthenticationListener(
+  Widget build(BuildContext context) => AuthenticationListener(
       child: (context) => SynchronizationListener(
         child: (context) => Scaffold(
           drawer: const MainAppDrawer(),
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: MainAppBar(label: "Simple POS"),
+            child: const MainAppBar(label: 'Simple POS'),
           ),
           body: SafeArea(
             child: DecoratedBox(
@@ -58,8 +57,7 @@ class _OrderFeaturePageState extends State<OrderFeaturePage> {
               ),
               child: BlocBuilder<OrderTablesBloc, OrderTablesState>(
                 bloc: _orderTablesBloc,
-                builder: (context, state) {
-                  return WindowSizeScope.of(context).maybeMap(
+                builder: (context, state) => WindowSizeScope.of(context).maybeMap(
                     compact: () => _buildContent(context, state, crossAxisCount: 1),
                     medium: () => _buildContent(context, state, crossAxisCount: 2),
                     orElse: () => Align(
@@ -69,36 +67,32 @@ class _OrderFeaturePageState extends State<OrderFeaturePage> {
                         child: _buildContent(context, state, crossAxisCount: 3),
                       ),
                     ),
-                  );
-                },
+                  ),
               ),
             ),
           ),
         ),
       ),
     );
-  }
 
   Widget _buildContent(
     BuildContext context,
     OrderTablesState state, {
     required int crossAxisCount,
-  }) {
-    return switch (state) {
+  }) => switch (state) {
       OrderTables$InitialState() => const SizedBox.shrink(),
       OrderTables$InProgressState() => const Center(child: CircularProgressIndicatorWidget()),
       OrderTables$ErrorState() => Center(
         child: ErrorButtonWidget(
           label: Constants.reloadLabel,
-          onTap: () => context.read<OrderTablesBloc>().add(OrderTablesEvent.refresh()),
+          onTap: () => context.read<OrderTablesBloc>().add(const OrderTablesEvent.refresh()),
         ),
       ),
       OrderTables$CompletedState() =>
         state.tables.isEmpty
-            ? const Center(child: Text("No tables"))
+            ? const Center(child: Text('No tables'))
             : _BuildGrid(state: state, crossAxisCount: crossAxisCount),
     };
-  }
 }
 
 class _BuildGrid extends StatefulWidget {
@@ -113,8 +107,7 @@ class _BuildGrid extends StatefulWidget {
 
 class _BuildGridState extends State<_BuildGrid> {
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
+  Widget build(BuildContext context) => GridView.builder(
       key: ValueKey(widget.state.tables.length),
       padding: const EdgeInsets.all(10),
       physics: const AlwaysScrollableScrollPhysics(),
@@ -128,7 +121,7 @@ class _BuildGridState extends State<_BuildGrid> {
       itemBuilder: (context, index) {
         final table = widget.state.tables[index];
         return Hero(
-          tag: "table_${table.id}",
+          tag: 'table_${table.id}',
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
@@ -137,5 +130,4 @@ class _BuildGridState extends State<_BuildGrid> {
         );
       },
     );
-  }
 }

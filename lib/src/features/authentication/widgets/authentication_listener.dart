@@ -6,7 +6,7 @@ import 'package:test_pos_app/src/features/authentication/bloc/authentication_blo
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 
 class AuthenticationListener extends StatefulWidget {
-  const AuthenticationListener({super.key, required this.child});
+  const AuthenticationListener({required this.child, super.key});
 
   final WidgetBuilder child;
 
@@ -25,8 +25,7 @@ class _AuthenticationListenerState extends State<AuthenticationListener> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
+  Widget build(BuildContext context) => BlocListener<AuthenticationBloc, AuthenticationState>(
       bloc: _authenticationBloc,
       listener: (context, state) {
         if (state is Authentication$UnauthenticatedState) {
@@ -35,5 +34,4 @@ class _AuthenticationListenerState extends State<AuthenticationListener> {
       },
       child: widget.child(context),
     );
-  }
 }

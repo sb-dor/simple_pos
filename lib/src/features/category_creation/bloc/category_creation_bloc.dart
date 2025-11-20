@@ -46,7 +46,7 @@ sealed class CategoryCreationState with _$CategoryCreationState {
       CategoryCreation$CompletedState;
 
   /// Static getter for the initial state of the bloc.
-  static CategoryCreationState get initialState => CategoryCreationState.initial(null);
+  static CategoryCreationState get initialState => const CategoryCreationState.initial(null);
 }
 
 /// Bloc responsible for managing category creation and editing.
@@ -81,7 +81,7 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
   /// Handles [CategoryCreationEvent.init] to load category data by ID.
   ///
   /// Emits [CategoryCreationState.initial] with the loaded or temporary category.
-  void _categoryCreation$InitEvent(
+  Future<void> _categoryCreation$InitEvent(
     _CategoryCreation$InitEvent event,
     Emitter<CategoryCreationState> emit,
   ) async {
@@ -89,11 +89,11 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
       final category = await _iCategoryCreationRepository.category(event.categoryId);
       if (category == null) {
         _logger.d(
-          "Category was not found\n"
-          "Was added temp category with temp id: ${event.categoryId}",
+          'Category was not found\n'
+          'Was added temp category with temp id: ${event.categoryId}',
         );
       } else {
-        _logger.d("Found category on init: $category");
+        _logger.d('Found category on init: $category');
       }
       emit(CategoryCreationState.initial(category ?? CategoryModel(id: event.categoryId)));
     } catch (error, stackTrace) {
@@ -108,14 +108,14 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
   /// - [CategoryCreationState.completed] if save is successful.
   /// - [CategoryCreationState.initial] if save fails.
   /// - [CategoryCreationState.error] if an exception occurs.
-  void _categoryCreation$SaveEvent(
+  Future<void> _categoryCreation$SaveEvent(
     _CategoryCreation$SaveEvent event,
     Emitter<CategoryCreationState> emit,
   ) async {
     try {
       emit(CategoryCreationState.inProgress(state.category));
 
-      final category = (state.category ?? CategoryModel()).copyWith(
+      final category = (state.category ?? const CategoryModel()).copyWith(
         id: state.category?.id ?? event.categoryCreationData.categoryId,
         name: () => event.categoryCreationData.name,
         updatedAt: DateTime.now,

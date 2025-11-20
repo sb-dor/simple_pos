@@ -50,7 +50,7 @@ class DependencyContainer {
 @visibleForTesting
 final class TestDependencyContainer implements DependencyContainer {
   @override
-  noSuchMethod(Invocation invocation) {
+  void noSuchMethod(Invocation invocation) {
     // ... implement noSuchMethod
     throw UnimplementedError();
   }

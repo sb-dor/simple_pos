@@ -28,7 +28,7 @@ class DecimalTextInputSpaceFormatterWithSpecificLength extends TextInputFormatte
       int.tryParse(intPart),
     );
 
-    String formattedText = formattedIntPart ?? '';
+    var formattedText = formattedIntPart ?? '';
     if (decimalPart != null) {
       formattedText += '.$decimalPart';
     }

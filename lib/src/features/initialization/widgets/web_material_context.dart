@@ -6,7 +6,7 @@ import 'package:test_pos_app/src/features/initialization/models/dependency_conta
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 
 class WebMaterialContext extends StatefulWidget {
-  const WebMaterialContext({super.key, required this.dependencyContainer});
+  const WebMaterialContext({required this.dependencyContainer, super.key});
 
   final DependencyContainer dependencyContainer;
 

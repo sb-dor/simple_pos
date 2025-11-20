@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
 
 class TextWidget extends StatelessWidget {
+
+  const TextWidget({
+    required this.text, super.key,
+    this.size,
+    this.color,
+    this.fontWeight,
+    this.maxLines,
+    this.textDecoration,
+    this.decorationColor,
+    this.overFlow,
+    this.textAlign,
+    this.padding,
+    this.letterSpacing,
+    this.height,
+  });
   final String text;
   final double? size;
   final Color? color;
@@ -14,25 +29,8 @@ class TextWidget extends StatelessWidget {
   final double? letterSpacing;
   final double? height;
 
-  const TextWidget({
-    super.key,
-    required this.text,
-    this.size,
-    this.color,
-    this.fontWeight,
-    this.maxLines,
-    this.textDecoration,
-    this.decorationColor,
-    this.overFlow,
-    this.textAlign,
-    this.padding,
-    this.letterSpacing,
-    this.height,
-  });
-
   @override
-  Widget build(BuildContext context) {
-    return Padding(
+  Widget build(BuildContext context) => Padding(
       padding: padding ?? const EdgeInsets.all(0),
       child: Text(
         text,
@@ -50,5 +48,4 @@ class TextWidget extends StatelessWidget {
         ),
       ),
     );
-  }
 }

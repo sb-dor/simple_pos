@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_model.dart';
 
 class CashierInvoiceWidget extends StatelessWidget {
+
+  const CashierInvoiceWidget({required this.customerInvoice, super.key});
   final CustomerInvoiceModel customerInvoice;
 
-  const CashierInvoiceWidget({super.key, required this.customerInvoice});
-
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       width: MediaQuery.of(context).size.width,
       child: DecoratedBox(
         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: IntrinsicHeight(
             child: Row(
               children: [
@@ -35,7 +34,7 @@ class CashierInvoiceWidget extends StatelessWidget {
                         width: 30,
                         child: customerInvoice.table?.imageData != null
                             ? ClipRRect(
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(5),
                                   topRight: Radius.circular(5),
                                 ),
@@ -44,7 +43,7 @@ class CashierInvoiceWidget extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : customerInvoice.table?.icon ?? Icon(Icons.table_chart),
+                            : customerInvoice.table?.icon ?? const Icon(Icons.table_chart),
                       ),
                     ),
                   ],
@@ -58,11 +57,11 @@ class CashierInvoiceWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Посетитель",
+                          'Посетитель',
                           style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400),
                         ),
                         Text(
-                          "${customerInvoice.table?.name}",
+                          '${customerInvoice.table?.name}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -76,11 +75,11 @@ class CashierInvoiceWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        "№${customerInvoice.id} ${customerInvoice.invoiceDateTime?.substring(0, 19)}",
+                        '№${customerInvoice.id} ${customerInvoice.invoiceDateTime?.substring(0, 19)}',
                         style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "Итог: ${customerInvoice.total ?? 0.0}",
+                        'Итог: ${customerInvoice.total ?? 0.0}',
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -92,5 +91,4 @@ class CashierInvoiceWidget extends StatelessWidget {
         ),
       ),
     );
-  }
 }

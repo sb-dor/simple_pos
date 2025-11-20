@@ -39,7 +39,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   /// Constructs the bloc with a required repository.
   CategoriesBloc({required final ICategoriesRepository repository})
     : _iCategoriesRepository = repository,
-      super(CategoriesState.initial()) {
+      super(const CategoriesState.initial()) {
     //
     on<CategoriesEvent>(
       (event, emit) => switch (event) {
@@ -57,19 +57,19 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   /// - [CategoriesState.inProgress] when fetching starts.
   /// - [CategoriesState.completed] with the list of categories if successful.
   /// - [CategoriesState.error] if an exception occurs.
-  void _categories$RefreshEvent(
+  Future<void> _categories$RefreshEvent(
     Categories$RefreshEvent event,
     Emitter<CategoriesState> emit,
   ) async {
     try {
-      emit(CategoriesState.inProgress());
+      emit(const CategoriesState.inProgress());
 
       final categories = await _iCategoriesRepository.categories();
 
       emit(CategoriesState.completed(categories));
     } catch (error, stackTrace) {
       addError(error, stackTrace);
-      emit(CategoriesState.error());
+      emit(const CategoriesState.error());
     }
   }
 }

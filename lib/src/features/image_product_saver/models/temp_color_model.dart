@@ -11,5 +11,5 @@ class TempColorModel {
   final String? name;
   final String? code;
 
-  Map<String, dynamic> toMap() => {"id": id, "name": name, "code": code};
+  Map<String, dynamic> toMap() => {'id': id, 'name': name, 'code': code};
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_pos_app/src/features/products/models/product_model.dart';
 
 class ProductItemTile extends StatelessWidget {
-  const ProductItemTile({super.key, required this.product, this.onTap});
+  const ProductItemTile({required this.product, super.key, this.onTap});
 
   final ProductModel product;
   final VoidCallback? onTap;
@@ -21,7 +21,7 @@ class ProductItemTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4, offset: const Offset(0, 2))],
+          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,14 +45,14 @@ class ProductItemTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name ?? "Unnamed product",
+                    product.name ?? 'Unnamed product',
                     style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (product.category != null)
                     Text(
-                      product.category!.name ?? "",
+                      product.category!.name ?? '',
                       style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -80,6 +80,6 @@ class ProductItemTile extends StatelessWidget {
 
   String _formatPrice() {
     final price = product.price ?? 0;
-    return "Price: ${price.toStringAsFixed(2)}";
+    return 'Price: ${price.toStringAsFixed(2)}';
   }
 }

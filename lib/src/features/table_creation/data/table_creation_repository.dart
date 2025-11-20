@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/features/table_creation/data/table_creation_datasource.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 abstract interface class ITableCreationRepository {
   FutureOr<TableModel?> table(final String tableId);

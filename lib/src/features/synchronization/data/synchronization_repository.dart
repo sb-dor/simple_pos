@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/establishment_database_helper.dart';
 import 'package:test_pos_app/src/features/synchronization/data/synchronization_datasource.dart';
 
@@ -10,7 +9,6 @@ final class SynchronizationRepositoryImpl implements ISynchronizationRepository 
   SynchronizationRepositoryImpl({
     required final ISynchronizationDatasource synchronizationDatasource,
     required final EstablishmentDatabaseHelper establishmentDatabaseHelper,
-    required final Logger logger,
   }) : _establishmentDatabaseHelper = establishmentDatabaseHelper,
        _synchronizationDatasource = synchronizationDatasource;
 

@@ -22,15 +22,14 @@ class _OrderCategoriesState extends State<OrderCategories> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<OrderFeatureBloc, OrderFeatureStates>(
+  Widget build(BuildContext context) => BlocBuilder<OrderFeatureBloc, OrderFeatureStates>(
       bloc: _orderFeatureBloc,
       builder: (context, state) {
         switch (state) {
           case InitialOrderState():
           case InProgressOrderState():
           case ErrorOrderState():
-            return SizedBox();
+            return const SizedBox();
           case CompletedOrderState():
             return GridView.builder(
               shrinkWrap: true,
@@ -54,7 +53,7 @@ class _OrderCategoriesState extends State<OrderCategories> {
                     ),
                     child: Center(
                       child: Text(
-                        "${category.name}",
+                        '${category.name}',
                         style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -65,5 +64,4 @@ class _OrderCategoriesState extends State<OrderCategories> {
         }
       },
     );
-  }
 }

@@ -11,12 +11,12 @@ import 'package:test_pos_app/src/features/initialization/models/app_config.dart'
 import 'package:test_pos_app/src/features/initialization/widgets/io_material_context.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/web_material_context.dart';
 
-const String _imageLibraryResourceService = "image resource service";
-const String _connectionClosedBeforeFullHWR = "Connection closed before full header was received";
-const String _cannotCloneDisposedImage = "Cannot clone a disposed image";
+const String _imageLibraryResourceService = 'image resource service';
+const String _connectionClosedBeforeFullHWR = 'Connection closed before full header was received';
+const String _cannotCloneDisposedImage = 'Cannot clone a disposed image';
 
 Future<void> $initializeApp() async {
-  final appConfig = AppConfig();
+  const appConfig = AppConfig();
 
   final logger = AppLoggerFactory(
     logFilter: kReleaseMode ? NoOpLogFilter() : DevelopmentFilter(),
@@ -64,10 +64,10 @@ Future<void> $initializeApp() async {
     },
     (error, stackTrace) {
       //
-      logger.e("Error from zone", error: error, stackTrace: stackTrace);
+      logger.e('Error from zone', error: error, stackTrace: stackTrace);
 
       if (!kReleaseMode) {
-        _errorMessage("Error occurred");
+        _errorMessage('Error occurred');
       }
 
       if (kReleaseMode) {
@@ -88,7 +88,7 @@ Future<void> _catchExceptions({
 }) async {
   try {
     PlatformDispatcher.instance.onError = (error, stack) {
-      logger.log(Level.error, "error: $error | stacktrace: $stack");
+      logger.log(Level.error, 'error: $error | stacktrace: $stack');
 
       if (kReleaseMode) {
         // send to the sever or firebase crashlytics (crashlytics does not work for web)
@@ -107,7 +107,7 @@ Future<void> _catchExceptions({
 
       logger.log(
         Level.error,
-        "library: $library | \nFlutter error: $exceptionStr \nException: $errorDetails",
+        'library: $library | \nFlutter error: $exceptionStr \nException: $errorDetails',
       );
 
       // error is from cachedImageNetwork (if there is no internet connection or very slow internet connection)

@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 
 class RefreshIndicatorWidget extends StatelessWidget {
   //
-  const RefreshIndicatorWidget({super.key, required this.onRefresh, required this.child});
+  const RefreshIndicatorWidget({required this.onRefresh, required this.child, super.key});
 
   final Future<void> Function() onRefresh;
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator.adaptive(onRefresh: onRefresh, child: child);
-  }
+  Widget build(BuildContext context) => RefreshIndicator.adaptive(onRefresh: onRefresh, child: child);
 }

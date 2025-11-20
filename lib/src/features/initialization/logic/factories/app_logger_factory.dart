@@ -9,8 +9,7 @@ final class AppLoggerFactory extends Factory<Logger> {
   final LogFilter _logFilter;
 
   @override
-  Logger create() {
-    return Logger(
+  Logger create() => Logger(
       filter: _logFilter,
       printer: PrettyPrinter(
         methodCount: 2,
@@ -28,12 +27,9 @@ final class AppLoggerFactory extends Factory<Logger> {
       ),
       output: ConsoleOutput(),
     );
-  }
 }
 
 final class NoOpLogFilter extends LogFilter {
   @override
-  bool shouldLog(LogEvent event) {
-    return false;
-  }
+  bool shouldLog(LogEvent event) => false;
 }

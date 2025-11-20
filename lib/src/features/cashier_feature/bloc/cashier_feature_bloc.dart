@@ -57,7 +57,7 @@ class CashierFeatureBloc extends Bloc<CashierFeatureEvents, CashierFeatureStates
   final ICashierFeatureRepo _iCashierFeatureRepo;
   final PaginateListHelper _paginateListHelper;
 
-  void _cashier$InitialEvent(
+  Future<void> _cashier$InitialEvent(
     _Cashier$InitialEvent event,
     Emitter<CashierFeatureStates> emit,
   ) async {
@@ -82,7 +82,7 @@ class CashierFeatureBloc extends Bloc<CashierFeatureEvents, CashierFeatureStates
     }
   }
 
-  void _cashier$PaginateInvoiceEvent(
+  Future<void> _cashier$PaginateInvoiceEvent(
     _Cashier$PaginateInvoiceEvent event,
     Emitter<CashierFeatureStates> emit,
   ) async {

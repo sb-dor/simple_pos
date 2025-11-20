@@ -20,15 +20,14 @@ class _OrderedDetailsState extends State<OrderedDetails> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<OrderFeatureBloc, OrderFeatureStates>(
+  Widget build(BuildContext context) => BlocBuilder<OrderFeatureBloc, OrderFeatureStates>(
       bloc: _orderFeatureBloc,
       builder: (context, state) {
         switch (state) {
           case InitialOrderState():
           case InProgressOrderState():
           case ErrorOrderState():
-            return SizedBox();
+            return const SizedBox();
           case CompletedOrderState():
             final currentStateModel = state.orderFeatureStateModel;
             return Container(
@@ -47,7 +46,7 @@ class _OrderedDetailsState extends State<OrderedDetails> {
                           currentStateModel.orderItemForChange?.product?.id == orderItem.product?.id
                           ? Colors.blueAccent.shade100
                           : Colors.transparent,
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -67,7 +66,7 @@ class _OrderedDetailsState extends State<OrderedDetails> {
                                 icon: const Icon(Icons.add_circle_outline, color: Colors.green),
                               ),
                               Text(
-                                "${orderItem.qty?.toInt()}",
+                                '${orderItem.qty?.toInt()}',
                                 style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
                               ),
                               IconButton(
@@ -95,10 +94,10 @@ class _OrderedDetailsState extends State<OrderedDetails> {
                                       backgroundColor: WidgetStatePropertyAll(Colors.red.shade500),
                                     ),
                                     onPressed: () => _orderFeatureBloc.add(
-                                      OrderFeatureEvents.deleteOrderItemFromOrder(),
+                                      const OrderFeatureEvents.deleteOrderItemFromOrder(),
                                     ),
                                     child: const Text(
-                                      "Удалить из счета",
+                                      'Удалить из счета',
                                       style: TextStyle(fontSize: 12, color: Colors.white),
                                     ),
                                   ),
@@ -115,5 +114,4 @@ class _OrderedDetailsState extends State<OrderedDetails> {
         }
       },
     );
-  }
 }

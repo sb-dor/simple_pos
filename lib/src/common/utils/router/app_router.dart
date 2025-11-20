@@ -19,16 +19,16 @@ import 'package:test_pos_app/src/features/table_creation/widgets/table_creation_
 import 'package:test_pos_app/src/features/tables/widgets/tables_widget.dart';
 
 abstract class AppRoutesName {
-  static const String authentication = "/authentication";
-  static const String login = "/login";
-  static const String register = "/register";
-  static const String establishmentsSelection = "/establishments";
-  static const String orderTables = "/order-tables";
-  static const String cashier = "/cashier/:cashierId";
-  static const String tables = "/tables";
-  static const String creation = "/creation";
-  static const String categories = "/categories";
-  static const String products = "/products";
+  static const String authentication = '/authentication';
+  static const String login = '/login';
+  static const String register = '/register';
+  static const String establishmentsSelection = '/establishments';
+  static const String orderTables = '/order-tables';
+  static const String cashier = '/cashier/:cashierId';
+  static const String tables = '/tables';
+  static const String creation = '/creation';
+  static const String categories = '/categories';
+  static const String products = '/products';
 }
 
 mixin AppRouter<T extends StatefulWidget> on State<T> {
@@ -53,53 +53,43 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
         GoRoute(
           path: AppRoutesName.authentication,
           builder: (context, state) {
-            return AuthenticationAuthCheckWidget(); //ImageProductSaverWidget AuthenticationAuthCheckWidget();
+            return const AuthenticationAuthCheckWidget(); //ImageProductSaverWidget AuthenticationAuthCheckWidget();
           },
           routes: [
             GoRoute(
               path: AppRoutesName.login,
-              builder: (context, state) {
-                return AuthenticationLoginWidget();
-              },
+              builder: (context, state) => const AuthenticationLoginWidget(),
             ),
             GoRoute(
               path: AppRoutesName.register,
-              builder: (context, state) {
-                return AuthenticationRegisterWidget();
-              },
+              builder: (context, state) => const AuthenticationRegisterWidget(),
             ),
             GoRoute(
               path: AppRoutesName.establishmentsSelection,
-              builder: (context, state) {
-                return AuthenticationSelectEstablishmentWidget();
-              },
+              builder: (context, state) => const AuthenticationSelectEstablishmentWidget(),
             ),
           ],
         ),
         GoRoute(
           path: AppRoutesName.orderTables,
-          builder: (context, state) {
-            return OrderFeaturePage();
-          },
+          builder: (context, state) => const OrderFeaturePage(),
           routes: [
             StatefulShellRoute.indexedStack(
-              builder: (context, state, navigationShell) {
-                return SalesModeScreen(
+              builder: (context, state, navigationShell) => SalesModeScreen(
                   key: UniqueKey(), // refresh every time while user refreshes by path
                   statefulNavigationShell: navigationShell,
                   goRouterState: state,
-                );
-              },
+                ),
               branches: [
                 StatefulShellBranch(
                   routes: [
                     GoRoute(
-                      path: "/products",
+                      path: '/products',
                       builder: (context, state) {
                         if (!state.uri.queryParameters.containsKey('table_id') ||
                             state.uri.queryParameters['table_id'] == null ||
                             state.uri.queryParameters['table_id']!.isEmpty) {
-                          return Scaffold(body: Center(child: Text("Table was not found")));
+                          return const Scaffold(body: Center(child: Text('Table was not found')));
                         } else {
                           return SalesModeProductsScreen(
                             tableId: state.uri.queryParameters['table_id'] as String,
@@ -112,8 +102,8 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
                 StatefulShellBranch(
                   routes: [
                     GoRoute(
-                      path: "/settings",
-                      builder: (context, state) => SalesModeSettingsScreen(),
+                      path: '/settings',
+                      builder: (context, state) => const SalesModeSettingsScreen(),
                     ),
                   ],
                 ),
@@ -123,55 +113,41 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
         ),
         GoRoute(
           path: AppRoutesName.cashier,
-          builder: (context, state) {
-            return CashierPage(cashierId: state.pathParameters['cashierId'] as String);
-          },
+          builder: (context, state) => CashierPage(cashierId: state.pathParameters['cashierId'] as String),
         ),
         GoRoute(
           path: AppRoutesName.tables,
-          builder: (context, state) {
-            return TablesWidget();
-          },
+          builder: (context, state) => const TablesWidget(),
           routes: [
             GoRoute(
               path: AppRoutesName.creation,
-              builder: (context, state) {
-                return TableCreationWidget(tableId: state.uri.queryParameters['tableId']);
-              },
+              builder: (context, state) => TableCreationWidget(tableId: state.uri.queryParameters['tableId']),
             ),
           ],
         ),
 
         GoRoute(
           path: AppRoutesName.categories,
-          builder: (context, state) {
-            return CategoriesWidget();
-          },
+          builder: (context, state) => const CategoriesWidget(),
           routes: [
             GoRoute(
               path: AppRoutesName.creation,
-              builder: (context, state) {
-                return CategoryCreationConfigWidget(
+              builder: (context, state) => CategoryCreationConfigWidget(
                   categoryId: state.uri.queryParameters['categoryId'],
-                );
-              },
+                ),
             ),
           ],
         ),
 
         GoRoute(
           path: AppRoutesName.products,
-          builder: (context, state) {
-            return ProductsWidget();
-          },
+          builder: (context, state) => const ProductsWidget(),
           routes: [
             GoRoute(
               path: AppRoutesName.creation,
-              builder: (context, state) {
-                return ProductCreationConfigWidget(
+              builder: (context, state) => ProductCreationConfigWidget(
                   productsId: state.uri.queryParameters['productId'],
-                );
-              },
+                ),
             ),
           ],
         ),

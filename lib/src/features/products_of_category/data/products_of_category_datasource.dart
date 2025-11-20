@@ -39,7 +39,7 @@ final class ProductsOfCategoryDatasourceImpl implements IProductsOfCategoryDatas
     final rows = products
         .map(
           (p) => ProductsCategoriesTableCompanion(
-            id: Value(Uuid().v4()),
+            id: Value(const Uuid().v4()),
             productId: Value(p.id),
             categoryId: Value(categoryId),
           ),

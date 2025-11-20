@@ -48,8 +48,7 @@ class ProductCreationData {
       image.hashCode;
 
   @override
-  String toString() {
-    return 'ProductCreationData{'
+  String toString() => 'ProductCreationData{'
         ' name: $name,'
         ' price: $price,'
         ' wholesalePrice: $wholesalePrice,'
@@ -59,7 +58,6 @@ class ProductCreationData {
         ' visible: $visible,'
         ' image: $image,'
         '}';
-  }
 
   ProductCreationData copyWith({
     ValueGetter<String?>? name,
@@ -70,8 +68,7 @@ class ProductCreationData {
     ValueGetter<String?>? barcode,
     bool? visible,
     ValueGetter<Uint8List?>? image,
-  }) {
-    return ProductCreationData(
+  }) => ProductCreationData(
       name: name != null ? name() : this.name,
       price: price != null ? price() : this.price,
       wholesalePrice: wholesalePrice != null ? wholesalePrice() : this.wholesalePrice,
@@ -81,5 +78,4 @@ class ProductCreationData {
       visible: visible ?? this.visible,
       image: image != null ? image() : this.image,
     );
-  }
 }

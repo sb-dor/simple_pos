@@ -53,7 +53,7 @@ class TextControllerListener with ChangeNotifier {
 
   void _textListener() {
     if (_rules.isNotEmpty) {
-      bool anyInvalid = false;
+      var anyInvalid = false;
       for (final rule in _rules.entries) {
         final valid = rule.value.call(trimmedText);
         if (!valid) {

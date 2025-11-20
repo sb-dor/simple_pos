@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
-
-import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
+import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 
 final class EstablishmentDatabaseHelper {
   EstablishmentDatabaseHelper(this._appDatabase);

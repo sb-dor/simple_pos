@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:test_pos_app/src/common/global_data/global_data.dart';
-import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_detail_model.dart';
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/common/models/waiter_model.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
+import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_detail_model.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 @immutable
 class CustomerInvoiceModel {
@@ -18,15 +18,6 @@ class CustomerInvoiceModel {
     this.invoiceDateTime,
   });
 
-  final int? id;
-  final WaiterModel? waiter;
-  final TableModel? table;
-  final double? total;
-  final double? totalQty;
-  final String? status;
-  final List<CustomerInvoiceDetailModel>? details;
-  final String? invoiceDateTime;
-
   factory CustomerInvoiceModel.fromDb(
     CustomerInvoicesTableData db,
     List<CustomerInvoiceDetailModel> details,
@@ -40,8 +31,16 @@ class CustomerInvoiceModel {
     invoiceDateTime: db.invoiceDatetime,
   );
 
-  Map<String, dynamic> toMap() {
-    return {
+  final int? id;
+  final WaiterModel? waiter;
+  final TableModel? table;
+  final double? total;
+  final double? totalQty;
+  final String? status;
+  final List<CustomerInvoiceDetailModel>? details;
+  final String? invoiceDateTime;
+
+  Map<String, dynamic> toMap() => {
       'id': id,
       'waiter': waiter,
       'table': table,
@@ -51,7 +50,6 @@ class CustomerInvoiceModel {
       'details': details,
       'invoiceDateTime': invoiceDateTime,
     };
-  }
 
   CustomerInvoiceModel copyWith({
     int? id,
@@ -62,8 +60,7 @@ class CustomerInvoiceModel {
     String? status,
     List<CustomerInvoiceDetailModel>? details,
     String? invoiceDateTime,
-  }) {
-    return CustomerInvoiceModel(
+  }) => CustomerInvoiceModel(
       id: id ?? this.id,
       waiter: waiter ?? this.waiter,
       table: table ?? this.table,
@@ -73,5 +70,4 @@ class CustomerInvoiceModel {
       details: details ?? this.details,
       invoiceDateTime: invoiceDateTime ?? this.invoiceDateTime,
     );
-  }
 }

@@ -87,7 +87,7 @@ class OrderFeatureBloc extends Bloc<OrderFeatureEvents, OrderFeatureStates> {
 
   final IOrderFeatureRepo _iOrderFeatureRepo;
 
-  void _orderFeature$InitialEvent(
+  Future<void> _orderFeature$InitialEvent(
     _OrderFeature$InitialEvent event,
     Emitter<OrderFeatureStates> emit,
   ) async {
@@ -98,7 +98,7 @@ class OrderFeatureBloc extends Bloc<OrderFeatureEvents, OrderFeatureStates> {
     emit(OrderFeatureStates.completed(state.orderFeatureStateModel));
   }
 
-  void _orderFeature$AddPlaceEvent(
+  Future<void> _orderFeature$AddPlaceEvent(
     _OrderFeature$AddPlaceEvent event,
     Emitter<OrderFeatureStates> emit,
   ) async {
@@ -109,7 +109,7 @@ class OrderFeatureBloc extends Bloc<OrderFeatureEvents, OrderFeatureStates> {
     emit(OrderFeatureStates.completed(currentStateModel));
   }
 
-  void _orderFeature$SelectCategoryEvent(
+  Future<void> _orderFeature$SelectCategoryEvent(
     _OrderFeature$SelectCategoryEvent event,
     Emitter<OrderFeatureStates> emit,
   ) async {
@@ -120,12 +120,12 @@ class OrderFeatureBloc extends Bloc<OrderFeatureEvents, OrderFeatureStates> {
     _emitter(currentStateModel, emit);
   }
 
-  void _orderFeature$AddProductToOrderEvent(
+  Future<void> _orderFeature$AddProductToOrderEvent(
     _OrderFeature$AddProductToOrderEvent event,
     Emitter<OrderFeatureStates> emit,
   ) async {
     var currentStateModel = state.orderFeatureStateModel;
-    final List<OrderItemModel> orderItems = List.from(state.orderFeatureStateModel.orderItems);
+    final orderItems = List<OrderItemModel>.from(state.orderFeatureStateModel.orderItems);
     var item = orderItems.firstWhereOrNull((e) => e.product?.id == event.product?.id);
     if (item == null) {
       item = OrderItemModel(product: event.product, price: event.product?.price, qty: 1);
@@ -139,12 +139,12 @@ class OrderFeatureBloc extends Bloc<OrderFeatureEvents, OrderFeatureStates> {
     _emitter(currentStateModel, emit);
   }
 
-  void _orderFeature$DecrementOrderItemQtyEvent(
+  Future<void> _orderFeature$DecrementOrderItemQtyEvent(
     _OrderFeature$DecrementOrderItemQtyEvent event,
     Emitter<OrderFeatureStates> emit,
   ) async {
     var currentStateModel = state.orderFeatureStateModel;
-    final List<OrderItemModel> orderItems = List.from(state.orderFeatureStateModel.orderItems);
+    final orderItems = List<OrderItemModel>.from(state.orderFeatureStateModel.orderItems);
     final item = orderItems.firstWhereOrNull((e) => e.product?.id == event.product?.id);
     if (item == null) return;
     item.qty = (item.qty ?? 0) - 1;
@@ -158,7 +158,7 @@ class OrderFeatureBloc extends Bloc<OrderFeatureEvents, OrderFeatureStates> {
     _emitter(currentStateModel, emit);
   }
 
-  void _orderFeature$AddOrderItemForChangeEvent(
+  Future<void> _orderFeature$AddOrderItemForChangeEvent(
     _OrderFeature$AddOrderItemForChangeEvent event,
     Emitter<OrderFeatureStates> emit,
   ) async {
@@ -168,7 +168,7 @@ class OrderFeatureBloc extends Bloc<OrderFeatureEvents, OrderFeatureStates> {
     _emitter(currentStateModel, emit);
   }
 
-  void _orderFeature$DeleteOrderItemFromOrderEvent(
+  Future<void> _orderFeature$DeleteOrderItemFromOrderEvent(
     _OrderFeature$DeleteOrderItemFromOrderEvent event,
     Emitter<OrderFeatureStates> emit,
   ) async {
@@ -186,7 +186,7 @@ class OrderFeatureBloc extends Bloc<OrderFeatureEvents, OrderFeatureStates> {
     _emitter(currentStateModel, emit);
   }
 
-  void _orderFeature$FinishCustomerInvoiceEvent(
+  Future<void> _orderFeature$FinishCustomerInvoiceEvent(
     _OrderFeature$FinishCustomerInvoiceEvent event,
     Emitter<OrderFeatureStates> emit,
   ) async {
@@ -199,7 +199,7 @@ class OrderFeatureBloc extends Bloc<OrderFeatureEvents, OrderFeatureStates> {
         orderItems: <OrderItemModel>[],
       );
       _emitter(currentStateModel, emit);
-      event.onMessage("Order completed!");
+      event.onMessage('Order completed!');
     }
   }
 

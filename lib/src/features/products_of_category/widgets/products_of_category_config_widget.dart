@@ -8,7 +8,7 @@ import 'package:test_pos_app/src/features/products_of_category/bloc/products_of_
 import 'package:test_pos_app/src/features/products_of_category/widgets/products_of_category_widget.dart';
 
 class ProductsOfCategoryConfigWidget extends StatefulWidget {
-  const ProductsOfCategoryConfigWidget({super.key, required this.categoryId});
+  const ProductsOfCategoryConfigWidget({required this.categoryId, super.key});
 
   final String categoryId;
 
@@ -41,13 +41,11 @@ class _ProductsOfCategoryConfigWidgetState extends State<ProductsOfCategoryConfi
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
+  Widget build(BuildContext context) => MultiBlocProvider(
       providers: [
         BlocProvider.value(value: _productsOfCategoryBloc),
         BlocProvider.value(value: _productsBloc),
       ],
       child: ProductsOfCategoryWidget(categoryId: widget.categoryId),
     );
-  }
 }

@@ -3,10 +3,7 @@ import 'package:test_pos_app/src/common/uikit/circle_selected_widget.dart';
 
 class DropDownSelectionWidget<T> extends StatelessWidget {
   const DropDownSelectionWidget({
-    super.key,
-    required this.listOfDropdownEntries,
-    required this.title,
-    required this.onSelect,
+    required this.listOfDropdownEntries, required this.title, required this.onSelect, super.key,
     this.initialSelection,
     this.textController,
     this.singleItemInfo,
@@ -47,8 +44,8 @@ class DropDownSelectionWidget<T> extends StatelessWidget {
             singleBoxDecoration ??
             BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                const BoxShadow(color: Colors.grey, offset: Offset(0.1, 0.1), blurRadius: 1),
+              boxShadow: const [
+                BoxShadow(color: Colors.grey, offset: Offset(0.1, 0.1), blurRadius: 1),
               ],
               border: Border.all(color: isError ? Colors.red : Colors.grey, width: 0.5),
             ),
@@ -115,7 +112,7 @@ class DropDownSelectionWidget<T> extends StatelessWidget {
         closeBehavior: dropdownMenuCloseBehavior,
         initialSelection: initialSelection,
         label: Text(title),
-        trailingIcon: Icon(Icons.arrow_drop_down),
+        trailingIcon: const Icon(Icons.arrow_drop_down),
         inputDecorationTheme:
             multipleBoxDecoration ??
             InputDecorationTheme(
@@ -136,12 +133,12 @@ class DropDownSelectionWidget<T> extends StatelessWidget {
               ),
             ),
         menuStyle: MenuStyle(
-          backgroundColor: WidgetStatePropertyAll(Colors.white),
+          backgroundColor: const WidgetStatePropertyAll(Colors.white),
           maximumSize: WidgetStatePropertyAll(maximumSize),
-          surfaceTintColor: WidgetStatePropertyAll(Colors.white),
+          surfaceTintColor: const WidgetStatePropertyAll(Colors.white),
         ),
         width: MediaQuery.of(context).size.width,
-        onSelected: (T? data) {
+        onSelected: (data) {
           if (data != null) {
             onSelect(data);
           }

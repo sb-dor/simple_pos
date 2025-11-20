@@ -4,21 +4,6 @@ import 'package:test_pos_app/src/features/image_product_saver/models/temp_image_
 import 'package:uuid/uuid.dart';
 
 class TempVariant {
-  final int? id;
-  final String? localUUID;
-  final int? productId;
-  final String? name;
-  final String? sku;
-  final String? barcode;
-  double? price;
-  final double? costPrice;
-  final int? stock;
-  final bool? isActive;
-  final String? createdAt;
-  final String? updatedAt;
-  final String? deletedAt;
-  List<TempImageModel>? images;
-  final List<TempColorModel>? colors;
 
   TempVariant({
     this.id,
@@ -61,12 +46,27 @@ class TempVariant {
         ?.map((v) => TempColorModel.fromJson(v as Map<String, dynamic>))
         .toList(),
   );
+  final int? id;
+  final String? localUUID;
+  final int? productId;
+  final String? name;
+  final String? sku;
+  final String? barcode;
+  double? price;
+  final double? costPrice;
+  final int? stock;
+  final bool? isActive;
+  final String? createdAt;
+  final String? updatedAt;
+  final String? deletedAt;
+  List<TempImageModel>? images;
+  final List<TempColorModel>? colors;
 
   Map<String, dynamic> toJson() => {
     'id': id,
     'local_uuid': localUUID,
     'product_id': productId,
-    "description": Faker().lorem.sentences(3),
+    'description': Faker().lorem.sentences(3),
     'name': name,
     'sku': sku,
     'barcode': barcode,

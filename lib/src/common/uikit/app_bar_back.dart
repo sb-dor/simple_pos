@@ -6,10 +6,8 @@ import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 
 class AppBarBack extends StatefulWidget {
   const AppBarBack({
-    super.key,
-    required this.label,
-    required this.backPath,
-    this.backLabel = "Назад",
+    required this.label, required this.backPath, super.key,
+    this.backLabel = 'Назад',
   });
 
   final String label;
@@ -22,10 +20,9 @@ class AppBarBack extends StatefulWidget {
 
 class _AppBarBackState extends State<AppBarBack> {
   @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
+  Widget build(BuildContext context) => DecoratedBox(
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: Constants.appGradientColor),
+        gradient: const LinearGradient(colors: Constants.appGradientColor),
         color: Colors.white.withValues(alpha: 0.8),
       ),
       child: SafeArea(
@@ -47,9 +44,9 @@ class _AppBarBackState extends State<AppBarBack> {
                       context.go(widget.backPath);
                     },
                     label: Text(widget.backLabel),
-                    icon: Icon(Icons.arrow_back),
+                    icon: const Icon(Icons.arrow_back),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: TextWidget(
                       text: widget.label,
@@ -68,5 +65,4 @@ class _AppBarBackState extends State<AppBarBack> {
         ),
       ),
     );
-  }
 }

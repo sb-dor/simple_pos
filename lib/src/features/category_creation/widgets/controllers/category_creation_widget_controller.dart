@@ -59,11 +59,11 @@ class CategoryCreationWidgetController with ChangeNotifier {
     notifyListeners();
   }
 
-  void pickColor(BuildContext context) async {
+  Future<void> pickColor(BuildContext context) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Pick a color"),
+        title: const Text('Pick a color'),
         content: SingleChildScrollView(
           child: ColorPicker(
             pickerColor: _selectedColor,
@@ -73,7 +73,7 @@ class CategoryCreationWidgetController with ChangeNotifier {
             },
           ),
         ),
-        actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text("Done"))],
+        actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Done'))],
       ),
     ).ignore();
   }

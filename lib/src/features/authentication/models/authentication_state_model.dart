@@ -24,25 +24,21 @@ final class AuthenticationStateModel {
   int get hashCode => establishment.hashCode ^ userModel.hashCode ^ allUserEstablishments.hashCode;
 
   @override
-  String toString() {
-    return 'AuthenticationStateModel{'
+  String toString() => 'AuthenticationStateModel{'
         ' establishment: $establishment,'
         ' userModel: $userModel,'
         ' allUserEstablishments: $allUserEstablishments'
         '}';
-  }
 
   AuthenticationStateModel copyWith({
     ValueGetter<UserModel?>? userModel,
     ValueGetter<Establishment?>? establishment,
     ValueGetter<List<Establishment>?>? allUserEstablishments,
-  }) {
-    return AuthenticationStateModel(
+  }) => AuthenticationStateModel(
       userModel: userModel != null ? userModel() : this.userModel,
       establishment: establishment != null ? establishment() : this.establishment,
       allUserEstablishments: allUserEstablishments != null
           ? allUserEstablishments()
           : this.allUserEstablishments,
     );
-  }
 }

@@ -51,33 +51,32 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
   void _initControllers(ProductModel product) {
     _nameController.text = product.name ?? '';
     if (product.price != null) {
-      _priceController.text = "${ReusableFunctions.instance.separateNumbersRegex(product.price)}";
+      _priceController.text = '${ReusableFunctions.instance.separateNumbersRegex(product.price)}';
     }
     if (product.wholesalePrice != null) {
       _wholesalePriceController.text =
-          "${ReusableFunctions.instance.separateNumbersRegex(product.wholesalePrice)}";
+          '${ReusableFunctions.instance.separateNumbersRegex(product.wholesalePrice)}';
     }
     if (product.packQty != null) {
       _packQtyController.text =
-          "${ReusableFunctions.instance.separateNumbersRegex(product.packQty)}";
+          '${ReusableFunctions.instance.separateNumbersRegex(product.packQty)}';
     }
     _packQtyController.text = product.packQty?.toString() ?? '';
     _barcodeController.text = product.barcode ?? '';
     _productType = product.productType;
-    _productTypeController.text = "${product.productType.type}, ${product.productType.unit}";
+    _productTypeController.text = '${product.productType.type}, ${product.productType.unit}';
     setState(() {});
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocListener<ProductCreationBloc, ProductCreationState>(
+  Widget build(BuildContext context) => BlocListener<ProductCreationBloc, ProductCreationState>(
       listener: (context, state) {
         if (state is ProductCreation$InitialState && state.product != null) {
           _initControllers(state.product!);
         }
 
         if (state is ProductCreation$CompletedState) {
-          DependenciesScope.of(context).productsBloc.add(ProductsEvent.load());
+          DependenciesScope.of(context).productsBloc.add(const ProductsEvent.load());
           context.go(AppRoutesName.products);
         }
       },
@@ -85,9 +84,9 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
         child: (context) => SynchronizationListener(
           child: (context) => Scaffold(
             drawer: const MainAppDrawer(),
-            appBar: PreferredSize(
-              preferredSize: const Size(double.infinity, kToolbarHeight),
-              child: const AppBarBack(label: "Create Product", backPath: AppRoutesName.products),
+            appBar: const PreferredSize(
+              preferredSize: Size(double.infinity, kToolbarHeight),
+              child: AppBarBack(label: 'Create Product', backPath: AppRoutesName.products),
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -133,7 +132,7 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
               compact: () => FloatingActionButtonLocation.endFloat,
             ),
             body: DecoratedBox(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: Constants.appGradientColor),
               ),
               child: SafeArea(
@@ -154,14 +153,13 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                             _packQtyControllerListener,
                             _barcodeControllerListener,
                           ]),
-                          builder: (context, _) {
-                            return ListView(
+                          builder: (context, _) => ListView(
                               padding: const EdgeInsets.all(16),
                               children: [
                                 TextField(
                                   controller: _nameController,
                                   decoration: InputDecoration(
-                                    labelText: "Product Name",
+                                    labelText: 'Product Name',
                                     border: const OutlineInputBorder(),
                                     errorText: _nameControllerListener.error,
                                   ),
@@ -172,7 +170,7 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                                   controller: _priceController,
                                   keyboardType: ReusableFunctions.instance.numberInputType,
                                   decoration: InputDecoration(
-                                    labelText: "Retail Price",
+                                    labelText: 'Retail Price',
                                     border: const OutlineInputBorder(),
                                     errorText: _priceControllerListener.error,
                                   ),
@@ -184,7 +182,7 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                                   controller: _wholesalePriceController,
                                   keyboardType: ReusableFunctions.instance.numberInputType,
                                   decoration: const InputDecoration(
-                                    labelText: "Wholesale Price",
+                                    labelText: 'Wholesale Price',
                                     border: OutlineInputBorder(),
                                   ),
                                   inputFormatters: [DecimalTextInputFormatter()],
@@ -195,8 +193,8 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                                   controller: _packQtyController,
                                   keyboardType: ReusableFunctions.instance.numberInputType,
                                   decoration: InputDecoration(
-                                    labelText: "Pack Quantity",
-                                    border: OutlineInputBorder(),
+                                    labelText: 'Pack Quantity',
+                                    border: const OutlineInputBorder(),
                                     errorText: _packQtyControllerListener.error,
                                   ),
                                   inputFormatters: [DecimalTextInputFormatter()],
@@ -206,7 +204,7 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                                 TextField(
                                   controller: _barcodeController,
                                   decoration: const InputDecoration(
-                                    labelText: "Barcode",
+                                    labelText: 'Barcode',
                                     border: OutlineInputBorder(),
                                   ),
                                 ),
@@ -218,11 +216,11 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
                                       .map(
                                         (e) => DropdownMenuEntry<ProductType>(
                                           value: e,
-                                          label: "${e.type}, ${e.unit}",
+                                          label: '${e.type}, ${e.unit}',
                                         ),
                                       )
                                       .toList(),
-                                  title: "Product Type",
+                                  title: 'Product Type',
                                   enableSearch: false,
                                   requestFocusOnTap: false,
                                   onSelect: (productType) {
@@ -238,8 +236,7 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
 
                                 const SizedBox(height: 12),
                               ],
-                            );
-                          },
+                            ),
                         ),
                       ),
                     ),
@@ -251,5 +248,4 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
         ),
       ),
     );
-  }
 }

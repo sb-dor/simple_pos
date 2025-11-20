@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/features/order_tables/data/order_tables_repository.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 part 'order_tables_bloc.freezed.dart';
 
@@ -22,7 +22,7 @@ sealed class OrderTablesState with _$OrderTablesState {
   const factory OrderTablesState.completed(final List<TableModel> tables) =
       OrderTables$CompletedState;
 
-  static OrderTablesState get initialState => OrderTablesState.initial(<TableModel>[]);
+  static OrderTablesState get initialState => const OrderTablesState.initial(<TableModel>[]);
 }
 
 class OrderTablesBloc extends Bloc<OrderTablesEvent, OrderTablesState> {
@@ -41,7 +41,7 @@ class OrderTablesBloc extends Bloc<OrderTablesEvent, OrderTablesState> {
 
   final IOrderTablesRepository _iOrderTablesRepository;
 
-  void _orderTables$RefreshEvent(
+  Future<void> _orderTables$RefreshEvent(
     _OrderTables$RefreshEvent event,
     Emitter<OrderTablesState> emit,
   ) async {

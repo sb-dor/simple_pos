@@ -5,10 +5,10 @@ import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/extensions/order_item_extentions.dart';
 import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_detail_model.dart';
 import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_model.dart';
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/features/order_feature/models/order_item_model.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
-@Deprecated("No useful anymore")
+@Deprecated('No useful anymore')
 class LocalDatabaseService {
   late final Database database;
 
@@ -17,36 +17,34 @@ class LocalDatabaseService {
 
   Future<void> initDatabase() async {
     final databasePath = await getDatabasesPath();
-    final String path = join(databasePath, 'test_pos_app.db');
+    final path = join(databasePath, 'test_pos_app.db');
 
     database = await openDatabase(
       path,
       version: 1,
-      onCreate: (Database db, int version) async {
+      onCreate: (db, version) async {
         await _createTables(db);
       },
-      onUpgrade: (Database db, int oldVersion, int newVersion) async {
-        return await _createTables(db);
-      },
+      onUpgrade: (db, oldVersion, newVersion) async => await _createTables(db),
     );
   }
 
   Future<void> _createTables(Database db) async {
     await db.execute(
-      "CREATE TABLE IF NOT EXISTS $customerInvoiceTable (id INTEGER PRIMARY KEY AUTOINCREMENT, waiter_id INTEGER,"
-      " place_id INTEGER, total REAL, total_qty REAL, status TEXT, invoice_datetime TEXT)",
+      'CREATE TABLE IF NOT EXISTS $customerInvoiceTable (id INTEGER PRIMARY KEY AUTOINCREMENT, waiter_id INTEGER,'
+      ' place_id INTEGER, total REAL, total_qty REAL, status TEXT, invoice_datetime TEXT)',
     );
 
     await db.execute(
-      "CREATE TABLE IF NOT EXISTS $customerInvoicesDetailsTable (id INTEGER PRIMARY KEY AUTOINCREMENT, customer_invoice_id INTEGER,"
-      " product_id INTEGER, price REAL, qty REAL, total REAL)",
+      'CREATE TABLE IF NOT EXISTS $customerInvoicesDetailsTable (id INTEGER PRIMARY KEY AUTOINCREMENT, customer_invoice_id INTEGER,'
+      ' product_id INTEGER, price REAL, qty REAL, total REAL)',
     );
   }
 
   Future<void> addProduct(TableModel? table, CustomerInvoiceDetailModel? item) async {
     final checkInvoiceForPlace = await database.query(
       customerInvoiceTable,
-      where: "place_id = ? and status = ?",
+      where: 'place_id = ? and status = ?',
       whereArgs: [table?.id, Constants.pending],
     );
 
@@ -54,9 +52,9 @@ class LocalDatabaseService {
 
     if (checkInvoiceForPlace.isEmpty) {
       customerInvoiceId = await database.insert(customerInvoiceTable, {
-        "waiter_id": GlobalData.currentWaiter.id,
-        "place_id": table?.id,
-        "status": Constants.pending,
+        'waiter_id': GlobalData.currentWaiter.id,
+        'place_id': table?.id,
+        'status': Constants.pending,
       });
     } else {
       customerInvoiceId = int.tryParse("${checkInvoiceForPlace.first['id']}");
@@ -67,7 +65,7 @@ class LocalDatabaseService {
   Future<void> _update(int? customerInvoiceId, CustomerInvoiceDetailModel? item) async {
     final checkItemsWithCurrentInvoice = await database.query(
       customerInvoicesDetailsTable,
-      where: "customer_invoice_id = ? and product_id = ?",
+      where: 'customer_invoice_id = ? and product_id = ?',
       whereArgs: [customerInvoiceId, item?.product?.id],
     );
 
@@ -77,7 +75,7 @@ class LocalDatabaseService {
       if ((item?.qty ?? 0.0) <= 0.0) {
         await database.delete(
           customerInvoicesDetailsTable,
-          where: "customer_invoice_id = ? and product_id = ?",
+          where: 'customer_invoice_id = ? and product_id = ?',
           whereArgs: [customerInvoiceId, item?.product?.id],
         );
         // check if invoice doesn't have any data delete invoice
@@ -87,7 +85,7 @@ class LocalDatabaseService {
       await database.update(
         customerInvoicesDetailsTable,
         item?.toDb(customerInvoiceId) ?? {},
-        where: "customer_invoice_id = ? and product_id = ?",
+        where: 'customer_invoice_id = ? and product_id = ?',
         whereArgs: [customerInvoiceId, item?.product?.id],
       );
     }
@@ -96,13 +94,13 @@ class LocalDatabaseService {
   Future<void> deleteOrderItemFromOrder(OrderItemModel? orderItem, TableModel? table) async {
     final checkInvoiceForPlace = await database.query(
       customerInvoiceTable,
-      where: "place_id = ? and status = ?",
+      where: 'place_id = ? and status = ?',
       whereArgs: [table?.id, Constants.pending],
     );
     if (checkInvoiceForPlace.isNotEmpty) {
       await database.delete(
         customerInvoicesDetailsTable,
-        where: "customer_invoice_id = ? and product_id = ?",
+        where: 'customer_invoice_id = ? and product_id = ?',
         whereArgs: [checkInvoiceForPlace.first['id'], orderItem?.product?.id],
       );
 
@@ -114,7 +112,7 @@ class LocalDatabaseService {
   Future<void> checkInvoiceForEmptyDetails(int invoiceId) async {
     final checkInvoiceForPlace = await database.query(
       customerInvoicesDetailsTable,
-      where: "customer_invoice_id = ?",
+      where: 'customer_invoice_id = ?',
       whereArgs: [invoiceId],
     );
     if (checkInvoiceForPlace.isEmpty) {
@@ -127,12 +125,12 @@ class LocalDatabaseService {
     await database.update(
       customerInvoiceTable,
       {
-        "status": null,
-        "total": items.total(),
-        "total_qty": items.totalQty(),
-        "invoice_datetime": currentDateTime,
+        'status': null,
+        'total': items.total(),
+        'total_qty': items.totalQty(),
+        'invoice_datetime': currentDateTime,
       },
-      where: "place_id = ? and status = ?",
+      where: 'place_id = ? and status = ?',
       whereArgs: [table?.id, Constants.pending],
     );
 
@@ -142,7 +140,7 @@ class LocalDatabaseService {
   Future<List<CustomerInvoiceDetailModel>> customerInvoiceDetails(TableModel? table) async {
     final invoice = await database.query(
       customerInvoiceTable,
-      where: "place_id = ? and status is not null",
+      where: 'place_id = ? and status is not null',
       whereArgs: [table?.id],
     );
 

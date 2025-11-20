@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 class VipPlaceWidget extends StatefulWidget {
-  const VipPlaceWidget({super.key, required this.table});
+  const VipPlaceWidget({required this.table, super.key});
 
   final TableModel table;
 
@@ -16,13 +16,12 @@ class _VipPlaceWidgetState extends State<VipPlaceWidget> {
   bool _hovered = false;
 
   @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
+  Widget build(BuildContext context) => MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
         onTap: () {
-          context.go("${AppRoutesName.orderTables}/products?table_id=${widget.table.id}");
+          context.go('${AppRoutesName.orderTables}/products?table_id=${widget.table.id}');
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 220),
@@ -75,5 +74,4 @@ class _VipPlaceWidgetState extends State<VipPlaceWidget> {
         ),
       ),
     );
-  }
 }

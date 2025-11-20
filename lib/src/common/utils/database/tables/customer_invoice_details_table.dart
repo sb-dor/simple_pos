@@ -15,5 +15,5 @@ class CustomerInvoiceDetailsTable extends Table {
   RealColumn get total => real().nullable()();
 
   @override
-  String? get tableName => "customer_invoices_details";
+  String? get tableName => 'customer_invoices_details';
 }

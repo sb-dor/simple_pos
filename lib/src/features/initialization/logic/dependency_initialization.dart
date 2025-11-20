@@ -41,7 +41,7 @@ Future<DependencyContainer> $initializeDependencies({
 }) async {
   final dependenciesContainer = DependencyContainer(logger: logger, errorReporter: errorReporter);
   final totalSteps = _initializationSteps.length;
-  int step = 0;
+  var step = 0;
   for (final each in _initializationSteps.entries) {
     try {
       step++;
@@ -70,58 +70,58 @@ typedef _InitializationStep = FutureOr<void> Function(DependencyContainer depend
 
 final Map<String, _InitializationStep> _initializationSteps = <String, _InitializationStep>{
   'Platform pre-initialization': (_) => $platformInitialization(),
-  "Firebase init": (_) async {
+  'Firebase init': (_) async {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     // other firebase initializations
   },
-  "Bloc Configuration init": (dependencies) {
+  'Bloc Configuration init': (dependencies) {
     Bloc.transformer = sequential();
     Bloc.observer = BlocObserverManager(
       logger: dependencies.logger,
       errorReporter: dependencies.errorReporter,
     );
   },
-  "Database init": (dependencies) {
+  'Database init': (dependencies) {
     final appDatabase = AppDatabase.defaults(name: 'test_pos_app');
     dependencies.appDatabase = appDatabase;
   },
-  "Shared Preferences init": (dependencies) async {
+  'Shared Preferences init': (dependencies) async {
     final sharedPreferencesService = SharedPreferencesService();
     await sharedPreferencesService.init();
     dependencies.sharedPreferencesService = sharedPreferencesService;
   },
-  "Paginate List Helper init": (dependencies) =>
+  'Paginate List Helper init': (dependencies) =>
       dependencies.paginateListHelper = PaginateListHelper(),
   //
-  "App Config init": (dependencies) => dependencies.appConfig = AppConfig(),
+  'App Config init': (dependencies) => dependencies.appConfig = const AppConfig(),
   //
-  "Authentication Bloc init": (dependencies) =>
+  'Authentication Bloc init': (dependencies) =>
       dependencies.authenticationBloc = AuthenticationBlocFactory(
         logger: dependencies.logger,
         sharedPreferencesService: dependencies.sharedPreferencesService,
         appDatabase: dependencies.appDatabase,
       ).create(),
-  "Order Tables Bloc init": (dependencies) => dependencies.orderTablesBloc = OrderTablesBlocFactory(
+  'Order Tables Bloc init': (dependencies) => dependencies.orderTablesBloc = OrderTablesBlocFactory(
     appDatabase: dependencies.appDatabase,
   ).create(),
-  "Order bloc init": (dependencies) => dependencies.orderFeatureBloc = OrderBlocFactory(
+  'Order bloc init': (dependencies) => dependencies.orderFeatureBloc = OrderBlocFactory(
     appDatabase: dependencies.appDatabase,
     logger: dependencies.logger,
   ).create(),
-  "Tables bloc init": (dependencies) =>
+  'Tables bloc init': (dependencies) =>
       dependencies.tablesBloc = TablesBlocFactory(appDatabase: dependencies.appDatabase).create(),
-  "Categories bloc init": (dependencies) => dependencies.categoriesBloc = CategoriesBlocFactory(
+  'Categories bloc init': (dependencies) => dependencies.categoriesBloc = CategoriesBlocFactory(
     appDatabase: dependencies.appDatabase,
   ).create(),
-  "Products bloc initl": (dependencies) {
+  'Products bloc initl': (dependencies) {
     dependencies.productsBloc = ProductsBlocFactory(dependencies.appDatabase).create();
   },
-  "Cashier bloc init": (dependencies) => dependencies.cashierFeatureBloc = CashierBlocFactory(
+  'Cashier bloc init': (dependencies) => dependencies.cashierFeatureBloc = CashierBlocFactory(
     appDatabase: dependencies.appDatabase,
     logger: dependencies.logger,
     paginatingListHelper: dependencies.paginateListHelper,
   ).create(),
-  "Synchronization bloc init": (dependencies) {
+  'Synchronization bloc init': (dependencies) {
     final ISynchronizationDatasource synchronizationDatasource = SynchronizationDatasourceImpl(
       firebaseStore: FirebaseFirestore.instance,
       orderTableDbTableHelper: OrderTableDbTableHelper(dependencies.appDatabase),
@@ -130,10 +130,9 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
     );
     final ISynchronizationRepository synchronizationRepository = SynchronizationRepositoryImpl(
       establishmentDatabaseHelper: EstablishmentDatabaseHelper(dependencies.appDatabase),
-      logger: dependencies.logger,
       synchronizationDatasource: synchronizationDatasource,
     );
-    final SynchronizationBloc synchronizationBloc = SynchronizationBloc(
+    final synchronizationBloc = SynchronizationBloc(
       iSynchronizationRepository: synchronizationRepository,
     );
     dependencies.synchronizationBloc = synchronizationBloc;

@@ -37,8 +37,7 @@ class _AuthenticationRegisterWidgetState extends State<AuthenticationRegisterWid
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
@@ -56,20 +55,16 @@ class _AuthenticationRegisterWidgetState extends State<AuthenticationRegisterWid
         ),
         child: WindowSizeScope.of(context).maybeMap(
           orElse: () => _else(context, dividedBy: 3),
-          compact: () => Padding(padding: const EdgeInsets.all(16.0), child: _compact(context)),
-          medium: () => Padding(padding: const EdgeInsets.all(16.0), child: _compact(context)),
+          compact: () => Padding(padding: const EdgeInsets.all(16), child: _compact(context)),
+          medium: () => Padding(padding: const EdgeInsets.all(16), child: _compact(context)),
           expanded: () => _else(context),
         ),
       ),
     );
-  }
 
-  Widget _compact(BuildContext context) {
-    return Center(child: SingleChildScrollView(child: _authCard(context)));
-  }
+  Widget _compact(BuildContext context) => Center(child: SingleChildScrollView(child: _authCard(context)));
 
-  Widget _else(BuildContext context, {int dividedBy = 2}) {
-    return Align(
+  Widget _else(BuildContext context, {int dividedBy = 2}) => Align(
       alignment: Alignment.center,
       child: SingleChildScrollView(
         child: SizedBox(
@@ -78,27 +73,25 @@ class _AuthenticationRegisterWidgetState extends State<AuthenticationRegisterWid
         ),
       ),
     );
-  }
 
-  Widget _authCard(BuildContext context) {
-    return AnimatedContainer(
+  Widget _authCard(BuildContext context) => AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, offset: const Offset(0, 10))],
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 20, offset: Offset(0, 10))],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-            "Create Account ✨",
+            'Create Account ✨',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF334155)),
           ),
           const SizedBox(height: 8),
           const Text(
-            "Please fill in the details below",
+            'Please fill in the details below',
             style: TextStyle(fontSize: 16, color: Colors.black54),
           ),
           const SizedBox(height: 30),
@@ -153,7 +146,7 @@ class _AuthenticationRegisterWidgetState extends State<AuthenticationRegisterWid
                 bloc: _authenticationBloc,
                 builder: (context, state) {
                   if (state is Authentication$InProgressState) {
-                    return Center(child: CircularProgressIndicator(color: Colors.white));
+                    return const Center(child: CircularProgressIndicator(color: Colors.white));
                   } else {
                     return const Text(
                       'Register',
@@ -174,22 +167,20 @@ class _AuthenticationRegisterWidgetState extends State<AuthenticationRegisterWid
               context.replace(AppRoutesName.authentication + AppRoutesName.login);
             },
             child: const Text(
-              "Already have an account? Login",
+              'Already have an account? Login',
               style: TextStyle(fontSize: 15, color: Color(0xFF4C6EF5)),
             ),
           ),
         ],
       ),
     );
-  }
 
   Widget _buildTextField({
     required TextEditingController controller,
     required String label,
     required IconData icon,
     required bool obscure,
-  }) {
-    return TextField(
+  }) => TextField(
       controller: controller,
       obscureText: obscure,
       autocorrect: false,
@@ -209,5 +200,4 @@ class _AuthenticationRegisterWidgetState extends State<AuthenticationRegisterWid
         ),
       ),
     );
-  }
 }

@@ -17,17 +17,6 @@ class TableModel {
     this.changed = false,
   });
 
-  final String? id;
-  final String? establishmentId;
-  final String? name;
-  final bool? vip;
-  final DateTime? updatedAt;
-  final Uint8List? imageData;
-
-  final Widget? icon;
-  final Color? color;
-  final bool changed;
-
   factory TableModel.fromDbTable(OrderTableDbTableData db) {
     Color? color;
     if (db.colorValue != null) {
@@ -62,6 +51,17 @@ class TableModel {
     );
   }
 
+  final String? id;
+  final String? establishmentId;
+  final String? name;
+  final bool? vip;
+  final DateTime? updatedAt;
+  final Uint8List? imageData;
+
+  final Widget? icon;
+  final Color? color;
+  final bool changed;
+
   TableModel copyWith({
     String? id,
     ValueGetter<String?>? establishmentId,
@@ -72,8 +72,7 @@ class TableModel {
     ValueGetter<Widget?>? icon,
     ValueGetter<Color?>? color,
     bool? changed,
-  }) {
-    return TableModel(
+  }) => TableModel(
       id: id ?? this.id,
       establishmentId: establishmentId != null ? establishmentId() : this.establishmentId,
       name: name != null ? name() : this.name,
@@ -84,7 +83,6 @@ class TableModel {
       color: color != null ? color() : this.color,
       changed: changed ?? false,
     );
-  }
 
   OrderTableDbTableCompanion toDbTableCompanion({bool changed = false}) =>
       OrderTableDbTableCompanion(
@@ -106,6 +104,6 @@ class TableModel {
     'updated_at': updatedAt,
     'image': imageData,
     'color': color?.toARGB32(),
-    "changed": changed,
+    'changed': changed,
   };
 }

@@ -28,9 +28,7 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
     _establishmentRef = firebaseStore
         .collection('establishments')
         .withConverter<Establishment>(
-          fromFirestore: (snapshot, _) {
-            return Establishment.fromMap(snapshot.data() ?? {}, documentId: snapshot.id);
-          },
+          fromFirestore: (snapshot, _) => Establishment.fromMap(snapshot.data() ?? {}, documentId: snapshot.id),
           toFirestore: (value, _) => value.toMap(),
         );
   }
@@ -43,7 +41,7 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
   @override
   Future<bool> tableSync({required final Establishment establishment}) async {
-    _logger.log(Level.debug, "Establishment document id: ${establishment.documentId}");
+    _logger.log(Level.debug, 'Establishment document id: ${establishment.documentId}');
 
     final establishmentRef = _establishmentRef.doc(establishment.documentId);
 
@@ -80,7 +78,7 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
     final remoteTables = remoteSnapshot.docs.map((d) => d.data()).toList();
 
-    _logger.log(Level.info, "Remote tables: $remoteTables");
+    _logger.log(Level.info, 'Remote tables: $remoteTables');
 
     if (remoteTables.isEmpty) return true;
 
@@ -126,13 +124,13 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
     await (_appDatabase.update(_appDatabase.categoryTable)
           ..where((t) => t.id.isIn(localChangedCategories.map((e) => e.id ?? '').toList())))
-        .write(CategoryTableCompanion(changed: const Value(true)));
+        .write(const CategoryTableCompanion(changed: Value(true)));
 
     final remoteSnapshot = await categoriesRef.get();
 
     final remoteCategories = remoteSnapshot.docs.map((d) => d.data()).toList();
 
-    _logger.log(Level.info, "Remote categories: $remoteCategories");
+    _logger.log(Level.info, 'Remote categories: $remoteCategories');
 
     if (remoteCategories.isEmpty) return true;
 
@@ -142,9 +140,9 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
         _appDatabase.categoryTable,
       )..where((element) => element.id.equals(category.id!))).getSingleOrNull();
       if (findTable == null) {
-        await (_appDatabase
+        await _appDatabase
             .into(_appDatabase.categoryTable)
-            .insert(category.toDbCategoryCompanion()));
+            .insert(category.toDbCategoryCompanion());
       } else {
         await (_appDatabase.update(_appDatabase.categoryTable)
               ..where((element) => element.id.equals(category.id!)))
@@ -190,13 +188,13 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
     await (_appDatabase.update(_appDatabase.productsTable)
           ..where((t) => t.id.isIn(localChangedProducts.map((e) => e.id ?? '').toList())))
-        .write(ProductsTableCompanion(changed: const Value(true)));
+        .write(const ProductsTableCompanion(changed: Value(true)));
 
     final remoteSnapshot = await productsRef.get();
 
     final remoteProducts = remoteSnapshot.docs.map((d) => d.data()).toList();
 
-    _logger.log(Level.info, "Remote products: $remoteProducts");
+    _logger.log(Level.info, 'Remote products: $remoteProducts');
 
     if (remoteProducts.isEmpty) return true;
 
@@ -206,9 +204,9 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
         _appDatabase.productsTable,
       )..where((element) => element.id.equals(product.id!))).getSingleOrNull();
       if (findTable == null) {
-        await (_appDatabase
+        await _appDatabase
             .into(_appDatabase.productsTable)
-            .insert(product.toDbProductCompanion()));
+            .insert(product.toDbProductCompanion());
       } else {
         await (_appDatabase.update(_appDatabase.productsTable)
               ..where((element) => element.id.equals(product.id!)))

@@ -42,12 +42,11 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 5;
 
   @override
-  MigrationStrategy get migration {
-    return MigrationStrategy(
-      onCreate: (Migrator m) async {
+  MigrationStrategy get migration => MigrationStrategy(
+      onCreate: (m) async {
         await m.createAll();
       },
-      onUpgrade: (Migrator m, int from, int to) async {
+      onUpgrade: (m, from, to) async {
         await m.runMigrationSteps(
           from: from,
           to: to,
@@ -55,13 +54,13 @@ class AppDatabase extends _$AppDatabase {
             from1To2: (m, schema) async {
               await m.addColumn(orderTableDbTable, orderTableDbTable.changed);
             },
-            from2To3: (Migrator m, Schema3 schema) async {
+            from2To3: (m, schema) async {
               await m.addColumn(orderTableDbTable, orderTableDbTable.establishmentId);
             },
-            from3To4: (Migrator m, Schema4 schema) async {
+            from3To4: (m, schema) async {
               await m.createTable(categoryTable);
             },
-            from4To5: (Migrator m, Schema5 schema) async {
+            from4To5: (m, schema) async {
               await m.createTable(productsCategoriesTable);
               await m.createTable(productsTable);
 
@@ -79,5 +78,4 @@ class AppDatabase extends _$AppDatabase {
         );
       },
     );
-  }
 }
