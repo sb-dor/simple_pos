@@ -1,9 +1,8 @@
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
-import 'package:test_pos_app/src/features/tables/models/table_model.dart';
-import 'package:test_pos_app/src/features/products/models/product_model.dart';
+import 'package:test_pos_app/src/features/order_feature/data/order_feature_source.dart';
 import 'package:test_pos_app/src/features/order_feature/models/order_item_model.dart';
-
-import 'order_feature_source.dart';
+import 'package:test_pos_app/src/features/products/models/product_model.dart';
+import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 abstract class IOrderFeatureRepo {
   Future<void> addToDb({required TableModel? table, required OrderItemModel? item});

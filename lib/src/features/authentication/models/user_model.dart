@@ -1,18 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'user_role.dart';
+import 'package:test_pos_app/src/features/authentication/models/user_role.dart';
 
 @immutable
 class UserModel {
-  final String? id;
-  final String? name;
-  final String? email;
-  final String? password;
-  final String? documentId;
-  final UserRole? userRole;
-
-  // final Establishment? establishment;
-  final List<String>? establishmentIds;
-
   const UserModel({
     this.id,
     this.name,
@@ -23,6 +13,16 @@ class UserModel {
     // this.establishment,
     this.establishmentIds,
   });
+
+  final String? id;
+  final String? name;
+  final String? email;
+  final String? password;
+  final String? documentId;
+  final UserRole? userRole;
+
+  // final Establishment? establishment;
+  final List<String>? establishmentIds;
 
   @override
   bool operator ==(Object other) =>

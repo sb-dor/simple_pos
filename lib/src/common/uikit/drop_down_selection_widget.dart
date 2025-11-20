@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'circle_selected_widget.dart';
+import 'package:test_pos_app/src/common/uikit/circle_selected_widget.dart';
 
 class DropDownSelectionWidget<T> extends StatelessWidget {
   const DropDownSelectionWidget({

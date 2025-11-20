@@ -1,6 +1,5 @@
+import 'package:test_pos_app/src/features/tables/data/tables_datasource.dart';
 import 'package:test_pos_app/src/features/tables/models/table_model.dart';
-
-import 'tables_datasource.dart';
 
 abstract interface class ITablesRepository {
   Future<List<TableModel>> tables({int page = 1});

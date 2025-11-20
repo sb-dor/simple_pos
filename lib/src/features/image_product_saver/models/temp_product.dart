@@ -1,11 +1,33 @@
 import 'package:faker/faker.dart';
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_color_model.dart';
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_image_model.dart';
+import 'package:test_pos_app/src/features/image_product_saver/models/temp_variant.dart';
 import 'package:uuid/uuid.dart';
 
-import 'temp_variant.dart';
-
 class TempProduct {
+  TempProduct({
+    required this.name,
+    required this.description,
+    required this.type,
+    required this.isActive,
+    required this.hasVariants,
+    required this.price,
+    required this.stockQuantity,
+    required this.isNew,
+    required this.discountPrice,
+    required this.productImages,
+    required this.variants,
+    this.id,
+    this.localUUID,
+    this.costPrice,
+    this.barcode,
+    this.weight,
+    this.length,
+    this.width,
+    this.height,
+    this.colors,
+  });
+
   final int? id;
   final String? localUUID; // temp only for image update
   final String name;
@@ -27,55 +49,34 @@ class TempProduct {
   final List<TempVariant> variants;
   final List<TempColorModel>? colors;
 
-  TempProduct({
-    this.id,
-    this.localUUID,
-    required this.name,
-    required this.description,
-    required this.type,
-    required this.isActive,
-    required this.hasVariants,
-    required this.price,
-    this.costPrice,
-    required this.stockQuantity,
-    this.barcode,
-    required this.isNew,
-    required this.discountPrice,
-    this.weight,
-    this.length,
-    this.width,
-    this.height,
-    required this.productImages,
-    required this.variants,
-    this.colors,
-  });
-
-  factory TempProduct.fromJson(Map<String, dynamic> json) {
-    return TempProduct(
-      id: json['id'],
-      localUUID: Uuid().v4(),
-      name: json['name'],
-      description: json['description'],
-      type: json['type'],
-      isActive: json['is_active'],
-      hasVariants: json['has_variants'],
-      price: double.tryParse("${json['price']}") ?? 0,
-      costPrice: double.tryParse("${json['cost_price']}"),
-      stockQuantity: json['stock_quantity'] ?? 0,
-      barcode: json['barcode'],
-      isNew: json['is_new'],
-      discountPrice: double.tryParse("${json['discount_price']}") ?? 0.0,
-      weight: double.tryParse("${json['weight']}"),
-      length: double.tryParse("${json['length']}"),
-      width: double.tryParse("${json['width']}"),
-      height: double.tryParse("${json['height']}"),
-      productImages: (json['images'] as List<dynamic>)
-          .map((v) => TempImageModel.fromJson(v))
-          .toList(),
-      variants: (json['variants'] as List<dynamic>).map((v) => TempVariant.fromJson(v)).toList(),
-      colors: (json['colors'] as List<dynamic>?)?.map((v) => TempColorModel.fromJson(v)).toList(),
-    );
-  }
+  factory TempProduct.fromJson(Map<String, Object?> json) => TempProduct(
+    id: json['id'] as int?,
+    localUUID: Uuid().v4(),
+    name: json['name'] as String,
+    description: json['description'] as String,
+    type: json['type'] as String,
+    isActive: json['is_active'] as bool,
+    hasVariants: json['has_variants'] as bool,
+    price: double.tryParse("${json['price']}") ?? 0,
+    costPrice: double.tryParse("${json['cost_price']}"),
+    stockQuantity: json['stock_quantity'] as int,
+    barcode: json['barcode'] as String,
+    isNew: json['is_new'] as bool,
+    discountPrice: double.tryParse("${json['discount_price']}") ?? 0.0,
+    weight: double.tryParse("${json['weight']}"),
+    length: double.tryParse("${json['length']}"),
+    width: double.tryParse("${json['width']}"),
+    height: double.tryParse("${json['height']}"),
+    productImages: (json['images'] as List<dynamic>)
+        .map((v) => TempImageModel.fromJson(v as Map<String, dynamic>))
+        .toList(),
+    variants: (json['variants'] as List<dynamic>)
+        .map((v) => TempVariant.fromJson(v as Map<String, dynamic>))
+        .toList(),
+    colors: (json['colors'] as List<dynamic>?)
+        ?.map((v) => TempColorModel.fromJson(v as Map<String, dynamic>))
+        .toList(),
+  );
 
   Map<String, dynamic> toJson() => {
     'name': name,
@@ -119,28 +120,26 @@ class TempProduct {
     List<TempImageModel>? productImages,
     List<TempVariant>? variants,
     List<TempColorModel>? colors,
-  }) {
-    return TempProduct(
-      id: id ?? this.id,
-      localUUID: localUUID ?? this.localUUID,
-      name: name ?? this.name,
-      description: description ?? this.description,
-      type: type ?? this.type,
-      isActive: isActive ?? this.isActive,
-      hasVariants: hasVariants ?? this.hasVariants,
-      price: price ?? this.price,
-      costPrice: costPrice ?? this.costPrice,
-      stockQuantity: stockQuantity ?? this.stockQuantity,
-      barcode: barcode ?? this.barcode,
-      isNew: isNew ?? this.isNew,
-      discountPrice: discountPrice ?? this.discountPrice,
-      weight: weight ?? this.weight,
-      length: length ?? this.length,
-      width: width ?? this.width,
-      height: height ?? this.height,
-      productImages: productImages ?? this.productImages,
-      variants: variants ?? this.variants,
-      colors: colors ?? this.colors,
-    );
-  }
+  }) => TempProduct(
+    id: id ?? this.id,
+    localUUID: localUUID ?? this.localUUID,
+    name: name ?? this.name,
+    description: description ?? this.description,
+    type: type ?? this.type,
+    isActive: isActive ?? this.isActive,
+    hasVariants: hasVariants ?? this.hasVariants,
+    price: price ?? this.price,
+    costPrice: costPrice ?? this.costPrice,
+    stockQuantity: stockQuantity ?? this.stockQuantity,
+    barcode: barcode ?? this.barcode,
+    isNew: isNew ?? this.isNew,
+    discountPrice: discountPrice ?? this.discountPrice,
+    weight: weight ?? this.weight,
+    length: length ?? this.length,
+    width: width ?? this.width,
+    height: height ?? this.height,
+    productImages: productImages ?? this.productImages,
+    variants: variants ?? this.variants,
+    colors: colors ?? this.colors,
+  );
 }

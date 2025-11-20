@@ -6,14 +6,13 @@ import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_bar.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
-
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/order_tables/bloc/order_tables_bloc.dart';
+import 'package:test_pos_app/src/features/order_tables/widgets/widgets/place_widget.dart';
+import 'package:test_pos_app/src/features/order_tables/widgets/widgets/vip_place_widget.dart';
 import 'package:test_pos_app/src/features/synchronization/bloc/synchronization_bloc.dart';
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
-import 'widgets/place_widget.dart';
-import 'widgets/vip_place_widget.dart';
 
 class OrderFeaturePage extends StatefulWidget {
   const OrderFeaturePage({super.key});

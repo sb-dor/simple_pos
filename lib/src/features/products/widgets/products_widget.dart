@@ -11,9 +11,8 @@ import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/products/bloc/products_bloc.dart';
+import 'package:test_pos_app/src/features/products/widgets/product_widget.dart';
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
-
-import 'product_widget.dart';
 
 class ProductsWidget extends StatefulWidget {
   const ProductsWidget({super.key});
@@ -30,31 +29,30 @@ class _ProductsWidgetState extends State<ProductsWidget> {
     super.initState();
     final dependencies = DependenciesScope.of(context);
     _productsBloc = dependencies.productsBloc;
-    _productsBloc.add(ProductsEvent.load());
+    _productsBloc.add(const ProductsEvent.load());
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AuthenticationListener(
+  Widget build(BuildContext context) => AuthenticationListener(
       child: (context) => SynchronizationListener(
         child: (context) => Scaffold(
-          drawer: MainAppDrawer(),
+          drawer: const MainAppDrawer(),
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: MainAppBar(label: Constants.products),
+            child: const MainAppBar(label: Constants.products),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              context.go("${AppRoutesName.products}${AppRoutesName.creation}");
+              context.go('${AppRoutesName.products}${AppRoutesName.creation}');
             },
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
           floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
             orElse: () => FloatingActionButtonLocation.centerFloat,
             compact: () => FloatingActionButtonLocation.endFloat,
           ),
           body: DecoratedBox(
-            decoration: BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
+            decoration: const BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
             child: Center(
               child: SizedBox(
                 width: WindowSizeScope.of(context).expandedSize,
@@ -65,9 +63,9 @@ class _ProductsWidgetState extends State<ProductsWidget> {
                       builder: (context, productsState) {
                         switch (productsState) {
                           case Products$InitialState():
-                            return SliverToBoxAdapter(child: SizedBox.shrink());
+                            return const SliverToBoxAdapter(child: SizedBox.shrink());
                           case Products$InProgressState():
-                            return SliverFillRemaining(
+                            return const SliverFillRemaining(
                               child: Center(child: CircularProgressIndicatorWidget()),
                             );
                           case Products$ErrorState():
@@ -76,7 +74,7 @@ class _ProductsWidgetState extends State<ProductsWidget> {
                                 child: ErrorButtonWidget(
                                   label: Constants.reloadLabel,
                                   onTap: () {
-                                    context.read<ProductsBloc>().add(ProductsEvent.load());
+                                    context.read<ProductsBloc>().add(const ProductsEvent.load());
                                   },
                                 ),
                               ),
@@ -91,7 +89,7 @@ class _ProductsWidgetState extends State<ProductsWidget> {
                                     product: product,
                                     onTap: () {
                                       final path =
-                                          "${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}";
+                                          '${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}';
                                       context.go(path);
                                     },
                                   );
@@ -112,7 +110,7 @@ class _ProductsWidgetState extends State<ProductsWidget> {
                                     product: product,
                                     onTap: () {
                                       final path =
-                                          "${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}";
+                                          '${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}';
                                       context.go(path);
                                     },
                                   );
@@ -130,5 +128,4 @@ class _ProductsWidgetState extends State<ProductsWidget> {
         ),
       ),
     );
-  }
 }

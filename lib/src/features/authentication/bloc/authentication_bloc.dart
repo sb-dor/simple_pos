@@ -1,11 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/features/authentication/data/authentication_repository.dart';
+import 'package:test_pos_app/src/features/authentication/models/authentication_state_model.dart';
+import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/features/authentication/models/user_model.dart';
 import 'package:uuid/uuid.dart';
-
-import '../models/authentication_state_model.dart';
 
 part 'authentication_bloc.freezed.dart';
 

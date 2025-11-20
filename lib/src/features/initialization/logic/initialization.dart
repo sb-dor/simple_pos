@@ -4,13 +4,12 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
-import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
 import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart';
+import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
+import 'package:test_pos_app/src/features/initialization/logic/factories/app_logger_factory.dart';
+import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/io_material_context.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/web_material_context.dart';
-
-import 'factories/app_logger_factory.dart';
 
 const String _imageLibraryResourceService = "image resource service";
 const String _connectionClosedBeforeFullHWR = "Connection closed before full header was received";

@@ -5,18 +5,17 @@ import 'package:test_pos_app/src/features/image_product_saver/models/image_size.
 class TempImageModel {
   TempImageModel({this.id, this.file, this.path});
 
+  factory TempImageModel.fromJson(final Map<String, dynamic> json) =>
+      TempImageModel(id: json['id'] as int?, file: null, path: json['path'] as String?);
+
   final int? id;
   final XFile? file;
   final String? path;
 
-  factory TempImageModel.fromJson(final Map<String, dynamic> json) {
-    return TempImageModel(id: json['id'], file: null, path: json['path']);
-  }
-
-  Map<String, dynamic> toJson() => <String, dynamic>{"id": id, "path": path};
+  Map<String, dynamic> toJson() => <String, dynamic>{'id': id, 'path': path};
 
   String imageURL(ImageSize imageSize) {
-    final getImage = "${ImageProductConstant.baseURL}/product/image/${imageSize.value}_$path";
+    final getImage = '${ImageProductConstant.baseURL}/product/image/${imageSize.value}_$path';
     return getImage;
   }
 }

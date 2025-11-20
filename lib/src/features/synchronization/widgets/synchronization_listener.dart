@@ -4,12 +4,11 @@ import 'package:test_pos_app/src/features/categories/bloc/categories_bloc.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/products/bloc/products_bloc.dart';
 import 'package:test_pos_app/src/features/synchronization/bloc/synchronization_bloc.dart';
+import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_popup.dart';
 import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
 
-import 'synchronization_popup.dart';
-
 class SynchronizationListener extends StatefulWidget {
-  const SynchronizationListener({super.key, required this.child});
+  const SynchronizationListener({required this.child, super.key});
 
   final WidgetBuilder child;
 

@@ -1,12 +1,12 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
-import 'package:test_pos_app/src/features/products/models/product_model.dart';
 import 'package:test_pos_app/src/features/order_feature/data/order_feature_repo.dart';
+import 'package:test_pos_app/src/features/order_feature/models/order_feature_state_model.dart';
 import 'package:test_pos_app/src/features/order_feature/models/order_item_model.dart';
-import 'package:collection/collection.dart';
-import '../models/order_feature_state_model.dart';
+import 'package:test_pos_app/src/features/products/models/product_model.dart';
 
 part 'order_feature_bloc.freezed.dart';
 

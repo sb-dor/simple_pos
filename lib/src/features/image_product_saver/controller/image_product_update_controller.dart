@@ -36,7 +36,7 @@ class ImageProductUpdateController with ChangeNotifier {
 
       _logger.log(Level.debug, response.data);
 
-      tempProduct = TempProduct.fromJson(response.data);
+      tempProduct = TempProduct.fromJson(response.data as Map<String, Object?>);
 
       notifyListeners();
     } on DioException catch (error, stackTrace) {

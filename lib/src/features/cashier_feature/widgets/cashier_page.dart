@@ -4,14 +4,13 @@ import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/uikit/circular_progress_indicator_widget.dart';
 import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_bar.dart';
-import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
-
+import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/cashier_feature/bloc/cashier_feature_bloc.dart';
+import 'package:test_pos_app/src/features/cashier_feature/widgets/widgets/cashier_invoice_widget.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:test_pos_app/src/features/synchronization/widgets/synchronization_listener.dart';
-import 'widgets/cashier_invoice_widget.dart';
 
 class CashierPage extends StatefulWidget {
   const CashierPage({super.key, required this.cashierId});

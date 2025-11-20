@@ -38,27 +38,29 @@ class TempVariant {
     this.colors,
   });
 
-  factory TempVariant.fromJson(Map<String, dynamic> json) {
-    return TempVariant(
-      id: json['id'],
-      localUUID: const Uuid().v4(),
-      productId: json['product_id'],
-      name: json['name'],
-      sku: json['sku'],
-      barcode: json['barcode'],
-      price: double.tryParse("${json['price']}"),
-      costPrice: double.tryParse("${json['cost_price']}"),
-      stock: int.tryParse("${json['stock_quantity']}"),
-      isActive: json['is_active'] is bool ? json['is_active'] : json['is_active'] == 1,
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      deletedAt: json['deleted_at'],
-      images: (json['images'] as List<dynamic>?)
-          ?.map((element) => TempImageModel.fromJson(element))
-          .toList(),
-      colors: (json['colors'] as List<dynamic>?)?.map((v) => TempColorModel.fromJson(v)).toList(),
-    );
-  }
+  factory TempVariant.fromJson(Map<String, Object?> json) => TempVariant(
+    id: json['id'] as int,
+    localUUID: const Uuid().v4(),
+    productId: json['product_id'] as int,
+    name: json['name'] as String,
+    sku: json['sku'] as String,
+    barcode: json['barcode'] as String,
+    price: double.tryParse("${json['price']}"),
+    costPrice: double.tryParse("${json['cost_price']}"),
+    stock: int.tryParse("${json['stock_quantity']}"),
+    isActive: json['is_active'] is bool
+        ? bool.tryParse("${json['is_active']}")
+        : json['is_active'] == 1,
+    createdAt: json['created_at'] as String,
+    updatedAt: json['updated_at'] as String,
+    deletedAt: json['deleted_at'] as String,
+    images: (json['images'] as List<dynamic>?)
+        ?.map((element) => TempImageModel.fromJson(element as Map<String, dynamic>))
+        .toList(),
+    colors: (json['colors'] as List<dynamic>?)
+        ?.map((v) => TempColorModel.fromJson(v as Map<String, dynamic>))
+        .toList(),
+  );
 
   Map<String, dynamic> toJson() => {
     'id': id,

@@ -1,6 +1,5 @@
+import 'package:test_pos_app/src/features/cashier_feature/data/cashier_feature_data_source.dart';
 import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_model.dart';
-
-import 'cashier_feature_data_source.dart';
 
 abstract interface class ICashierFeatureRepo {
   Future<List<CustomerInvoiceModel>> invoices();
