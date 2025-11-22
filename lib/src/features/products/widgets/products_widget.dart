@@ -101,7 +101,7 @@ class _ProductsWidgetState extends State<ProductsWidget> {
                                     context,
                                     listen: false,
                                   ).maybeMap(orElse: () => 4, medium: () => 3),
-                                  mainAxisExtent: 120,
+                                  mainAxisExtent: 140,
                                 ),
                                 itemCount: productsState.products.length,
                                 itemBuilder: (context, index) {
