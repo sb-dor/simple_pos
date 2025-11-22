@@ -6,8 +6,10 @@
  * FirebaseCrashlytics.instance
  *   .recordError(exception, stackTrace ?? StackTrace.current, reason: hint, fatal: fatal);
  * */
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 Future<void> $captureException(Object exception, StackTrace stackTrace, String? hint, bool fatal) =>
-    Future<void>.value();
+    FirebaseCrashlytics.instance.recordError(exception, stackTrace, fatal: true);
 // FirebaseCrashlytics.instance.recordError(exception, stackTrace, reason: hint, fatal: fatal);
 
 /*

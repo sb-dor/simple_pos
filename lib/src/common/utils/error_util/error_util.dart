@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:l/l.dart';
 import 'package:test_pos_app/src/common/utils/error_util/platform/error_util_vm.dart'
     // ignore: uri_does_not_exist
     if (dart.library.html) 'package:test_pos_app/src/common/utils/error_util/platform/error_util_js.dart';

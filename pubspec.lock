@@ -736,6 +736,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.11.1"
+  l:
+    dependency: "direct main"
+    description:
+      name: l
+      sha256: "48db3024c2f74e1bc84b753b17d6754a066969c246de59505d6306f5154cbc86"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
   leak_tracker:
     dependency: transitive
     description:
@@ -769,7 +777,7 @@ packages:
     source: hosted
     version: "6.0.0"
   logger:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: logger
       sha256: a7967e31b703831a893bbc3c3dd11db08126fe5f369b5c648a36f821979f5be3

@@ -42,7 +42,8 @@ dependencies:
   path: ^1.9.0
   window_manager: ^0.5.1
   firebase_core: ^4.1.1
-  logger: ^2.5.0
+#  logger: ^2.5.0
+  l: ^5.0.0
   freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
   flutter_bloc: ^9.1.0

@@ -26,30 +26,32 @@ Future<void> $initializeApp() async {
     environment: appConfig.environment.value,
   );
 
+  late final WidgetsBinding binding;
+  final stopwatch = Stopwatch()..start();
+
+  try {
+    binding = WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
+
+    await errorReporter.initialize();
+
+    await _catchExceptions(logger: logger, errorReporter: errorReporter);
+
+    final dependencies = await $initializeDependencies(
+      logger: logger,
+      errorReporter: errorReporter,
+    );
+
+    runApp(MaterialContext(dependencyContainer: dependencies));
+  } on Object {
+    rethrow;
+  } finally {
+    stopwatch.stop();
+    binding.allowFirstFrame();
+  }
+
   await runZonedGuarded(
     () async {
-      late final WidgetsBinding binding;
-      final stopwatch = Stopwatch()..start();
 
-      try {
-        binding = WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
-
-        await errorReporter.initialize();
-
-        await _catchExceptions(logger: logger, errorReporter: errorReporter);
-
-        final dependencies = await $initializeDependencies(
-          logger: logger,
-          errorReporter: errorReporter,
-        );
-
-        runApp(MaterialContext(dependencyContainer: dependencies));
-      } on Object {
-        rethrow;
-      } finally {
-        stopwatch.stop();
-        binding.allowFirstFrame();
-      }
     },
     (error, stackTrace) {
       //

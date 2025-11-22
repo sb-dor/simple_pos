@@ -4,8 +4,10 @@
 // use this one for web if you have Sentry service
 
 //  * Sentry.captureException(exception, stackTrace: stackTrace, hint: hint);
+import 'package:sentry_flutter/sentry_flutter.dart';
+
 Future<void> $captureException(Object exception, StackTrace stackTrace, String? hint, bool fatal) =>
-    Future<void>.value(null);
+    Sentry.captureException(exception, stackTrace: stackTrace);
 
 // the only service that works both for js and vm
 // use this one for web if you have Sentry service
