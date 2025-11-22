@@ -14,7 +14,26 @@ class MaterialContext extends StatefulWidget {
   State<MaterialContext> createState() => _MaterialContextState();
 }
 
-class _MaterialContextState extends State<MaterialContext> with AppRouter {
+class _MaterialContextState extends State<MaterialContext> {
+  @override
+  Widget build(BuildContext context) {
+    return WindowSizeScope(
+      child: DependenciesScope(
+        dependencies: widget.dependencyContainer,
+        child: const _MaterialRouteConfig(),
+      ),
+    );
+  }
+}
+
+class _MaterialRouteConfig extends StatefulWidget {
+  const _MaterialRouteConfig();
+
+  @override
+  State<_MaterialRouteConfig> createState() => _MaterialRouteConfigState();
+}
+
+class _MaterialRouteConfigState extends State<_MaterialRouteConfig> with AppRouter {
   final fadeTransitionPlatforms = {
     TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
     TargetPlatform.macOS: const CupertinoPageTransitionsBuilder(),
@@ -27,22 +46,17 @@ class _MaterialContextState extends State<MaterialContext> with AppRouter {
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
-    return WindowSizeScope(
-      child: DependenciesScope(
-        dependencies: widget.dependencyContainer,
-        child: MaterialApp.router(
-          builder: (context, child) => MediaQuery(
-            data: mediaQueryData.copyWith(
-              textScaler: TextScaler.linear(mediaQueryData.textScaler.scale(1).clamp(0.5, 2)),
-            ),
-            child: child!,
-          ),
-          routerConfig: goRouter,
-          debugShowCheckedModeBanner: !kReleaseMode,
-          theme: ThemeData(
-            pageTransitionsTheme: PageTransitionsTheme(builders: fadeTransitionPlatforms),
-          ),
+    return MaterialApp.router(
+      builder: (context, child) => MediaQuery(
+        data: mediaQueryData.copyWith(
+          textScaler: TextScaler.linear(mediaQueryData.textScaler.scale(1).clamp(0.5, 2)),
         ),
+        child: child!,
+      ),
+      routerConfig: goRouter,
+      debugShowCheckedModeBanner: !kReleaseMode,
+      theme: ThemeData(
+        pageTransitionsTheme: PageTransitionsTheme(builders: fadeTransitionPlatforms),
       ),
     );
   }

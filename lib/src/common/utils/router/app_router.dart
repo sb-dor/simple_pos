@@ -1,5 +1,7 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_auth_check_widget.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_login_widget.dart';
@@ -37,7 +39,15 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
+    final dependencies = DependenciesScope.of(context);
     goRouter = GoRouter(
+      observers: [
+        FirebaseAnalyticsObserver(
+          analytics: FirebaseAnalytics.instance,
+          nameExtractor: (settings) => settings.name,
+        ),
+        _LocalNavigatorLoggerObserver(dependencies.logger),
+      ],
       redirect: (context, state) {
         final authenticationBloc = DependenciesScope.of(context).authenticationBloc;
         if (authenticationBloc.state is Authentication$AuthenticatedState) {
@@ -76,10 +86,10 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
           routes: [
             StatefulShellRoute.indexedStack(
               builder: (context, state, navigationShell) => SalesModeScreen(
-                  key: UniqueKey(), // refresh every time while user refreshes by path
-                  statefulNavigationShell: navigationShell,
-                  goRouterState: state,
-                ),
+                key: UniqueKey(), // refresh every time while user refreshes by path
+                statefulNavigationShell: navigationShell,
+                goRouterState: state,
+              ),
               branches: [
                 StatefulShellBranch(
                   routes: [
@@ -113,7 +123,8 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
         ),
         GoRoute(
           path: AppRoutesName.cashier,
-          builder: (context, state) => CashierPage(cashierId: state.pathParameters['cashierId'] as String),
+          builder: (context, state) =>
+              CashierPage(cashierId: state.pathParameters['cashierId'] as String),
         ),
         GoRoute(
           path: AppRoutesName.tables,
@@ -121,7 +132,8 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
           routes: [
             GoRoute(
               path: AppRoutesName.creation,
-              builder: (context, state) => TableCreationWidget(tableId: state.uri.queryParameters['tableId']),
+              builder: (context, state) =>
+                  TableCreationWidget(tableId: state.uri.queryParameters['tableId']),
             ),
           ],
         ),
@@ -132,9 +144,8 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
           routes: [
             GoRoute(
               path: AppRoutesName.creation,
-              builder: (context, state) => CategoryCreationConfigWidget(
-                  categoryId: state.uri.queryParameters['categoryId'],
-                ),
+              builder: (context, state) =>
+                  CategoryCreationConfigWidget(categoryId: state.uri.queryParameters['categoryId']),
             ),
           ],
         ),
@@ -145,13 +156,63 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
           routes: [
             GoRoute(
               path: AppRoutesName.creation,
-              builder: (context, state) => ProductCreationConfigWidget(
-                  productsId: state.uri.queryParameters['productId'],
-                ),
+              builder: (context, state) =>
+                  ProductCreationConfigWidget(productsId: state.uri.queryParameters['productId']),
             ),
           ],
         ),
       ],
     );
+  }
+}
+
+final class _LocalNavigatorLoggerObserver extends NavigatorObserver {
+  _LocalNavigatorLoggerObserver(this._logger);
+
+  final Logger _logger;
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPush(route, previousRoute);
+    _logger.log(Level.info, 'User pushed to: ${route.settings.name}');
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPop(route, previousRoute);
+    _logger.log(Level.info, 'User popped from: ${route.settings.name}');
+  }
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didRemove(route, previousRoute);
+    _logger.log(Level.info, 'User removed: ${route.settings.name}');
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    _logger.log(
+      Level.info,
+      'User replaced old ${oldRoute?.settings.name} with new ${newRoute?.settings.name}',
+    );
+  }
+
+  @override
+  void didChangeTop(Route<dynamic> topRoute, Route<dynamic>? previousTopRoute) {
+    super.didChangeTop(topRoute, previousTopRoute);
+    _logger.log(Level.info, 'User changed: $topRoute');
+  }
+
+  @override
+  void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didStartUserGesture(route, previousRoute);
+    _logger.log(Level.info, 'User started gesture: ${route.settings.name}');
+  }
+
+  @override
+  void didStopUserGesture() {
+    super.didStopUserGesture();
+    _logger.log(Level.info, 'User stopped gesture');
   }
 }
