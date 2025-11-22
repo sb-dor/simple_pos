@@ -34,98 +34,100 @@ class _ProductsWidgetState extends State<ProductsWidget> {
 
   @override
   Widget build(BuildContext context) => AuthenticationListener(
-      child: (context) => SynchronizationListener(
-        child: (context) => Scaffold(
-          drawer: const MainAppDrawer(),
-          appBar: PreferredSize(
-            preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: const MainAppBar(label: Constants.products),
+    child: (context) => SynchronizationListener(
+      child: (context) => Scaffold(
+        drawer: const MainAppDrawer(),
+        appBar: PreferredSize(
+          preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+          child: const MainAppBar(label: products),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            context.go('${AppRoutesName.products}${AppRoutesName.creation}');
+          },
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
+          orElse: () => FloatingActionButtonLocation.centerFloat,
+          compact: () => FloatingActionButtonLocation.endFloat,
+        ),
+        body: DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(colors: appGradientColor),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              context.go('${AppRoutesName.products}${AppRoutesName.creation}');
-            },
-            child: const Icon(Icons.add),
-          ),
-          floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
-            orElse: () => FloatingActionButtonLocation.centerFloat,
-            compact: () => FloatingActionButtonLocation.endFloat,
-          ),
-          body: DecoratedBox(
-            decoration: const BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
-            child: Center(
-              child: SizedBox(
-                width: WindowSizeScope.of(context).expandedSize,
-                child: CustomScrollView(
-                  slivers: [
-                    BlocBuilder<ProductsBloc, ProductsState>(
-                      bloc: _productsBloc,
-                      builder: (context, productsState) {
-                        switch (productsState) {
-                          case Products$InitialState():
-                            return const SliverToBoxAdapter(child: SizedBox.shrink());
-                          case Products$InProgressState():
-                            return const SliverFillRemaining(
-                              child: Center(child: CircularProgressIndicatorWidget()),
-                            );
-                          case Products$ErrorState():
-                            return SliverFillRemaining(
-                              child: Center(
-                                child: ErrorButtonWidget(
-                                  label: Constants.reloadLabel,
+          child: Center(
+            child: SizedBox(
+              width: WindowSizeScope.of(context).expandedSize,
+              child: CustomScrollView(
+                slivers: [
+                  BlocBuilder<ProductsBloc, ProductsState>(
+                    bloc: _productsBloc,
+                    builder: (context, productsState) {
+                      switch (productsState) {
+                        case Products$InitialState():
+                          return const SliverToBoxAdapter(child: SizedBox.shrink());
+                        case Products$InProgressState():
+                          return const SliverFillRemaining(
+                            child: Center(child: CircularProgressIndicatorWidget()),
+                          );
+                        case Products$ErrorState():
+                          return SliverFillRemaining(
+                            child: Center(
+                              child: ErrorButtonWidget(
+                                label: reloadLabel,
+                                onTap: () {
+                                  context.read<ProductsBloc>().add(const ProductsEvent.load());
+                                },
+                              ),
+                            ),
+                          );
+                        case Products$CompletedState():
+                          return WindowSizeScope.of(context).maybeMap(
+                            compact: () => SliverList.builder(
+                              itemCount: productsState.products.length,
+                              itemBuilder: (context, index) {
+                                final product = productsState.products[index];
+                                return ProductItemTile(
+                                  product: product,
                                   onTap: () {
-                                    context.read<ProductsBloc>().add(const ProductsEvent.load());
+                                    final path =
+                                        '${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}';
+                                    context.go(path);
                                   },
-                                ),
+                                );
+                              },
+                            ),
+                            orElse: () => SliverGrid.builder(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: WindowSizeScope.of(
+                                  context,
+                                  listen: false,
+                                ).maybeMap(orElse: () => 4, medium: () => 3),
+                                mainAxisExtent: 140,
                               ),
-                            );
-                          case Products$CompletedState():
-                            return WindowSizeScope.of(context).maybeMap(
-                              compact: () => SliverList.builder(
-                                itemCount: productsState.products.length,
-                                itemBuilder: (context, index) {
-                                  final product = productsState.products[index];
-                                  return ProductItemTile(
-                                    product: product,
-                                    onTap: () {
-                                      final path =
-                                          '${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}';
-                                      context.go(path);
-                                    },
-                                  );
-                                },
-                              ),
-                              orElse: () => SliverGrid.builder(
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: WindowSizeScope.of(
-                                    context,
-                                    listen: false,
-                                  ).maybeMap(orElse: () => 4, medium: () => 3),
-                                  mainAxisExtent: 140,
-                                ),
-                                itemCount: productsState.products.length,
-                                itemBuilder: (context, index) {
-                                  final product = productsState.products[index];
-                                  return ProductItemTile(
-                                    product: product,
-                                    onTap: () {
-                                      final path =
-                                          '${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}';
-                                      context.go(path);
-                                    },
-                                  );
-                                },
-                              ),
-                            );
-                        }
-                      },
-                    ),
-                  ],
-                ),
+                              itemCount: productsState.products.length,
+                              itemBuilder: (context, index) {
+                                final product = productsState.products[index];
+                                return ProductItemTile(
+                                  product: product,
+                                  onTap: () {
+                                    final path =
+                                        '${AppRoutesName.products}${AppRoutesName.creation}?productId=${product.id}';
+                                    context.go(path);
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
           ),
         ),
       ),
-    );
+    ),
+  );
 }

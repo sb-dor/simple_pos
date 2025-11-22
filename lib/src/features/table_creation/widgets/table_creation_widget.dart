@@ -84,155 +84,157 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
 
   @override
   Widget build(BuildContext context) => AuthenticationListener(
-      child: (context) => SynchronizationListener(
-        child: (context) => Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: const AppBarBack(label: Constants.tableCreation, backPath: AppRoutesName.tables),
+    child: (context) => SynchronizationListener(
+      child: (context) => Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+          child: const AppBarBack(label: tableCreation, backPath: AppRoutesName.tables),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            if (!_tableCreationChangeNotifierController.isValidate) return;
+            final establishment = _authenticationBloc.state.stateModel.establishment;
+            if (establishment == null) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('No establishment')));
+              return;
+            }
+            _tableCreationBloc.add(
+              TableCreationEvent.save(
+                tableData: _tableCreationChangeNotifierController.tableModelDataChange,
+                establishment: establishment,
+                onSave: () {
+                  if (!mounted) return;
+                  DependenciesScope.of(context).tablesBloc.add(const TablesEvent.refresh());
+                  context.go(AppRoutesName.tables);
+                },
+              ),
+            );
+          },
+          child: const Icon(Icons.save),
+        ),
+        floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
+          orElse: () => FloatingActionButtonLocation.centerFloat,
+          compact: () => FloatingActionButtonLocation.endFloat,
+        ),
+        body: DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(colors: appGradientColor),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              if (!_tableCreationChangeNotifierController.isValidate) return;
-              final establishment = _authenticationBloc.state.stateModel.establishment;
-              if (establishment == null) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('No establishment')));
-                return;
-              }
-              _tableCreationBloc.add(
-                TableCreationEvent.save(
-                  tableData: _tableCreationChangeNotifierController.tableModelDataChange,
-                  establishment: establishment,
-                  onSave: () {
-                    if (!mounted) return;
-                    DependenciesScope.of(context).tablesBloc.add(const TablesEvent.refresh());
-                    context.go(AppRoutesName.tables);
-                  },
-                ),
-              );
-            },
-            child: const Icon(Icons.save),
-          ),
-          floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
-            orElse: () => FloatingActionButtonLocation.centerFloat,
-            compact: () => FloatingActionButtonLocation.endFloat,
-          ),
-          body: DecoratedBox(
-            decoration: const BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
-            child: SafeArea(
-              child: Center(
-                child: SizedBox(
-                  width: WindowSizeScope.of(context).expandedSize,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: BlocBuilder<TableCreationBloc, TableCreationState>(
-                        bloc: _tableCreationBloc,
-                        builder: (context, state) {
-                          switch (state) {
-                            case TableCreation$InitialState():
-                              return const SizedBox.shrink();
-                            case TableCreation$InProgressState():
-                              return const CircularProgressIndicatorWidget();
-                            case TableCreation$ErrorState():
-                              return ErrorButtonWidget(
-                                label: Constants.reloadLabel,
-                                onTap: () {
-                                  _tableCreationBloc.add(
-                                    TableCreationEvent.init(tableId: widget.tableId),
-                                  );
-                                },
-                              );
-                            case TableCreation$CompletedState():
-                              return ListenableBuilder(
-                                listenable: _tableCreationChangeNotifierController,
-                                builder: (context, child) => Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8),
-                                        child: TextField(
-                                          controller: _nameController,
-                                          decoration: InputDecoration(
-                                            labelText: 'Table Name',
-                                            errorText: _tableCreationChangeNotifierController.error,
-                                          ),
-                                        ),
+          child: SafeArea(
+            child: Center(
+              child: SizedBox(
+                width: WindowSizeScope.of(context).expandedSize,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: BlocBuilder<TableCreationBloc, TableCreationState>(
+                      bloc: _tableCreationBloc,
+                      builder: (context, state) {
+                        switch (state) {
+                          case TableCreation$InitialState():
+                            return const SizedBox.shrink();
+                          case TableCreation$InProgressState():
+                            return const CircularProgressIndicatorWidget();
+                          case TableCreation$ErrorState():
+                            return ErrorButtonWidget(
+                              label: reloadLabel,
+                              onTap: () {
+                                _tableCreationBloc.add(
+                                  TableCreationEvent.init(tableId: widget.tableId),
+                                );
+                              },
+                            );
+                          case TableCreation$CompletedState():
+                            return ListenableBuilder(
+                              listenable: _tableCreationChangeNotifierController,
+                              builder: (context, child) => Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: TextField(
+                                      controller: _nameController,
+                                      decoration: InputDecoration(
+                                        labelText: 'Table Name',
+                                        errorText: _tableCreationChangeNotifierController.error,
                                       ),
-                                      SwitchListTile(
-                                        title: const Text('VIP Table'),
-                                        value: _tableCreationChangeNotifierController
-                                            .tableModelDataChange
-                                            .isVip,
-                                        onChanged: (value) {
-                                          _tableCreationChangeNotifierController.changeVIP();
-                                        },
-                                      ),
-                                      ListTile(
-                                        title: const Text('Pick Table Color'),
-                                        trailing: CircleAvatar(
-                                          backgroundColor: _tableCreationChangeNotifierController
-                                              .tableModelDataChange
-                                              .selectedColor,
-                                        ),
-                                        onTap: () {
-                                          _tableCreationChangeNotifierController.pickColor(context);
-                                        },
-                                      ),
-                                      if (_tableCreationChangeNotifierController
-                                              .tableModelDataChange
-                                              .imageData !=
-                                          null)
-                                        ElevatedButton(
-                                          onPressed:
-                                              _tableCreationChangeNotifierController.deleteImage,
-                                          child: const Text('Delete Image'),
-                                        )
-                                      else
-                                        ElevatedButton(
-                                          onPressed:
-                                              _tableCreationChangeNotifierController.pickImage,
-                                          child: const Text('Pick Image'),
-                                        ),
-                                      if (_tableCreationChangeNotifierController
-                                                  .tableModelDataChange
-                                                  .imageData !=
-                                              null) SizedBox(
-                                              height: 200,
-                                              child: Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                                child: kIsWeb
-                                                    ? Image.network(
-                                                        _tableCreationChangeNotifierController
-                                                            .tableModelDataChange
-                                                            .imageData!
-                                                            .path,
-                                                        height: 100,
-                                                        fit: BoxFit.cover,
-                                                      )
-                                                    : Image.file(
-                                                        File(
-                                                          _tableCreationChangeNotifierController
-                                                              .tableModelDataChange
-                                                              .imageData!
-                                                              .path,
-                                                        ),
-                                                        height: 100,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                              ),
-                                            ) else const SizedBox.shrink(),
-                                      const SizedBox(height: 20),
-                                    ],
+                                    ),
                                   ),
-                              );
-                          }
-                        },
-                      ),
+                                  SwitchListTile(
+                                    title: const Text('VIP Table'),
+                                    value: _tableCreationChangeNotifierController
+                                        .tableModelDataChange
+                                        .isVip,
+                                    onChanged: (value) {
+                                      _tableCreationChangeNotifierController.changeVIP();
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: const Text('Pick Table Color'),
+                                    trailing: CircleAvatar(
+                                      backgroundColor: _tableCreationChangeNotifierController
+                                          .tableModelDataChange
+                                          .selectedColor,
+                                    ),
+                                    onTap: () {
+                                      _tableCreationChangeNotifierController.pickColor(context);
+                                    },
+                                  ),
+                                  if (_tableCreationChangeNotifierController
+                                          .tableModelDataChange
+                                          .imageData !=
+                                      null)
+                                    ElevatedButton(
+                                      onPressed: _tableCreationChangeNotifierController.deleteImage,
+                                      child: const Text('Delete Image'),
+                                    )
+                                  else
+                                    ElevatedButton(
+                                      onPressed: _tableCreationChangeNotifierController.pickImage,
+                                      child: const Text('Pick Image'),
+                                    ),
+                                  if (_tableCreationChangeNotifierController
+                                          .tableModelDataChange
+                                          .imageData !=
+                                      null)
+                                    SizedBox(
+                                      height: 200,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                        child: kIsWeb
+                                            ? Image.network(
+                                                _tableCreationChangeNotifierController
+                                                    .tableModelDataChange
+                                                    .imageData!
+                                                    .path,
+                                                height: 100,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.file(
+                                                File(
+                                                  _tableCreationChangeNotifierController
+                                                      .tableModelDataChange
+                                                      .imageData!
+                                                      .path,
+                                                ),
+                                                height: 100,
+                                                fit: BoxFit.cover,
+                                              ),
+                                      ),
+                                    )
+                                  else
+                                    const SizedBox.shrink(),
+                                  const SizedBox(height: 20),
+                                ],
+                              ),
+                            );
+                        }
+                      },
                     ),
                   ),
                 ),
@@ -241,5 +243,6 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
           ),
         ),
       ),
-    );
+    ),
+  );
 }

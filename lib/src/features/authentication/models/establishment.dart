@@ -1,12 +1,15 @@
-class Establishment {
+import 'package:flutter/foundation.dart';
 
+@immutable
+class Establishment {
   const Establishment({this.id, this.name, this.documentId});
 
-  factory Establishment.fromMap(final Map<String, Object?> map, {final String? documentId}) => Establishment(
-      id: map['id'] as String?,
-      name: map['name'] as String?,
-      documentId: documentId ?? (map['document_id'] as String?),
-    );
+  factory Establishment.fromMap(final Map<String, Object?> map, {final String? documentId}) =>
+      Establishment(
+        id: map['id'] as String?,
+        name: map['name'] as String?,
+        documentId: documentId ?? (map['document_id'] as String?),
+      );
   final String? id;
   final String? name;
   final String? documentId;
@@ -24,17 +27,18 @@ class Establishment {
   int get hashCode => id.hashCode ^ name.hashCode ^ documentId.hashCode;
 
   @override
-  String toString() => 'Establishment{'
-        ' id: $id,'
-        ' name: $name,'
-        ' documentId: $documentId,'
-        '}';
+  String toString() =>
+      'Establishment { '
+      ' id: $id,'
+      ' name: $name,'
+      ' documentId: $documentId, '
+      '}';
 
   Establishment copyWith({String? id, String? name, String? documentId}) => Establishment(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      documentId: documentId ?? this.documentId,
-    );
+    id: id ?? this.id,
+    name: name ?? this.name,
+    documentId: documentId ?? this.documentId,
+  );
 
   Map<String, dynamic> toMap() => {'id': id, 'name': name, 'documentId': documentId};
 }

@@ -96,7 +96,7 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
         _logger.d('Found category on init: $category');
       }
       emit(CategoryCreationState.initial(category ?? CategoryModel(id: event.categoryId)));
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
     }
   }
@@ -130,7 +130,7 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
       } else {
         emit(CategoryCreationState.initial(state.category));
       }
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(CategoryCreationState.error(state.category));
     }

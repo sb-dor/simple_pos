@@ -42,10 +42,10 @@ class _ProductsOfCategoryConfigWidgetState extends State<ProductsOfCategoryConfi
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: _productsOfCategoryBloc),
-        BlocProvider.value(value: _productsBloc),
-      ],
-      child: ProductsOfCategoryWidget(categoryId: widget.categoryId),
-    );
+    providers: [
+      BlocProvider.value(value: _productsOfCategoryBloc),
+      BlocProvider.value(value: _productsBloc),
+    ],
+    child: ProductsOfCategoryWidget(categoryId: widget.categoryId),
+  );
 }

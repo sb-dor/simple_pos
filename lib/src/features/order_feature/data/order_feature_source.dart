@@ -54,7 +54,8 @@ class OrderFeatureSourceImpl implements IOrderFeatureSource {
       _customerInvoiceDatabaseHelper.deleteOrderItemFromOrder(item, table);
 
   @override
-  Future<List<ProductModel>> categoriesProducts(CategoryModel category) async => GlobalData.products.where((e) => e.category?.id == category.id).toList();
+  Future<List<ProductModel>> categoriesProducts(CategoryModel category) async =>
+      products.where((e) => e.category?.id == category.id).toList();
 
   @override
   Future<TableModel?> table(String id) => _orderTableDbTableHelper.table(id);

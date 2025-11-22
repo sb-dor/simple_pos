@@ -10,7 +10,6 @@ import 'package:test_pos_app/src/features/image_product_saver/models/temp_varian
 import 'package:uuid/uuid.dart';
 
 class ImageProductUpdateController with ChangeNotifier {
-
   ImageProductUpdateController(this._logger);
   final Logger _logger;
 
@@ -42,7 +41,7 @@ class ImageProductUpdateController with ChangeNotifier {
     } on DioException catch (error, stackTrace) {
       _logger.log(Level.error, 'error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);
     }
   }
@@ -134,7 +133,7 @@ class ImageProductUpdateController with ChangeNotifier {
       notifyListeners();
       _logger.log(Level.error, 'error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       sending = false;
       notifyListeners();
       Error.throwWithStackTrace(error, stackTrace);
@@ -214,13 +213,14 @@ class ImageProductUpdateController with ChangeNotifier {
   }
 
   void reorderProductImages(int oldIndex, int newIndex) {
+    var adjustedNewIndex = newIndex;
     // Adjust the newIndex if moving down
-    if (newIndex > oldIndex) {
-      newIndex -= 1;
+    if (adjustedNewIndex > oldIndex) {
+      adjustedNewIndex -= 1;
     }
 
     final item = tempProduct!.productImages.removeAt(oldIndex);
-    tempProduct!.productImages.insert(newIndex, item);
+    tempProduct!.productImages.insert(adjustedNewIndex, item);
     notifyListeners();
   }
 }

@@ -16,9 +16,8 @@ final class ProductCreationDatasource implements IProductCreationDatasource {
   Future<ProductsTableData?> product(String? productId) async {
     if (productId == null) return null;
 
-    final productReq = _appDatabase.select(_appDatabase.productsTable);
-
-    productReq.where((el) => el.id.equals(productId));
+    final productReq = _appDatabase.select(_appDatabase.productsTable)
+      ..where((el) => el.id.equals(productId));
 
     return productReq.getSingleOrNull();
   }

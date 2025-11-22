@@ -68,13 +68,13 @@ class CategoryModel {
   );
 
   Map<String, Object?> toJson() => <String, Object?>{
-      'id': id,
-      'establishment_id': establishmentId,
-      'name': name,
-      'updated_at': updatedAt,
-      'color': color?.toARGB32(),
-      'changed': changed,
-    };
+    'id': id,
+    'establishment_id': establishmentId,
+    'name': name,
+    'updated_at': updatedAt,
+    'color': color?.toARGB32(),
+    'changed': changed,
+  };
 
   CategoryTableCompanion toDbCategoryCompanion() => CategoryTableCompanion(
     id: Value.absentIfNull(id),

@@ -33,66 +33,68 @@ class _OrderFeaturePageState extends State<OrderFeaturePage> {
     _synchronizationBloc = dependencies.synchronizationBloc;
 
     _synchronizationBloc.add(
-      SynchronizationEvent.sync(onSyncDone: () => _orderTablesBloc.add(const OrderTablesEvent.refresh())),
+      SynchronizationEvent.sync(
+        onSyncDone: () => _orderTablesBloc.add(const OrderTablesEvent.refresh()),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) => AuthenticationListener(
-      child: (context) => SynchronizationListener(
-        child: (context) => Scaffold(
-          drawer: const MainAppDrawer(),
-          appBar: PreferredSize(
-            preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: const MainAppBar(label: 'Simple POS'),
-          ),
-          body: SafeArea(
-            child: DecoratedBox(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: Constants.appGradientColor,
-                ),
+    child: (context) => SynchronizationListener(
+      child: (context) => Scaffold(
+        drawer: const MainAppDrawer(),
+        appBar: PreferredSize(
+          preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+          child: const MainAppBar(label: 'Simple POS'),
+        ),
+        body: SafeArea(
+          child: DecoratedBox(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: appGradientColor,
               ),
-              child: BlocBuilder<OrderTablesBloc, OrderTablesState>(
-                bloc: _orderTablesBloc,
-                builder: (context, state) => WindowSizeScope.of(context).maybeMap(
-                    compact: () => _buildContent(context, state, crossAxisCount: 1),
-                    medium: () => _buildContent(context, state, crossAxisCount: 2),
-                    orElse: () => Align(
-                      alignment: Alignment.topCenter,
-                      child: SizedBox(
-                        width: WindowSizeScope.of(context).expandedSize,
-                        child: _buildContent(context, state, crossAxisCount: 3),
-                      ),
-                    ),
+            ),
+            child: BlocBuilder<OrderTablesBloc, OrderTablesState>(
+              bloc: _orderTablesBloc,
+              builder: (context, state) => WindowSizeScope.of(context).maybeMap(
+                compact: () => _buildContent(context, state, crossAxisCount: 1),
+                medium: () => _buildContent(context, state, crossAxisCount: 2),
+                orElse: () => Align(
+                  alignment: Alignment.topCenter,
+                  child: SizedBox(
+                    width: WindowSizeScope.of(context).expandedSize,
+                    child: _buildContent(context, state, crossAxisCount: 3),
                   ),
+                ),
               ),
             ),
           ),
         ),
       ),
-    );
+    ),
+  );
 
   Widget _buildContent(
     BuildContext context,
     OrderTablesState state, {
     required int crossAxisCount,
   }) => switch (state) {
-      OrderTables$InitialState() => const SizedBox.shrink(),
-      OrderTables$InProgressState() => const Center(child: CircularProgressIndicatorWidget()),
-      OrderTables$ErrorState() => Center(
-        child: ErrorButtonWidget(
-          label: Constants.reloadLabel,
-          onTap: () => context.read<OrderTablesBloc>().add(const OrderTablesEvent.refresh()),
-        ),
+    OrderTables$InitialState() => const SizedBox.shrink(),
+    OrderTables$InProgressState() => const Center(child: CircularProgressIndicatorWidget()),
+    OrderTables$ErrorState() => Center(
+      child: ErrorButtonWidget(
+        label: reloadLabel,
+        onTap: () => context.read<OrderTablesBloc>().add(const OrderTablesEvent.refresh()),
       ),
-      OrderTables$CompletedState() =>
-        state.tables.isEmpty
-            ? const Center(child: Text('No tables'))
-            : _BuildGrid(state: state, crossAxisCount: crossAxisCount),
-    };
+    ),
+    OrderTables$CompletedState() =>
+      state.tables.isEmpty
+          ? const Center(child: Text('No tables'))
+          : _BuildGrid(state: state, crossAxisCount: crossAxisCount),
+  };
 }
 
 class _BuildGrid extends StatefulWidget {
@@ -108,26 +110,26 @@ class _BuildGrid extends StatefulWidget {
 class _BuildGridState extends State<_BuildGrid> {
   @override
   Widget build(BuildContext context) => GridView.builder(
-      key: ValueKey(widget.state.tables.length),
-      padding: const EdgeInsets.all(10),
-      physics: const AlwaysScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: widget.crossAxisCount,
-        mainAxisExtent: 120,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-      ),
-      itemCount: widget.state.tables.length,
-      itemBuilder: (context, index) {
-        final table = widget.state.tables[index];
-        return Hero(
-          tag: 'table_${table.id}',
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            child: table.vip == true ? VipPlaceWidget(table: table) : PlaceWidget(table: table),
-          ),
-        );
-      },
-    );
+    key: ValueKey(widget.state.tables.length),
+    padding: const EdgeInsets.all(10),
+    physics: const AlwaysScrollableScrollPhysics(),
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: widget.crossAxisCount,
+      mainAxisExtent: 120,
+      mainAxisSpacing: 16,
+      crossAxisSpacing: 16,
+    ),
+    itemCount: widget.state.tables.length,
+    itemBuilder: (context, index) {
+      final table = widget.state.tables[index];
+      return Hero(
+        tag: 'table_${table.id}',
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          child: table.vip == true ? VipPlaceWidget(table: table) : PlaceWidget(table: table),
+        ),
+      );
+    },
+  );
 }

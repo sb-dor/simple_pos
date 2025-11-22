@@ -1,13 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
 import 'package:test_pos_app/src/features/order_feature/models/order_item_model.dart';
 import 'package:test_pos_app/src/features/products/models/product_model.dart';
 import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
-// GlobalData.categories.first
+// categories.first
 
-//GlobalData.products.where((e) => e.category?.id == GlobalData.categories.first.id).toList()
+//products.where((e) => e.category?.id == categories.first.id).toList()
+@immutable
 class OrderFeatureStateModel {
-
   const OrderFeatureStateModel({
     required this.productsForShow,
     required this.orderItems,
@@ -17,9 +18,9 @@ class OrderFeatureStateModel {
   });
 
   factory OrderFeatureStateModel.initial() => const OrderFeatureStateModel(
-      productsForShow: <ProductModel>[],
-      orderItems: <OrderItemModel>[],
-    );
+    productsForShow: <ProductModel>[],
+    orderItems: <OrderItemModel>[],
+  );
   final List<ProductModel> productsForShow;
 
   final List<OrderItemModel> orderItems;
@@ -50,13 +51,14 @@ class OrderFeatureStateModel {
       category.hashCode;
 
   @override
-  String toString() => 'OrderFeatureStateModel{'
-        ' productsForShow: $productsForShow,'
-        ' orderItems: $orderItems,'
-        ' orderItemForChange: $orderItemForChange,'
-        ' table: $table,'
-        ' category: $category,'
-        '}';
+  String toString() =>
+      'OrderFeatureStateModel { '
+      ' productsForShow: $productsForShow,'
+      ' orderItems: $orderItems,'
+      ' orderItemForChange: $orderItemForChange,'
+      ' table: $table,'
+      ' category: $category, '
+      '}';
 
   OrderFeatureStateModel copyWith({
     List<ProductModel>? productsForShow,
@@ -65,10 +67,10 @@ class OrderFeatureStateModel {
     TableModel? table,
     CategoryModel? category,
   }) => OrderFeatureStateModel(
-      productsForShow: productsForShow ?? this.productsForShow,
-      orderItems: orderItems ?? this.orderItems,
-      orderItemForChange: orderItemForChange ?? this.orderItemForChange,
-      table: table ?? this.table,
-      category: category ?? this.category,
-    );
+    productsForShow: productsForShow ?? this.productsForShow,
+    orderItems: orderItems ?? this.orderItems,
+    orderItemForChange: orderItemForChange ?? this.orderItemForChange,
+    table: table ?? this.table,
+    category: category ?? this.category,
+  );
 }

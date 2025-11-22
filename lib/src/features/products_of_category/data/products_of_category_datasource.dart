@@ -47,12 +47,12 @@ final class ProductsOfCategoryDatasourceImpl implements IProductsOfCategoryDatas
         .toList();
 
     await _appDatabase.batch((batch) {
-      batch.deleteWhere(
-        _appDatabase.productsCategoriesTable,
-        (tbl) => tbl.categoryId.equals(categoryId),
-      );
-
-      batch.insertAll(_appDatabase.productsCategoriesTable, rows);
+      batch
+        ..deleteWhere(
+          _appDatabase.productsCategoriesTable,
+          (tbl) => tbl.categoryId.equals(categoryId),
+        )
+        ..insertAll(_appDatabase.productsCategoriesTable, rows);
     });
 
     return true;

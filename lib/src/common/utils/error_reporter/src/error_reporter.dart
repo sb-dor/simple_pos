@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 abstract interface class ErrorReporter {
@@ -30,6 +31,7 @@ final class ErrorReporterWithLog {
   }
 }
 
+@immutable
 final class ReportMessageException implements Exception {
   const ReportMessageException(this.message);
 

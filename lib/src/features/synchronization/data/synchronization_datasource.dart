@@ -28,7 +28,8 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
     _establishmentRef = firebaseStore
         .collection('establishments')
         .withConverter<Establishment>(
-          fromFirestore: (snapshot, _) => Establishment.fromMap(snapshot.data() ?? {}, documentId: snapshot.id),
+          fromFirestore: (snapshot, _) =>
+              Establishment.fromMap(snapshot.data() ?? {}, documentId: snapshot.id),
           toFirestore: (value, _) => value.toMap(),
         );
   }
@@ -204,9 +205,7 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
         _appDatabase.productsTable,
       )..where((element) => element.id.equals(product.id!))).getSingleOrNull();
       if (findTable == null) {
-        await _appDatabase
-            .into(_appDatabase.productsTable)
-            .insert(product.toDbProductCompanion());
+        await _appDatabase.into(_appDatabase.productsTable).insert(product.toDbProductCompanion());
       } else {
         await (_appDatabase.update(_appDatabase.productsTable)
               ..where((element) => element.id.equals(product.id!)))

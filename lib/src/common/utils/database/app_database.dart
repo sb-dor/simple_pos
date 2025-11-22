@@ -43,39 +43,39 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-      onCreate: (m) async {
-        await m.createAll();
-      },
-      onUpgrade: (m, from, to) async {
-        await m.runMigrationSteps(
-          from: from,
-          to: to,
-          steps: migrationSteps(
-            from1To2: (m, schema) async {
-              await m.addColumn(orderTableDbTable, orderTableDbTable.changed);
-            },
-            from2To3: (m, schema) async {
-              await m.addColumn(orderTableDbTable, orderTableDbTable.establishmentId);
-            },
-            from3To4: (m, schema) async {
-              await m.createTable(categoryTable);
-            },
-            from4To5: (m, schema) async {
-              await m.createTable(productsCategoriesTable);
-              await m.createTable(productsTable);
+    onCreate: (m) async {
+      await m.createAll();
+    },
+    onUpgrade: (m, from, to) async {
+      await m.runMigrationSteps(
+        from: from,
+        to: to,
+        steps: migrationSteps(
+          from1To2: (m, schema) async {
+            await m.addColumn(orderTableDbTable, orderTableDbTable.changed);
+          },
+          from2To3: (m, schema) async {
+            await m.addColumn(orderTableDbTable, orderTableDbTable.establishmentId);
+          },
+          from3To4: (m, schema) async {
+            await m.createTable(categoryTable);
+          },
+          from4To5: (m, schema) async {
+            await m.createTable(productsCategoriesTable);
+            await m.createTable(productsTable);
 
-              await m.alterTable(
-                TableMigration(
-                  schema.customerInvoicesDetails,
-                  columnTransformer: {
-                    customerInvoiceDetailsTable.productId: customerInvoiceDetailsTable.productId
-                        .cast<String>(),
-                  },
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
+            await m.alterTable(
+              TableMigration(
+                schema.customerInvoicesDetails,
+                columnTransformer: {
+                  customerInvoiceDetailsTable.productId: customerInvoiceDetailsTable.productId
+                      .cast<String>(),
+                },
+              ),
+            );
+          },
+        ),
+      );
+    },
+  );
 }

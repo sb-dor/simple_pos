@@ -22,12 +22,13 @@ class SentryErrorReporter implements ErrorReporter {
   @override
   Future<void> initialize() async {
     await SentryFlutter.init((options) {
-      options.dsn = sentryDsn;
-      options.sendDefaultPii = true;
-      options.debug = kDebugMode;
-      options.environment = environment;
-      options.anrEnabled = true;
-      options.tracesSampleRate = 0.10;
+      options
+        ..dsn = sentryDsn
+        ..sendDefaultPii = true
+        ..debug = kDebugMode
+        ..environment = environment
+        ..anrEnabled = true
+        ..tracesSampleRate = 0.10;
     });
   }
 

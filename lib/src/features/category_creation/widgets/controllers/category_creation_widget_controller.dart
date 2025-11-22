@@ -46,7 +46,7 @@ class CategoryCreationWidgetController with ChangeNotifier {
 
   void _nameListener() {
     if (_nameController.text.trim().isEmpty) {
-      _error = Constants.fieldCannotBeEmpty;
+      _error = fieldCannotBeEmpty;
     } else {
       _error = null;
     }

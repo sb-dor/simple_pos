@@ -73,16 +73,16 @@ class TableModel {
     ValueGetter<Color?>? color,
     bool? changed,
   }) => TableModel(
-      id: id ?? this.id,
-      establishmentId: establishmentId != null ? establishmentId() : this.establishmentId,
-      name: name != null ? name() : this.name,
-      vip: vip != null ? vip() : this.vip,
-      updatedAt: updatedAt != null ? updatedAt() : this.updatedAt,
-      imageData: imageData != null ? imageData() : this.imageData,
-      icon: icon != null ? icon() : this.icon,
-      color: color != null ? color() : this.color,
-      changed: changed ?? false,
-    );
+    id: id ?? this.id,
+    establishmentId: establishmentId != null ? establishmentId() : this.establishmentId,
+    name: name != null ? name() : this.name,
+    vip: vip != null ? vip() : this.vip,
+    updatedAt: updatedAt != null ? updatedAt() : this.updatedAt,
+    imageData: imageData != null ? imageData() : this.imageData,
+    icon: icon != null ? icon() : this.icon,
+    color: color != null ? color() : this.color,
+    changed: changed ?? false,
+  );
 
   OrderTableDbTableCompanion toDbTableCompanion({bool changed = false}) =>
       OrderTableDbTableCompanion(

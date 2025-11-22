@@ -37,22 +37,22 @@ class _ProductsOfCategoryWidgetState extends State<ProductsOfCategoryWidget> {
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-      length: _tabs.length,
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          scrolledUnderElevation: 0,
-          elevation: 0,
-          title: const TextWidget(
-            text: Constants.productsOfCategory,
-            size: 22,
-            fontWeight: FontWeight.w500,
-          ),
-          bottom: TabBar(tabs: _tabs),
+    length: _tabs.length,
+    child: Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        scrolledUnderElevation: 0,
+        elevation: 0,
+        title: const TextWidget(
+          text: productsOfCategory,
+          size: 22,
+          fontWeight: FontWeight.w500,
         ),
-        body: TabBarView(children: _children),
+        bottom: TabBar(tabs: _tabs),
       ),
-    );
+      body: TabBarView(children: _children),
+    ),
+  );
 }
 
 class _ProdudctsOfCategory extends StatefulWidget {
@@ -72,21 +72,24 @@ class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<ProductsOfCategoryBloc, ProductsOfCategoryState>(
-      builder: (context, productsOfCategoryState) => RefreshIndicatorWidget(
+  Widget build(BuildContext context) =>
+      BlocBuilder<ProductsOfCategoryBloc, ProductsOfCategoryState>(
+        builder: (context, productsOfCategoryState) => RefreshIndicatorWidget(
           onRefresh: () async => context.read<ProductsBloc>().add(const ProductsEvent.load()),
           child: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               switch (productsOfCategoryState) {
-                ProductsOfCategory$InitialState() => const SliverToBoxAdapter(child: SizedBox.shrink()),
+                ProductsOfCategory$InitialState() => const SliverToBoxAdapter(
+                  child: SizedBox.shrink(),
+                ),
                 ProductsOfCategory$InProgressState() => const SliverFillRemaining(
                   child: Center(child: CircularProgressIndicatorWidget()),
                 ),
                 ProductsOfCategory$ErrorState() => SliverFillRemaining(
                   child: Center(
                     child: ErrorButtonWidget(
-                      label: Constants.reloadLabel,
+                      label: reloadLabel,
                       onTap: () {
                         context.read<ProductsBloc>().add(const ProductsEvent.load());
                       },
@@ -105,7 +108,7 @@ class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
             ],
           ),
         ),
-    );
+      );
 }
 
 class _AllProductsWidget extends StatefulWidget {
@@ -151,71 +154,71 @@ class __AllProductsWidgetState extends State<_AllProductsWidget> {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<ProductsBloc, ProductsState>(
-      builder: (context, productsState) => Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              context.read<ProductsOfCategoryBloc>().add(
-                ProductsOfCategoryEvent.saveProducts(
-                  widget.categoryId,
-                  _selectedProducts.values.toList(),
-                ),
-              );
-            },
-            child: const Icon(Icons.save),
-          ),
-          body: RefreshIndicatorWidget(
-            onRefresh: () async => context.read<ProductsOfCategoryBloc>().add(
-              ProductsOfCategoryEvent.load(categoryId: widget.categoryId),
+    builder: (context, productsState) => Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.read<ProductsOfCategoryBloc>().add(
+            ProductsOfCategoryEvent.saveProducts(
+              widget.categoryId,
+              _selectedProducts.values.toList(),
             ),
-            child: CustomScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                switch (productsState) {
-                  Products$InitialState() => const SliverToBoxAdapter(child: SizedBox()),
-                  Products$InProgressState() => const SliverFillRemaining(
-                    child: Center(child: CircularProgressIndicatorWidget()),
-                  ),
-                  Products$ErrorState() => SliverFillRemaining(
-                    child: Center(
-                      child: ErrorButtonWidget(
-                        label: Constants.reloadLabel,
-                        onTap: () {
-                          context.read<ProductsOfCategoryBloc>().add(
-                            ProductsOfCategoryEvent.load(categoryId: widget.categoryId),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  Products$CompletedState() => SliverList.builder(
-                    itemCount: productsState.products.length,
-                    itemBuilder: (context, index) {
-                      final product = productsState.products[index];
-                      final selected = _selected(product.id);
-                      return Row(
-                        children: [
-                          Checkbox(
-                            value: selected,
-                            onChanged: (value) {
-                              if (product.id == null) return;
-                              setState(() {
-                                if (_selectedProducts[product.id!] != null) {
-                                  _selectedProducts.remove(product.id!);
-                                  return;
-                                }
-                                _selectedProducts[product.id!] = product;
-                              });
-                            },
-                          ),
-                          Expanded(child: ProductItemTile(product: product)),
-                        ],
+          );
+        },
+        child: const Icon(Icons.save),
+      ),
+      body: RefreshIndicatorWidget(
+        onRefresh: () async => context.read<ProductsOfCategoryBloc>().add(
+          ProductsOfCategoryEvent.load(categoryId: widget.categoryId),
+        ),
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            switch (productsState) {
+              Products$InitialState() => const SliverToBoxAdapter(child: SizedBox()),
+              Products$InProgressState() => const SliverFillRemaining(
+                child: Center(child: CircularProgressIndicatorWidget()),
+              ),
+              Products$ErrorState() => SliverFillRemaining(
+                child: Center(
+                  child: ErrorButtonWidget(
+                    label: reloadLabel,
+                    onTap: () {
+                      context.read<ProductsOfCategoryBloc>().add(
+                        ProductsOfCategoryEvent.load(categoryId: widget.categoryId),
                       );
                     },
                   ),
+                ),
+              ),
+              Products$CompletedState() => SliverList.builder(
+                itemCount: productsState.products.length,
+                itemBuilder: (context, index) {
+                  final product = productsState.products[index];
+                  final selected = _selected(product.id);
+                  return Row(
+                    children: [
+                      Checkbox(
+                        value: selected,
+                        onChanged: (value) {
+                          if (product.id == null) return;
+                          setState(() {
+                            if (_selectedProducts[product.id!] != null) {
+                              _selectedProducts.remove(product.id!);
+                              return;
+                            }
+                            _selectedProducts[product.id!] = product;
+                          });
+                        },
+                      ),
+                      Expanded(child: ProductItemTile(product: product)),
+                    ],
+                  );
                 },
-              ],
-            ),
-          ),
+              ),
+            },
+          ],
         ),
-    );
+      ),
+    ),
+  );
 }

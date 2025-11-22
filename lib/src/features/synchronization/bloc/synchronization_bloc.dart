@@ -54,14 +54,16 @@ class SynchronizationBloc extends Bloc<SynchronizationEvent, SynchronizationStat
 
       if (!sync) {
         emit(
-          const SynchronizationState.error(message: 'Something went wrong with table synchronization'),
+          const SynchronizationState.error(
+            message: 'Something went wrong with table synchronization',
+          ),
         );
         return;
       }
 
       event.onSyncDone?.call();
       emit(const SynchronizationState.completed());
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(const SynchronizationState.error());
     }

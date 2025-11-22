@@ -45,16 +45,16 @@ class LocalDatabaseService {
     final checkInvoiceForPlace = await database.query(
       customerInvoiceTable,
       where: 'place_id = ? and status = ?',
-      whereArgs: [table?.id, Constants.pending],
+      whereArgs: [table?.id, pending],
     );
 
     int? customerInvoiceId;
 
     if (checkInvoiceForPlace.isEmpty) {
       customerInvoiceId = await database.insert(customerInvoiceTable, {
-        'waiter_id': GlobalData.currentWaiter.id,
+        'waiter_id': currentWaiter.id,
         'place_id': table?.id,
-        'status': Constants.pending,
+        'status': pending,
       });
     } else {
       customerInvoiceId = int.tryParse("${checkInvoiceForPlace.first['id']}");
@@ -95,7 +95,7 @@ class LocalDatabaseService {
     final checkInvoiceForPlace = await database.query(
       customerInvoiceTable,
       where: 'place_id = ? and status = ?',
-      whereArgs: [table?.id, Constants.pending],
+      whereArgs: [table?.id, pending],
     );
     if (checkInvoiceForPlace.isNotEmpty) {
       await database.delete(
@@ -131,7 +131,7 @@ class LocalDatabaseService {
         'invoice_datetime': currentDateTime,
       },
       where: 'place_id = ? and status = ?',
-      whereArgs: [table?.id, Constants.pending],
+      whereArgs: [table?.id, pending],
     );
 
     return true;

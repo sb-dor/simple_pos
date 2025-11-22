@@ -19,9 +19,8 @@ final class CategoryCreationDatasourceImpl implements ICategoryCreationDatasourc
   Future<CategoryTableData?> category(final String? categoryId) async {
     if (categoryId == null) return null;
 
-    final categoryReq = _appDatabase.select(_appDatabase.categoryTable);
-
-    categoryReq.where((el) => el.id.equals(categoryId));
+    final categoryReq = _appDatabase.select(_appDatabase.categoryTable)
+      ..where((el) => el.id.equals(categoryId));
 
     return categoryReq.getSingleOrNull();
   }

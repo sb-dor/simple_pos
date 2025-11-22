@@ -10,23 +10,23 @@ final class AppLoggerFactory extends Factory<Logger> {
 
   @override
   Logger create() => Logger(
-      filter: _logFilter,
-      printer: PrettyPrinter(
-        methodCount: 2,
-        // Number of method calls to be displayed
-        errorMethodCount: 8,
-        // Number of method calls if stacktrace is provided
-        lineLength: 120,
+    filter: _logFilter,
+    printer: PrettyPrinter(
+      methodCount: 2,
+      // Number of method calls to be displayed
+      errorMethodCount: 8,
+      // Number of method calls if stacktrace is provided
+      lineLength: 120,
 
-        colors: ReusableFunctions.instance.isMacOsOriOS ? false : true,
-        // Colorful log messages
-        printEmojis: true,
-        // Print an emoji for each log message
-        // Should each log print contain a timestamp
-        dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
-      ),
-      output: ConsoleOutput(),
-    );
+      colors: !ReusableFunctions.instance.isMacOsOriOS,
+      // Colorful log messages
+      printEmojis: true,
+      // Print an emoji for each log message
+      // Should each log print contain a timestamp
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+    ),
+    output: ConsoleOutput(),
+  );
 }
 
 final class NoOpLogFilter extends LogFilter {

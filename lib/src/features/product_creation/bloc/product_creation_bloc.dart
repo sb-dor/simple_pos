@@ -74,7 +74,7 @@ class ProductCreationBloc extends Bloc<ProductCreationEvent, ProductCreationStat
     try {
       final product = await _productCreationRepository.product(event.productId);
       emit(ProductCreationState.initial(product));
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
     }
   }
@@ -108,7 +108,7 @@ class ProductCreationBloc extends Bloc<ProductCreationEvent, ProductCreationStat
       } else {
         emit(ProductCreationState.error(state.product));
       }
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(ProductCreationState.error(state.product));
     }

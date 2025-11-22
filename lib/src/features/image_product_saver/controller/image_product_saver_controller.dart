@@ -73,7 +73,7 @@ class ImageProductSaverController with ChangeNotifier {
       notifyListeners();
       _logger.log(Level.error, 'error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       sending = false;
       notifyListeners();
       Error.throwWithStackTrace(error, stackTrace);

@@ -70,173 +70,169 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
 
   @override
   Widget build(BuildContext context) => BlocListener<ProductCreationBloc, ProductCreationState>(
-      listener: (context, state) {
-        if (state is ProductCreation$InitialState && state.product != null) {
-          _initControllers(state.product!);
-        }
+    listener: (context, state) {
+      if (state is ProductCreation$InitialState && state.product != null) {
+        _initControllers(state.product!);
+      }
 
-        if (state is ProductCreation$CompletedState) {
-          DependenciesScope.of(context).productsBloc.add(const ProductsEvent.load());
-          context.go(AppRoutesName.products);
-        }
-      },
-      child: AuthenticationListener(
-        child: (context) => SynchronizationListener(
-          child: (context) => Scaffold(
-            drawer: const MainAppDrawer(),
-            appBar: const PreferredSize(
-              preferredSize: Size(double.infinity, kToolbarHeight),
-              child: AppBarBack(label: 'Create Product', backPath: AppRoutesName.products),
+      if (state is ProductCreation$CompletedState) {
+        DependenciesScope.of(context).productsBloc.add(const ProductsEvent.load());
+        context.go(AppRoutesName.products);
+      }
+    },
+    child: AuthenticationListener(
+      child: (context) => SynchronizationListener(
+        child: (context) => Scaffold(
+          drawer: const MainAppDrawer(),
+          appBar: const PreferredSize(
+            preferredSize: Size(double.infinity, kToolbarHeight),
+            child: AppBarBack(label: 'Create Product', backPath: AppRoutesName.products),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              final nameValidated = _nameControllerListener.validated;
+              final priceValidated = _priceControllerListener.validated;
+              final packQtyValidated = _packQtyControllerListener.validated;
+              final barcodeValidated = _barcodeControllerListener.validated;
+
+              if (!nameValidated || !priceValidated || !packQtyValidated || !barcodeValidated) {
+                return;
+              }
+
+              final trimmedPrice = ReusableFunctions.instance.clearSeparatedNumbers(
+                _priceController.text.trim(),
+              );
+              final trimmedWholeSalePrice = ReusableFunctions.instance.clearSeparatedNumbers(
+                _wholesalePriceController.text.trim(),
+              );
+              final trimmedPackQty = ReusableFunctions.instance.clearSeparatedNumbers(
+                _packQtyController.text.trim(),
+              );
+
+              final productCreationData = ProductCreationData(
+                name: _nameControllerListener.trimmedText,
+                price: double.tryParse(trimmedPrice),
+                wholesalePrice: double.tryParse(trimmedWholeSalePrice),
+                packQty: double.tryParse(trimmedPackQty),
+                barcode: _barcodeControllerListener.trimmedText,
+                productType: _productType,
+              );
+
+              context.read<ProductCreationBloc>().add(
+                ProductCreationEvent.save(productCreationData: productCreationData, onSave: () {}),
+              );
+            },
+            child: const Icon(Icons.save),
+          ),
+          floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
+            orElse: () => FloatingActionButtonLocation.centerFloat,
+            compact: () => FloatingActionButtonLocation.endFloat,
+          ),
+          body: DecoratedBox(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(colors: appGradientColor),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                final nameValidated = _nameControllerListener.validated;
-                final priceValidated = _priceControllerListener.validated;
-                final packQtyValidated = _packQtyControllerListener.validated;
-                final barcodeValidated = _barcodeControllerListener.validated;
-
-                if (!nameValidated || !priceValidated || !packQtyValidated || !barcodeValidated) {
-                  return;
-                }
-
-                final trimmedPrice = ReusableFunctions.instance.clearSeparatedNumbers(
-                  _priceController.text.trim(),
-                );
-                final trimmedWholeSalePrice = ReusableFunctions.instance.clearSeparatedNumbers(
-                  _wholesalePriceController.text.trim(),
-                );
-                final trimmedPackQty = ReusableFunctions.instance.clearSeparatedNumbers(
-                  _packQtyController.text.trim(),
-                );
-
-                final productCreationData = ProductCreationData(
-                  name: _nameControllerListener.trimmedText,
-                  price: double.tryParse(trimmedPrice),
-                  wholesalePrice: double.tryParse(trimmedWholeSalePrice),
-                  packQty: double.tryParse(trimmedPackQty),
-                  barcode: _barcodeControllerListener.trimmedText,
-                  productType: _productType,
-                );
-
-                context.read<ProductCreationBloc>().add(
-                  ProductCreationEvent.save(
-                    productCreationData: productCreationData,
-                    onSave: () {},
-                  ),
-                );
-              },
-              child: const Icon(Icons.save),
-            ),
-            floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
-              orElse: () => FloatingActionButtonLocation.centerFloat,
-              compact: () => FloatingActionButtonLocation.endFloat,
-            ),
-            body: DecoratedBox(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(colors: Constants.appGradientColor),
-              ),
-              child: SafeArea(
-                child: Center(
-                  child: SizedBox(
-                    width: WindowSizeScope.of(context).expandedSize,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ListenableBuilder(
-                          listenable: Listenable.merge([
-                            _nameControllerListener,
-                            _priceControllerListener,
-                            _packQtyControllerListener,
-                            _barcodeControllerListener,
-                          ]),
-                          builder: (context, _) => ListView(
-                              padding: const EdgeInsets.all(16),
-                              children: [
-                                TextField(
-                                  controller: _nameController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Product Name',
-                                    border: const OutlineInputBorder(),
-                                    errorText: _nameControllerListener.error,
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-
-                                TextField(
-                                  controller: _priceController,
-                                  keyboardType: ReusableFunctions.instance.numberInputType,
-                                  decoration: InputDecoration(
-                                    labelText: 'Retail Price',
-                                    border: const OutlineInputBorder(),
-                                    errorText: _priceControllerListener.error,
-                                  ),
-                                  inputFormatters: [DecimalTextInputFormatter()],
-                                ),
-                                const SizedBox(height: 12),
-
-                                TextField(
-                                  controller: _wholesalePriceController,
-                                  keyboardType: ReusableFunctions.instance.numberInputType,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Wholesale Price',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  inputFormatters: [DecimalTextInputFormatter()],
-                                ),
-                                const SizedBox(height: 12),
-
-                                TextField(
-                                  controller: _packQtyController,
-                                  keyboardType: ReusableFunctions.instance.numberInputType,
-                                  decoration: InputDecoration(
-                                    labelText: 'Pack Quantity',
-                                    border: const OutlineInputBorder(),
-                                    errorText: _packQtyControllerListener.error,
-                                  ),
-                                  inputFormatters: [DecimalTextInputFormatter()],
-                                ),
-                                const SizedBox(height: 12),
-
-                                TextField(
-                                  controller: _barcodeController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Barcode',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-
-                                DropDownSelectionWidget(
-                                  textController: _productTypeController,
-                                  listOfDropdownEntries: ProductType.values
-                                      .map(
-                                        (e) => DropdownMenuEntry<ProductType>(
-                                          value: e,
-                                          label: '${e.type}, ${e.unit}',
-                                        ),
-                                      )
-                                      .toList(),
-                                  title: 'Product Type',
-                                  enableSearch: false,
-                                  requestFocusOnTap: false,
-                                  onSelect: (productType) {
-                                    setState(() {
-                                      if (_productType == productType) {
-                                        _productType = null;
-                                      } else {
-                                        _productType = productType;
-                                      }
-                                    });
-                                  },
-                                ),
-
-                                const SizedBox(height: 12),
-                              ],
+            child: SafeArea(
+              child: Center(
+                child: SizedBox(
+                  width: WindowSizeScope.of(context).expandedSize,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListenableBuilder(
+                        listenable: Listenable.merge([
+                          _nameControllerListener,
+                          _priceControllerListener,
+                          _packQtyControllerListener,
+                          _barcodeControllerListener,
+                        ]),
+                        builder: (context, _) => ListView(
+                          padding: const EdgeInsets.all(16),
+                          children: [
+                            TextField(
+                              controller: _nameController,
+                              decoration: InputDecoration(
+                                labelText: 'Product Name',
+                                border: const OutlineInputBorder(),
+                                errorText: _nameControllerListener.error,
+                              ),
                             ),
+                            const SizedBox(height: 12),
+
+                            TextField(
+                              controller: _priceController,
+                              keyboardType: ReusableFunctions.instance.numberInputType,
+                              decoration: InputDecoration(
+                                labelText: 'Retail Price',
+                                border: const OutlineInputBorder(),
+                                errorText: _priceControllerListener.error,
+                              ),
+                              inputFormatters: [DecimalTextInputFormatter()],
+                            ),
+                            const SizedBox(height: 12),
+
+                            TextField(
+                              controller: _wholesalePriceController,
+                              keyboardType: ReusableFunctions.instance.numberInputType,
+                              decoration: const InputDecoration(
+                                labelText: 'Wholesale Price',
+                                border: OutlineInputBorder(),
+                              ),
+                              inputFormatters: [DecimalTextInputFormatter()],
+                            ),
+                            const SizedBox(height: 12),
+
+                            TextField(
+                              controller: _packQtyController,
+                              keyboardType: ReusableFunctions.instance.numberInputType,
+                              decoration: InputDecoration(
+                                labelText: 'Pack Quantity',
+                                border: const OutlineInputBorder(),
+                                errorText: _packQtyControllerListener.error,
+                              ),
+                              inputFormatters: [DecimalTextInputFormatter()],
+                            ),
+                            const SizedBox(height: 12),
+
+                            TextField(
+                              controller: _barcodeController,
+                              decoration: const InputDecoration(
+                                labelText: 'Barcode',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+
+                            DropDownSelectionWidget(
+                              textController: _productTypeController,
+                              listOfDropdownEntries: ProductType.values
+                                  .map(
+                                    (e) => DropdownMenuEntry<ProductType>(
+                                      value: e,
+                                      label: '${e.type}, ${e.unit}',
+                                    ),
+                                  )
+                                  .toList(),
+                              title: 'Product Type',
+                              enableSearch: false,
+                              requestFocusOnTap: false,
+                              onSelect: (productType) {
+                                setState(() {
+                                  if (_productType == productType) {
+                                    _productType = null;
+                                  } else {
+                                    _productType = productType;
+                                  }
+                                });
+                              },
+                            ),
+
+                            const SizedBox(height: 12),
+                          ],
                         ),
                       ),
                     ),
@@ -247,5 +243,6 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
           ),
         ),
       ),
-    );
+    ),
+  );
 }

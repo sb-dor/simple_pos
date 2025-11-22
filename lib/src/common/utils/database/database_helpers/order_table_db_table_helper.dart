@@ -28,7 +28,7 @@ final class OrderTableDbTableHelper {
             .write(tableModel.toDbTableCompanion(changed: tableModel.changed));
       }
       return true;
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);
     }
   }
@@ -46,8 +46,8 @@ final class OrderTableDbTableHelper {
   }
 
   Future<OrderTableDbTableData?> _findTable(final String tableId) async => (_appDatabase.select(
-      _appDatabase.orderTableDbTable,
-    )..where((element) => element.id.equals(tableId))).getSingleOrNull();
+    _appDatabase.orderTableDbTable,
+  )..where((element) => element.id.equals(tableId))).getSingleOrNull();
 
   Future<void> markAsSynced(List<String> ids) async {
     await (_appDatabase.update(

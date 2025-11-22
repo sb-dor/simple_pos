@@ -31,65 +31,65 @@ class _SalesModeProductsScreenState extends State<SalesModeProductsScreen> {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<OrderFeatureBloc, OrderFeatureStates>(
-      bloc: _orderFeatureBloc,
-      builder: (context, state) {
-        switch (state) {
-          case InitialOrderState():
-            return const SizedBox.shrink();
-          case InProgressOrderState():
-            return const CircularProgressIndicatorWidget();
-          case ErrorOrderState():
-            return ErrorButtonWidget(
-              label: Constants.reloadLabel,
-              onTap: () {
-                //
-              },
-            );
-          case CompletedOrderState():
-            final currentStateModel = state.orderFeatureStateModel;
-            return Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  if (currentStateModel.orderItems.isNotEmpty)
-                    GestureDetector(
-                      onTap: () => _orderFeatureBloc.add(
-                        OrderFeatureEvents.finishCustomerInvoice(
-                          onMessage: (message) {
-                            if (!mounted) return;
-                            ScaffoldMessenger.of(
-                              context,
-                            ).showSnackBar(SnackBar(content: Text(message)));
-                          },
-                        ),
-                      ),
-                      child: Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade100,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '${Constants.pay} - ${currentStateModel.orderItems.total()}',
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                          ),
-                        ),
+    bloc: _orderFeatureBloc,
+    builder: (context, state) {
+      switch (state) {
+        case InitialOrderState():
+          return const SizedBox.shrink();
+        case InProgressOrderState():
+          return const CircularProgressIndicatorWidget();
+        case ErrorOrderState():
+          return ErrorButtonWidget(
+            label: reloadLabel,
+            onTap: () {
+              //
+            },
+          );
+        case CompletedOrderState():
+          final currentStateModel = state.orderFeatureStateModel;
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                if (currentStateModel.orderItems.isNotEmpty)
+                  GestureDetector(
+                    onTap: () => _orderFeatureBloc.add(
+                      OrderFeatureEvents.finishCustomerInvoice(
+                        onMessage: (message) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(message)));
+                        },
                       ),
                     ),
-                  const SizedBox(height: 5),
-                  const OrderedDetails(),
-                  Expanded(
-                    child: ListView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      children: const [OrderCategories(), SizedBox(height: 20), OrderingProducts()],
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade100,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$pay - ${currentStateModel.orderItems.total()}',
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                        ),
+                      ),
                     ),
                   ),
-                ],
-              ),
-            );
-        }
-      },
-    );
+                const SizedBox(height: 5),
+                const OrderedDetails(),
+                Expanded(
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: const [OrderCategories(), SizedBox(height: 20), OrderingProducts()],
+                  ),
+                ),
+              ],
+            ),
+          );
+      }
+    },
+  );
 }

@@ -38,76 +38,76 @@ class _MainAppBarState extends State<MainAppBar> {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      bloc: _authenticationBloc,
-      builder: (context, authState) {
-        switch (authState) {
-          case Authentication$InitialState():
-          case Authentication$InProgressState():
-          case Authentication$UnauthenticatedState():
-            return const SizedBox.shrink();
-          case Authentication$AuthenticatedState():
-            return DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: Constants.appGradientColor),
-                color: Colors.white.withValues(alpha: 0.8),
-              ),
-              child: SafeArea(
-                child: Center(
-                  child: SizedBox(
-                    width: WindowSizeScope.of(context).expandedSize + 200,
-                    height: 100,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          ElevatedButton(
-                            style: ButtonStyle(
-                              shape: WidgetStatePropertyAll(
-                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              ),
-                            ),
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            child: const Icon(Icons.menu, color: Colors.black),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: TextWidget(
-                              text: widget.label,
-                              size: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 1.1,
-                              maxLines: 1,
-                              overFlow: TextOverflow.ellipsis,
+    bloc: _authenticationBloc,
+    builder: (context, authState) {
+      switch (authState) {
+        case Authentication$InitialState():
+        case Authentication$InProgressState():
+        case Authentication$UnauthenticatedState():
+          return const SizedBox.shrink();
+        case Authentication$AuthenticatedState():
+          return DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(colors: appGradientColor),
+              color: Colors.white.withValues(alpha: 0.8),
+            ),
+            child: SafeArea(
+              child: Center(
+                child: SizedBox(
+                  width: WindowSizeScope.of(context).expandedSize + 200,
+                  height: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            shape: WidgetStatePropertyAll(
+                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                             ),
                           ),
-                          const CircleAvatar(radius: 20),
-                          const SizedBox(width: 10),
-                          TextWidget(
-                            text: authState.stateModel.userModel?.name ?? '',
-                            size: 16,
-                            fontWeight: FontWeight.w500,
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          child: const Icon(Icons.menu, color: Colors.black),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextWidget(
+                            text: widget.label,
+                            size: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 1.1,
+                            maxLines: 1,
+                            overFlow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(width: 10),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                              shape: WidgetStatePropertyAll(
-                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              ),
+                        ),
+                        const CircleAvatar(radius: 20),
+                        const SizedBox(width: 10),
+                        TextWidget(
+                          text: authState.stateModel.userModel?.name ?? '',
+                          size: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            shape: WidgetStatePropertyAll(
+                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                             ),
-                            onPressed: () {},
-                            child: const Icon(Icons.settings, color: Colors.black),
                           ),
-                        ],
-                      ),
+                          onPressed: () {},
+                          child: const Icon(Icons.settings, color: Colors.black),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-            );
-        }
-      },
-    );
+            ),
+          );
+      }
+    },
+  );
 }

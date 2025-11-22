@@ -21,13 +21,14 @@ class CustomerInvoiceDetailModel {
       CustomerInvoiceDetailModel(
         id: db.id,
         customerInvoiceId: db.customerInvoiceId,
-        product: GlobalData.products.firstWhereOrNull((e) => e.id == db.productId),
+        product: products.firstWhereOrNull((e) => e.id == db.productId),
         price: db.price,
         qty: db.qty,
         total: db.total,
       );
 
-  factory CustomerInvoiceDetailModel.fromOrderItem(OrderItemModel? item) => CustomerInvoiceDetailModel(product: item?.product, price: item?.price, qty: item?.qty);
+  factory CustomerInvoiceDetailModel.fromOrderItem(OrderItemModel? item) =>
+      CustomerInvoiceDetailModel(product: item?.product, price: item?.price, qty: item?.qty);
 
   final int? id;
   final int? customerInvoiceId;
@@ -44,11 +45,12 @@ class CustomerInvoiceDetailModel {
     'total': (price ?? 0.0) * (qty ?? 0.0),
   };
 
-  CustomerInvoiceDetailsTableCompanion toDbCompanion(int? customerInvoiceId) => CustomerInvoiceDetailsTableCompanion(
-      customerInvoiceId: Value(customerInvoiceId),
-      productId: Value(product?.id),
-      price: Value(price),
-      qty: Value(qty),
-      total: Value(total),
-    );
+  CustomerInvoiceDetailsTableCompanion toDbCompanion(int? customerInvoiceId) =>
+      CustomerInvoiceDetailsTableCompanion(
+        customerInvoiceId: Value(customerInvoiceId),
+        productId: Value(product?.id),
+        price: Value(price),
+        qty: Value(qty),
+        total: Value(total),
+      );
 }

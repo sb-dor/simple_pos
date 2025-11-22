@@ -62,7 +62,7 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
       final products = await _iProductsOfCategoryRepository.productsOfCategory(event.categoryId);
 
       emit(ProductsOfCategoryState.completed(products));
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(const ProductsOfCategoryState.error());
     }
@@ -88,7 +88,7 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
         final products = await _iProductsOfCategoryRepository.productsOfCategory(event.categoryId);
         emit(ProductsOfCategoryState.completed(products));
       }
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
     }
   }

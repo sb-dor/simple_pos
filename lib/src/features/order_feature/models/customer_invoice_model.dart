@@ -23,7 +23,7 @@ class CustomerInvoiceModel {
     List<CustomerInvoiceDetailModel> details,
   ) => CustomerInvoiceModel(
     id: db.id,
-    waiter: GlobalData.currentWaiter,
+    waiter: currentWaiter,
     total: db.total,
     totalQty: db.totalQty,
     status: db.status,
@@ -41,15 +41,15 @@ class CustomerInvoiceModel {
   final String? invoiceDateTime;
 
   Map<String, dynamic> toMap() => {
-      'id': id,
-      'waiter': waiter,
-      'table': table,
-      'total': total,
-      'totalQty': totalQty,
-      'status': status,
-      'details': details,
-      'invoiceDateTime': invoiceDateTime,
-    };
+    'id': id,
+    'waiter': waiter,
+    'table': table,
+    'total': total,
+    'totalQty': totalQty,
+    'status': status,
+    'details': details,
+    'invoiceDateTime': invoiceDateTime,
+  };
 
   CustomerInvoiceModel copyWith({
     int? id,
@@ -61,13 +61,13 @@ class CustomerInvoiceModel {
     List<CustomerInvoiceDetailModel>? details,
     String? invoiceDateTime,
   }) => CustomerInvoiceModel(
-      id: id ?? this.id,
-      waiter: waiter ?? this.waiter,
-      table: table ?? this.table,
-      total: total ?? this.total,
-      totalQty: totalQty ?? this.totalQty,
-      status: status ?? this.status,
-      details: details ?? this.details,
-      invoiceDateTime: invoiceDateTime ?? this.invoiceDateTime,
-    );
+    id: id ?? this.id,
+    waiter: waiter ?? this.waiter,
+    table: table ?? this.table,
+    total: total ?? this.total,
+    totalQty: totalQty ?? this.totalQty,
+    status: status ?? this.status,
+    details: details ?? this.details,
+    invoiceDateTime: invoiceDateTime ?? this.invoiceDateTime,
+  );
 }

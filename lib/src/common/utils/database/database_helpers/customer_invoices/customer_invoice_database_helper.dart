@@ -21,7 +21,7 @@ final class CustomerInvoiceDatabaseHelper {
         await (_appDatabase.select(_appDatabase.customerInvoicesTable)..where(
               (element) =>
                   element.tableId.equals(table?.id ?? '') &
-                  element.status.equals(Constants.pending),
+                  element.status.equals(pending),
             ))
             .get();
 
@@ -32,9 +32,9 @@ final class CustomerInvoiceDatabaseHelper {
           .into(_appDatabase.customerInvoicesTable)
           .insert(
             CustomerInvoicesTableCompanion(
-              waiterId: Value(GlobalData.currentWaiter.id),
+              waiterId: Value(currentWaiter.id),
               tableId: Value(table?.id),
-              status: const Value(Constants.pending),
+              status: const Value(pending),
             ),
           );
     } else {
@@ -45,8 +45,11 @@ final class CustomerInvoiceDatabaseHelper {
 
   Future<void> _update(int? customerInvoiceId, CustomerInvoiceDetailModel? item) async {
     final checkItemsWithCurrentInvoice =
-        await (_appDatabase.select(_appDatabase.customerInvoiceDetailsTable)..where((element) => element.customerInvoiceId.equals(customerInvoiceId ?? 0) &
-                  element.productId.equals(item?.product?.id ?? '')))
+        await (_appDatabase.select(_appDatabase.customerInvoiceDetailsTable)..where(
+              (element) =>
+                  element.customerInvoiceId.equals(customerInvoiceId ?? 0) &
+                  element.productId.equals(item?.product?.id ?? ''),
+            ))
             .get();
 
     if (checkItemsWithCurrentInvoice.isEmpty) {
@@ -58,8 +61,11 @@ final class CustomerInvoiceDatabaseHelper {
     } else {
       if (item != null) {
         if ((item.qty ?? 0.0) <= 0.0) {
-          await (_appDatabase.delete(_appDatabase.customerInvoiceDetailsTable)..where((element) => element.customerInvoiceId.equals(customerInvoiceId ?? 0) &
-                    element.productId.equals(item.product?.id ?? '')))
+          await (_appDatabase.delete(_appDatabase.customerInvoiceDetailsTable)..where(
+                (element) =>
+                    element.customerInvoiceId.equals(customerInvoiceId ?? 0) &
+                    element.productId.equals(item.product?.id ?? ''),
+              ))
               .go();
 
           // check if invoice doesn't have any data delete invoice
@@ -67,8 +73,11 @@ final class CustomerInvoiceDatabaseHelper {
           return;
         }
 
-        await (_appDatabase.update(_appDatabase.customerInvoiceDetailsTable)..where((element) => element.customerInvoiceId.equals(customerInvoiceId ?? 0) &
-                  element.productId.equals(item.product?.id ?? '')))
+        await (_appDatabase.update(_appDatabase.customerInvoiceDetailsTable)..where(
+              (element) =>
+                  element.customerInvoiceId.equals(customerInvoiceId ?? 0) &
+                  element.productId.equals(item.product?.id ?? ''),
+            ))
             .write(item.toDbCompanion(customerInvoiceId));
       }
     }
@@ -76,13 +85,19 @@ final class CustomerInvoiceDatabaseHelper {
 
   Future<void> deleteOrderItemFromOrder(OrderItemModel? orderItem, TableModel? table) async {
     final checkInvoiceForPlace =
-        await (_appDatabase.select(_appDatabase.customerInvoicesTable)..where((element) => element.tableId.equals(table?.id ?? '') &
-                  element.status.equals(Constants.pending)))
+        await (_appDatabase.select(_appDatabase.customerInvoicesTable)..where(
+              (element) =>
+                  element.tableId.equals(table?.id ?? '') &
+                  element.status.equals(pending),
+            ))
             .get();
 
     if (checkInvoiceForPlace.isNotEmpty) {
-      await (_appDatabase.delete(_appDatabase.customerInvoiceDetailsTable)..where((element) => element.customerInvoiceId.equals(checkInvoiceForPlace.first.id) &
-                element.productId.equals(orderItem?.product?.id ?? '')))
+      await (_appDatabase.delete(_appDatabase.customerInvoiceDetailsTable)..where(
+            (element) =>
+                element.customerInvoiceId.equals(checkInvoiceForPlace.first.id) &
+                element.productId.equals(orderItem?.product?.id ?? ''),
+          ))
           .go();
 
       checkInvoiceForEmptyDetails(int.parse('${checkInvoiceForPlace.first.id}'));
@@ -91,19 +106,23 @@ final class CustomerInvoiceDatabaseHelper {
 
   // if invoice doesn't have any table remove whole invoice
   Future<void> checkInvoiceForEmptyDetails(int invoiceId) async {
-    final checkInvoiceForPlace =
-        await (_appDatabase.select(_appDatabase.customerInvoiceDetailsTable)..where((element) => element.customerInvoiceId.equals(invoiceId)))
-            .get();
+    final checkInvoiceForPlace = await (_appDatabase.select(
+      _appDatabase.customerInvoiceDetailsTable,
+    )..where((element) => element.customerInvoiceId.equals(invoiceId))).get();
 
     if (checkInvoiceForPlace.isEmpty) {
-      await (_appDatabase.delete(_appDatabase.customerInvoicesTable)..where((element) => element.id.equals(invoiceId)))
-          .go();
+      await (_appDatabase.delete(
+        _appDatabase.customerInvoicesTable,
+      )..where((element) => element.id.equals(invoiceId))).go();
     }
   }
 
   Future<bool> finishCustomerInvoice(TableModel? table, List<OrderItemModel> items) async {
     final currentDateTime = DateTime.now().toString().substring(0, 19);
-    await (_appDatabase.update(_appDatabase.customerInvoicesTable)..where((element) => element.tableId.equals(table?.id ?? '') & element.status.equals(Constants.pending)))
+    await (_appDatabase.update(_appDatabase.customerInvoicesTable)..where(
+          (element) =>
+              element.tableId.equals(table?.id ?? '') & element.status.equals(pending),
+        ))
         .write(
           CustomerInvoicesTableCompanion(
             status: const Value(null),
@@ -118,14 +137,16 @@ final class CustomerInvoiceDatabaseHelper {
 
   Future<List<CustomerInvoiceDetailModel>> customerInvoiceDetails(TableModel? table) async {
     final invoice =
-        await (_appDatabase.select(_appDatabase.customerInvoicesTable)..where((element) => element.tableId.equals(table?.id ?? '') & element.status.isNotNull()))
+        await (_appDatabase.select(_appDatabase.customerInvoicesTable)..where(
+              (element) => element.tableId.equals(table?.id ?? '') & element.status.isNotNull(),
+            ))
             .get();
 
     if (invoice.isEmpty) return <CustomerInvoiceDetailModel>[];
 
-    final customerInvoiceDetails =
-        await (_appDatabase.select(_appDatabase.customerInvoiceDetailsTable)..where((element) => element.customerInvoiceId.equals(invoice.first.id)))
-            .get();
+    final customerInvoiceDetails = await (_appDatabase.select(
+      _appDatabase.customerInvoiceDetailsTable,
+    )..where((element) => element.customerInvoiceId.equals(invoice.first.id))).get();
 
     _logger.log(Level.debug, customerInvoiceDetails);
 
@@ -133,9 +154,9 @@ final class CustomerInvoiceDatabaseHelper {
   }
 
   Future<List<CustomerInvoiceModel>> customerInvoices() async {
-    final details = (await _appDatabase.select(
-      _appDatabase.customerInvoiceDetailsTable,
-    ).get()).map(CustomerInvoiceDetailModel.fromDb);
+    final details = (await _appDatabase.select(_appDatabase.customerInvoiceDetailsTable).get()).map(
+      CustomerInvoiceDetailModel.fromDb,
+    );
 
     final customerInvoices =
         await (_appDatabase.select(_appDatabase.customerInvoicesTable)

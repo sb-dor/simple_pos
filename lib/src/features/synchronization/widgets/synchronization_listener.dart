@@ -55,37 +55,37 @@ class _SynchronizationListenerState extends State<SynchronizationListener> {
 
   @override
   Widget build(BuildContext context) => BlocListener<SynchronizationBloc, SynchronizationState>(
-      bloc: _synchronizationBloc,
-      listener: (context, synchronizationState) {
-        switch (synchronizationState) {
-          case Synchronization$InitialState():
-            _closePopup();
-            break;
-          case Synchronization$ErrorState():
-            _closePopup();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  synchronizationState.message ?? 'Something went wrong with synchronization',
-                ),
+    bloc: _synchronizationBloc,
+    listener: (context, synchronizationState) {
+      switch (synchronizationState) {
+        case Synchronization$InitialState():
+          _closePopup();
+          break;
+        case Synchronization$ErrorState():
+          _closePopup();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                synchronizationState.message ?? 'Something went wrong with synchronization',
               ),
-            );
-            break;
-          case Synchronization$InProgressState():
-            _showPopup();
-            break;
-          case Synchronization$CompletedState():
-            _closePopup();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Synchronization completed!!!'),
-                backgroundColor: Colors.green,
-              ),
-            );
-            _loadLocalData();
-            break;
-        }
-      },
-      child: widget.child(context),
-    );
+            ),
+          );
+          break;
+        case Synchronization$InProgressState():
+          _showPopup();
+          break;
+        case Synchronization$CompletedState():
+          _closePopup();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Synchronization completed!!!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+          _loadLocalData();
+          break;
+      }
+    },
+    child: widget.child(context),
+  );
 }

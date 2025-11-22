@@ -65,7 +65,7 @@ class TextControllerListener with ChangeNotifier {
       if (!anyInvalid) _error = null;
     } else {
       if (_textEditingController.text.trim().isEmpty) {
-        _error = Constants.fieldCannotBeEmpty;
+        _error = fieldCannotBeEmpty;
       } else {
         _error = null;
       }

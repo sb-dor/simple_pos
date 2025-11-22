@@ -6,7 +6,7 @@ import 'package:test_pos_app/src/common/global_data/global_data.dart';
 import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/uikit/app_bar_back.dart';
 import 'package:test_pos_app/src/common/uikit/text_widget.dart';
-import 'package:test_pos_app/src/common/utils/constants/constants.dart';
+import 'package:test_pos_app/src/common/utils/constants/constants.dart' hide products;
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
@@ -15,7 +15,9 @@ import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
 
 class SalesModeScreen extends StatefulWidget {
   const SalesModeScreen({
-    required this.statefulNavigationShell, required this.goRouterState, super.key,
+    required this.statefulNavigationShell,
+    required this.goRouterState,
+    super.key,
   });
 
   final StatefulNavigationShell statefulNavigationShell;
@@ -35,8 +37,8 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
     super.initState();
     final dependencies = DependenciesScope.of(context);
     _tabs = [
-      Tab(text: '${Constants.products} (${GlobalData.products.length})'),
-      const Tab(text: Constants.settings),
+      Tab(text: '$products (${products.length})'),
+      const Tab(text: settings),
     ];
     _tabController = TabController(length: _tabs.length, vsync: this);
     _tabController.animateTo(widget.statefulNavigationShell.currentIndex);
@@ -84,10 +86,15 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
         child: (context) => Scaffold(
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: const AppBarBack(label: Constants.salesMode, backPath: AppRoutesName.orderTables),
+            child: const AppBarBack(
+              label: salesMode,
+              backPath: AppRoutesName.orderTables,
+            ),
           ),
           body: DecoratedBox(
-            decoration: const BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(colors: appGradientColor),
+            ),
             child: SafeArea(
               child: Center(
                 child: SizedBox(

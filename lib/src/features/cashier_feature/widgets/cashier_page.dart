@@ -34,57 +34,58 @@ class _CashierPageState extends State<CashierPage> {
 
   @override
   Widget build(BuildContext context) => AuthenticationListener(
-      child: (context) => SynchronizationListener(
-        child: (context) => Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: const MainAppBar(label: Constants.cashier),
+    child: (context) => SynchronizationListener(
+      child: (context) => Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+          child: const MainAppBar(label: cashier),
+        ),
+        drawer: const MainAppDrawer(),
+        body: DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(colors: appGradientColor),
           ),
-          drawer: const MainAppDrawer(),
-          body: DecoratedBox(
-            decoration: const BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
-            child: SafeArea(
-              child: RefreshIndicator(
-                onRefresh: () async => _cashierFeatureBloc.add(const CashierFeatureEvents.initial()),
-                child: Center(
-                  child: SizedBox(
-                    width: WindowSizeScope.of(context).expandedSize,
-                    child: ListView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(8),
-                      children: [
-                        BlocBuilder<CashierFeatureBloc, CashierFeatureStates>(
-                          bloc: _cashierFeatureBloc,
-                          builder: (context, state) {
-                            switch (state) {
-                              case Cashier$InititalState():
-                                return const SizedBox.shrink();
-                              case Cashier$InProgressState():
-                                return const CircularProgressIndicatorWidget();
-                              case Cashier$ErrorState():
-                                return ErrorButtonWidget(
-                                  label: Constants.reloadLabel,
-                                  onTap: () {
-                                    //
-                                  },
-                                );
-                              case Cashier$CompletedState():
-                                final currentStateModel = state.cashierFeatureStateModel;
-                                return ListView.separated(
-                                  separatorBuilder: (context, index) => const SizedBox(height: 20),
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: currentStateModel.invoices.length,
-                                  itemBuilder: (context, index) {
-                                    final invoice = currentStateModel.invoices[index];
-                                    return CashierInvoiceWidget(customerInvoice: invoice);
-                                  },
-                                );
-                            }
-                          },
-                        ),
-                      ],
-                    ),
+          child: SafeArea(
+            child: RefreshIndicator(
+              onRefresh: () async => _cashierFeatureBloc.add(const CashierFeatureEvents.initial()),
+              child: Center(
+                child: SizedBox(
+                  width: WindowSizeScope.of(context).expandedSize,
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(8),
+                    children: [
+                      BlocBuilder<CashierFeatureBloc, CashierFeatureStates>(
+                        bloc: _cashierFeatureBloc,
+                        builder: (context, state) {
+                          switch (state) {
+                            case Cashier$InititalState():
+                              return const SizedBox.shrink();
+                            case Cashier$InProgressState():
+                              return const CircularProgressIndicatorWidget();
+                            case Cashier$ErrorState():
+                              return ErrorButtonWidget(
+                                label: reloadLabel,
+                                onTap: () {
+                                  //
+                                },
+                              );
+                            case Cashier$CompletedState():
+                              final currentStateModel = state.cashierFeatureStateModel;
+                              return ListView.separated(
+                                separatorBuilder: (context, index) => const SizedBox(height: 20),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: currentStateModel.invoices.length,
+                                itemBuilder: (context, index) {
+                                  final invoice = currentStateModel.invoices[index];
+                                  return CashierInvoiceWidget(customerInvoice: invoice);
+                                },
+                              );
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -92,5 +93,6 @@ class _CashierPageState extends State<CashierPage> {
           ),
         ),
       ),
-    );
+    ),
+  );
 }

@@ -30,99 +30,99 @@ class _ImageProductSaverWidgetState extends State<ImageProductSaverWidget> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: const Text('Image saver'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              _imageProductSaverController.setImagesWithProduct(tempProduct);
-            },
-            child: const Text('Send images'),
+    appBar: AppBar(
+      title: const Text('Image saver'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            _imageProductSaverController.setImagesWithProduct(tempProduct);
+          },
+          child: const Text('Send images'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ImageProductUpdateWidget()),
+            );
+          },
+          child: const Text('Get product'),
+        ),
+      ],
+    ),
+    body: ListView(
+      children: [
+        Row(
+          children: [
+            Text('Product: ${tempProduct.name}'),
+            TextButton(
+              onPressed: () {
+                _imageProductSaverController.pickImageForProduct(tempProduct);
+              },
+              child: const Text('Pick image'),
+            ),
+          ],
+        ),
+        ListenableBuilder(
+          listenable: _imageProductSaverController,
+          builder: (context, child) => Column(
+            children: tempProduct.productImages
+                .map(
+                  (element) => SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: element.file != null
+                        ? Image.file(File(element.file!.path))
+                        : element.path != null
+                        ? Image.network(element.imageURL(ImageSize.original))
+                        : const ColoredBox(color: Colors.grey),
+                  ),
+                )
+                .toList(),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ImageProductUpdateWidget()),
-              );
-            },
-            child: const Text('Get product'),
-          ),
-        ],
-      ),
-      body: ListView(
-        children: [
-          Row(
-            children: [
-              Text('Product: ${tempProduct.name}'),
-              TextButton(
-                onPressed: () {
-                  _imageProductSaverController.pickImageForProduct(tempProduct);
-                },
-                child: const Text('Pick image'),
-              ),
-            ],
-          ),
-          ListenableBuilder(
-            listenable: _imageProductSaverController,
-            builder: (context, child) => Column(
-                children: tempProduct.productImages
-                    .map(
-                      (element) => SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: element.file != null
-                            ? Image.file(File(element.file!.path))
-                            : element.path != null
-                            ? Image.network(element.imageURL(ImageSize.original))
-                            : const ColoredBox(color: Colors.grey),
-                      ),
-                    )
-                    .toList(),
-              ),
-          ),
-          ListenableBuilder(
-            listenable: _imageProductSaverController,
-            builder: (context, child) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: product.variants
-                    .map(
-                      (element) => Column(
+        ),
+        ListenableBuilder(
+          listenable: _imageProductSaverController,
+          builder: (context, child) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: product.variants
+                .map(
+                  (element) => Column(
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              Text(element.name ?? '-'),
-                              TextButton(
-                                onPressed: () {
-                                  _imageProductSaverController.pickImageForProductVariant(element);
-                                },
-                                child: const Text('Pick image'),
-                              ),
-                            ],
+                          Text(element.name ?? '-'),
+                          TextButton(
+                            onPressed: () {
+                              _imageProductSaverController.pickImageForProductVariant(element);
+                            },
+                            child: const Text('Pick image'),
                           ),
-                          Column(
-                            children: (element.images ?? <TempImageModel>[])
-                                .map(
-                                  (element) => SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: element.file != null
-                                        ? Image.file(File(element.file!.path))
-                                        : element.path != null
-                                        ? Image.network(element.imageURL(ImageSize.original))
-                                        : const ColoredBox(color: Colors.grey),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                          const SizedBox(height: 20),
                         ],
                       ),
-                    )
-                    .toList(),
-              ),
+                      Column(
+                        children: (element.images ?? <TempImageModel>[])
+                            .map(
+                              (element) => SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: element.file != null
+                                    ? Image.file(File(element.file!.path))
+                                    : element.path != null
+                                    ? Image.network(element.imageURL(ImageSize.original))
+                                    : const ColoredBox(color: Colors.grey),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                )
+                .toList(),
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 }

@@ -66,10 +66,10 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
 
   @override
   Future<AuthenticationResponseModel> user() async {
-    final userId = _sharedPreferencesService.getString(Constants.userUUIDKey);
+    final userId = _sharedPreferencesService.getString(userUUIDKey);
 
     if (userId == null) {
-      return AuthenticationResponseModel(message: Constants.messageUserDoesNotExist);
+      return AuthenticationResponseModel(message: messageUserDoesNotExist);
     }
 
     final establishments = <Establishment>[];
@@ -96,7 +96,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
 
     _logger.log(Level.debug, 'login establishemnt: $localEstablishment | $establishments');
 
-    final message = user == null ? Constants.messageUserDoesNotExist : null;
+    final message = user == null ? messageUserDoesNotExist : null;
 
     return AuthenticationResponseModel(
       message: message,
@@ -140,7 +140,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
     }
 
     if (user.id != null) {
-      await _sharedPreferencesService.saveString(Constants.userUUIDKey, user.id!);
+      await _sharedPreferencesService.saveString(userUUIDKey, user.id!);
     }
 
     return true;
@@ -175,10 +175,10 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
     _logger.log(Level.debug, 'login data: $user | establishements: ${establishments.length}');
 
     if (user?.id != null) {
-      await _sharedPreferencesService.saveString(Constants.userUUIDKey, user!.id!);
+      await _sharedPreferencesService.saveString(userUUIDKey, user!.id!);
     }
 
-    final message = user == null ? Constants.messageUserDoesNotExist : null;
+    final message = user == null ? messageUserDoesNotExist : null;
 
     return AuthenticationResponseModel(
       message: message,
@@ -193,7 +193,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
 
   @override
   Future<bool> logout() async {
-    await _sharedPreferencesService.remove(Constants.userUUIDKey);
+    await _sharedPreferencesService.remove(userUUIDKey);
     await _establishmentDatabaseHelper.deleteEstablishment();
     await _orderTableDbTableHelper.deleteAllTables();
     return true;

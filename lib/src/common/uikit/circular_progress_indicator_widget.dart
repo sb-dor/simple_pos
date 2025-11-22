@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CircularProgressIndicatorWidget extends StatelessWidget {
-
   const CircularProgressIndicatorWidget({
     super.key,
     this.strokeWidth = 4,
@@ -22,17 +21,17 @@ class CircularProgressIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Center(
-      child: (defaultTargetPlatform == TargetPlatform.iOS && !useAndroidIndicator)
-          ? CupertinoActivityIndicator(color: color)
-          : SizedBox(
-              width: size?.width,
-              height: size?.height,
-              child: CircularProgressIndicator(
-                value: value,
-                backgroundColor: backgroundColor ?? Colors.transparent,
-                color: color,
-                strokeWidth: strokeWidth,
-              ),
+    child: (defaultTargetPlatform == TargetPlatform.iOS && !useAndroidIndicator)
+        ? CupertinoActivityIndicator(color: color)
+        : SizedBox(
+            width: size?.width,
+            height: size?.height,
+            child: CircularProgressIndicator(
+              value: value,
+              backgroundColor: backgroundColor ?? Colors.transparent,
+              color: color,
+              strokeWidth: strokeWidth,
             ),
-    );
+          ),
+  );
 }

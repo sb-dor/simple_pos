@@ -43,7 +43,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       final products = await _iProductsRepository.products();
 
       emit(ProductsState.completed(products));
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(const ProductsState.error());
     }

@@ -67,7 +67,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       final categories = await _iCategoriesRepository.categories();
 
       emit(CategoriesState.completed(categories));
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(const CategoriesState.error());
     }

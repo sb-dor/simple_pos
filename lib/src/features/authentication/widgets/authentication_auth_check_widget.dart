@@ -51,28 +51,28 @@ class _AuthenticationAuthCheckWidgetState extends State<AuthenticationAuthCheckW
 
   @override
   Widget build(BuildContext context) => BlocListener<AuthenticationBloc, AuthenticationState>(
-      bloc: _authenticationBloc,
-      listener: _handleStateChange,
-      child: Scaffold(
-        body: DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: Constants.appGradientColor,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          child: WindowSizeScope.of(context).maybeMap(
-            compact: () =>
-                Padding(padding: const EdgeInsets.all(16), child: _buildCompactContent(context)),
-            medium: () =>
-                Padding(padding: const EdgeInsets.all(16), child: _buildCompactContent(context)),
-            expanded: () => _buildCenteredContent(context),
-            orElse: () => _buildCenteredContent(context, dividedBy: 3),
+    bloc: _authenticationBloc,
+    listener: _handleStateChange,
+    child: Scaffold(
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: appGradientColor,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
+        child: WindowSizeScope.of(context).maybeMap(
+          compact: () =>
+              Padding(padding: const EdgeInsets.all(16), child: _buildCompactContent(context)),
+          medium: () =>
+              Padding(padding: const EdgeInsets.all(16), child: _buildCompactContent(context)),
+          expanded: () => _buildCenteredContent(context),
+          orElse: () => _buildCenteredContent(context, dividedBy: 3),
+        ),
       ),
-    );
+    ),
+  );
 
   void _handleStateChange(BuildContext context, AuthenticationState state) {
     if (state is Authentication$AuthenticatedState) {
@@ -93,31 +93,31 @@ class _AuthenticationAuthCheckWidgetState extends State<AuthenticationAuthCheckW
   Widget _buildCompactContent(BuildContext context) => _buildContent();
 
   Widget _buildCenteredContent(BuildContext context, {int dividedBy = 1}) => Center(
-      child: FractionallySizedBox(widthFactor: 1 / dividedBy, child: _buildContent()),
-    );
+    child: FractionallySizedBox(widthFactor: 1 / dividedBy, child: _buildContent()),
+  );
 
   Widget _buildContent() => FadeTransition(
-      opacity: _fadeAnimation,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Icon(Icons.lock_outline_rounded, color: Colors.white, size: 72),
-          const SizedBox(height: 24),
-          const TextWidget(
-            text: 'Checking authentication...',
-            color: Colors.white,
-            size: 18,
-            fontWeight: FontWeight.w500,
-          ),
-          const SizedBox(height: 20),
-          const CircularProgressIndicatorWidget(color: Colors.white),
-          const SizedBox(height: 16),
-          Text(
-            'Please wait a moment',
-            style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 14),
-          ),
-        ],
-      ),
-    );
+    opacity: _fadeAnimation,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Icon(Icons.lock_outline_rounded, color: Colors.white, size: 72),
+        const SizedBox(height: 24),
+        const TextWidget(
+          text: 'Checking authentication...',
+          color: Colors.white,
+          size: 18,
+          fontWeight: FontWeight.w500,
+        ),
+        const SizedBox(height: 20),
+        const CircularProgressIndicatorWidget(color: Colors.white),
+        const SizedBox(height: 16),
+        Text(
+          'Please wait a moment',
+          style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 14),
+        ),
+      ],
+    ),
+  );
 }

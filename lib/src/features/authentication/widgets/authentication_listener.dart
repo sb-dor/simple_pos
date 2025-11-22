@@ -26,12 +26,12 @@ class _AuthenticationListenerState extends State<AuthenticationListener> {
 
   @override
   Widget build(BuildContext context) => BlocListener<AuthenticationBloc, AuthenticationState>(
-      bloc: _authenticationBloc,
-      listener: (context, state) {
-        if (state is Authentication$UnauthenticatedState) {
-          context.pushReplacement(AppRoutesName.authentication + AppRoutesName.login);
-        }
-      },
-      child: widget.child(context),
-    );
+    bloc: _authenticationBloc,
+    listener: (context, state) {
+      if (state is Authentication$UnauthenticatedState) {
+        context.pushReplacement(AppRoutesName.authentication + AppRoutesName.login);
+      }
+    },
+    child: widget.child(context),
+  );
 }

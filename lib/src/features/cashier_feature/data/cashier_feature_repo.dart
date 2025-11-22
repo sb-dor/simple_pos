@@ -6,7 +6,6 @@ abstract interface class ICashierFeatureRepo {
 }
 
 class CashierFeatureRepoImpl implements ICashierFeatureRepo {
-
   CashierFeatureRepoImpl(this._cashierFeatureDataSource);
   final ICashierFeatureDataSource _cashierFeatureDataSource;
 

@@ -24,9 +24,7 @@ class DecimalTextInputSpaceFormatterWithSpecificLength extends TextInputFormatte
     final intPart = parts[0];
     final decimalPart = parts.length > 1 ? parts[1] : null;
 
-    final formattedIntPart = ReusableFunctions.instance.separateNumbersRegex(
-      int.tryParse(intPart),
-    );
+    final formattedIntPart = ReusableFunctions.instance.separateNumbersRegex(int.tryParse(intPart));
 
     var formattedText = formattedIntPart ?? '';
     if (decimalPart != null) {

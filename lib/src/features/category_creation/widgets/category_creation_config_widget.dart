@@ -51,10 +51,10 @@ class _CategoryCreationConfigWidgetState extends State<CategoryCreationConfigWid
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: _categoryCreationBloc),
-        BlocProvider.value(value: _productsCategoriesBloc),
-      ],
-      child: CategoryCreationWidgets(categoryId: _categoryId),
-    );
+    providers: [
+      BlocProvider.value(value: _categoryCreationBloc),
+      BlocProvider.value(value: _productsCategoriesBloc),
+    ],
+    child: CategoryCreationWidgets(categoryId: _categoryId),
+  );
 }

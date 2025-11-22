@@ -33,115 +33,116 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
 
   @override
   Widget build(BuildContext context) => AuthenticationListener(
-      child: (context) => SynchronizationListener(
-        child: (context) => Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              context.go(AppRoutesName.categories + AppRoutesName.creation);
-            },
-            child: const Icon(Icons.add),
+    child: (context) => SynchronizationListener(
+      child: (context) => Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            context.go(AppRoutesName.categories + AppRoutesName.creation);
+          },
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
+          orElse: () => FloatingActionButtonLocation.centerFloat,
+          compact: () => FloatingActionButtonLocation.endFloat,
+        ),
+        drawer: const MainAppDrawer(),
+        appBar: const PreferredSize(
+          preferredSize: Size(double.infinity, kToolbarHeight),
+          child: MainAppBar(label: categories),
+        ),
+        body: DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(colors: appGradientColor),
           ),
-          floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
-            orElse: () => FloatingActionButtonLocation.centerFloat,
-            compact: () => FloatingActionButtonLocation.endFloat,
-          ),
-          drawer: const MainAppDrawer(),
-          appBar: const PreferredSize(
-            preferredSize: Size(double.infinity, kToolbarHeight),
-            child: MainAppBar(label: Constants.categories),
-          ),
-          body: DecoratedBox(
-            decoration: const BoxDecoration(gradient: LinearGradient(colors: Constants.appGradientColor)),
-            child: SafeArea(
-              child: CustomScrollView(
-                slivers: [
-                  const SliverToBoxAdapter(child: SizedBox(height: 10)),
-                  BlocBuilder<CategoriesBloc, CategoriesState>(
-                    bloc: _categoriesBloc,
-                    builder: (context, categoriesState) {
-                      switch (categoriesState) {
-                        case Categories$InitialState():
-                          return const SliverToBoxAdapter(child: SizedBox.shrink());
-                        case Categories$InProgressState():
-                          return const SliverFillRemaining(
-                            child: Center(child: CircularProgressIndicatorWidget()),
-                          );
-                        case Categories$ErrorState():
-                          return SliverFillRemaining(
-                            child: Center(
-                              child: ErrorButtonWidget(
-                                label: Constants.reloadLabel,
-                                onTap: () {
-                                  _categoriesBloc.add(const CategoriesEvent.refresh());
+          child: SafeArea(
+            child: CustomScrollView(
+              slivers: [
+                const SliverToBoxAdapter(child: SizedBox(height: 10)),
+                BlocBuilder<CategoriesBloc, CategoriesState>(
+                  bloc: _categoriesBloc,
+                  builder: (context, categoriesState) {
+                    switch (categoriesState) {
+                      case Categories$InitialState():
+                        return const SliverToBoxAdapter(child: SizedBox.shrink());
+                      case Categories$InProgressState():
+                        return const SliverFillRemaining(
+                          child: Center(child: CircularProgressIndicatorWidget()),
+                        );
+                      case Categories$ErrorState():
+                        return SliverFillRemaining(
+                          child: Center(
+                            child: ErrorButtonWidget(
+                              label: reloadLabel,
+                              onTap: () {
+                                _categoriesBloc.add(const CategoriesEvent.refresh());
+                              },
+                            ),
+                          ),
+                        );
+
+                      case Categories$CompletedState():
+                        return SliverToBoxAdapter(
+                          child: Center(
+                            child: SizedBox(
+                              width: WindowSizeScope.of(context).expandedSize,
+                              child: GridView.builder(
+                                padding: const EdgeInsets.all(12),
+                                itemCount: categoriesState.categories.length,
+                                shrinkWrap: true,
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4, // number of circles per row
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 12,
+                                  childAspectRatio: 0.9,
+                                ),
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final category = categoriesState.categories[index];
+
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      context.go(
+                                        '${AppRoutesName.categories}${AppRoutesName.creation}?categoryId=${category.id}',
+                                      );
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 30,
+                                          backgroundColor: category.color ?? Colors.grey,
+                                          child: TextWidget(
+                                            text: category.name != null && category.name!.isNotEmpty
+                                                ? category.name![0].toUpperCase()
+                                                : '-',
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            size: 18,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        TextWidget(
+                                          text: category.name ?? '',
+                                          textAlign: TextAlign.center,
+                                          overFlow: TextOverflow.ellipsis,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 },
                               ),
                             ),
-                          );
-
-                        case Categories$CompletedState():
-                          return SliverToBoxAdapter(
-                            child: Center(
-                              child: SizedBox(
-                                width: WindowSizeScope.of(context).expandedSize,
-                                child: GridView.builder(
-                                  padding: const EdgeInsets.all(12),
-                                  itemCount: categoriesState.categories.length,
-                                  shrinkWrap: true,
-                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 4, // number of circles per row
-                                    crossAxisSpacing: 12,
-                                    mainAxisSpacing: 12,
-                                    childAspectRatio: 0.9,
-                                  ),
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    final category = categoriesState.categories[index];
-
-                                    return GestureDetector(
-                                      onTap: () async {
-                                        context.go(
-                                          '${AppRoutesName.categories}${AppRoutesName.creation}?categoryId=${category.id}',
-                                        );
-                                      },
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 30,
-                                            backgroundColor: category.color ?? Colors.grey,
-                                            child: TextWidget(
-                                              text:
-                                                  category.name != null && category.name!.isNotEmpty
-                                                  ? category.name![0].toUpperCase()
-                                                  : '-',
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              size: 18,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 6),
-                                          TextWidget(
-                                            text: category.name ?? '',
-                                            textAlign: TextAlign.center,
-                                            overFlow: TextOverflow.ellipsis,
-                                            color: Colors.white,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
-                      }
-                    },
-                  ),
-                ],
-              ),
+                          ),
+                        );
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         ),
       ),
-    );
+    ),
+  );
 }

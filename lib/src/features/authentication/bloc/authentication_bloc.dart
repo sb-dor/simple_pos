@@ -135,7 +135,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       } else {
         emit(AuthenticationState.unauthenticated(state.stateModel));
       }
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
     }
   }
@@ -184,7 +184,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       } else {
         emit(AuthenticationState.unauthenticated(state.stateModel));
       }
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
     }
   }
@@ -221,7 +221,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       } else {
         emit(AuthenticationState.unauthenticated(state.stateModel));
       }
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
     }
   }
@@ -237,7 +237,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       await _iAuthenticationRepository.saveEstablishment(establishment: event.establishment);
 
       emit(AuthenticationState.authenticated(updatedModel));
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
     }
   }
@@ -261,7 +261,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         emit(AuthenticationState.unauthenticated(clearedState));
         event.onLogout();
       }
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
     }
   }

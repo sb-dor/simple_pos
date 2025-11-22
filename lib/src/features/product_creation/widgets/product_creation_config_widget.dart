@@ -52,7 +52,7 @@ class _ProductCreationConfigWidgetState extends State<ProductCreationConfigWidge
 
   @override
   Widget build(BuildContext context) => BlocProvider.value(
-      value: _productCreationBloc,
-      child: _ProductCreationWidgets(productId: widget.productsId),
-    );
+    value: _productCreationBloc,
+    child: _ProductCreationWidgets(productId: widget.productsId),
+  );
 }

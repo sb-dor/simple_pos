@@ -19,7 +19,6 @@ abstract class IOrderFeatureRepo {
 }
 
 class OrderFeatureRepoImpl implements IOrderFeatureRepo {
-
   OrderFeatureRepoImpl(this._iOrderFeatureSource);
   final IOrderFeatureSource _iOrderFeatureSource;
 

@@ -4,7 +4,6 @@ import 'package:test_pos_app/src/features/image_product_saver/models/temp_image_
 import 'package:uuid/uuid.dart';
 
 class TempVariant {
-
   TempVariant({
     this.id,
     this.localUUID,

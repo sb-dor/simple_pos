@@ -42,7 +42,7 @@ class EncryptionController {
     } on DioException catch (error, stackTrace) {
       logger.log(Level.error, 'error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);
     }
   }

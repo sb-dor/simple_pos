@@ -8,5 +8,6 @@ class RefreshIndicatorWidget extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => RefreshIndicator.adaptive(onRefresh: onRefresh, child: child);
+  Widget build(BuildContext context) =>
+      RefreshIndicator.adaptive(onRefresh: onRefresh, child: child);
 }

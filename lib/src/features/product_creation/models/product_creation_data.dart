@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:test_pos_app/src/features/products/models/product_type.dart';
 
+@immutable
 class ProductCreationData {
   const ProductCreationData({
     this.name,
@@ -48,16 +49,17 @@ class ProductCreationData {
       image.hashCode;
 
   @override
-  String toString() => 'ProductCreationData{'
-        ' name: $name,'
-        ' price: $price,'
-        ' wholesalePrice: $wholesalePrice,'
-        ' packQty: $packQty,'
-        ' productType: $productType,'
-        ' barcode: $barcode,'
-        ' visible: $visible,'
-        ' image: $image,'
-        '}';
+  String toString() =>
+      'ProductCreationData { '
+      ' name: $name,'
+      ' price: $price,'
+      ' wholesalePrice: $wholesalePrice,'
+      ' packQty: $packQty,'
+      ' productType: $productType,'
+      ' barcode: $barcode,'
+      ' visible: $visible,'
+      ' image: $image, '
+      '}';
 
   ProductCreationData copyWith({
     ValueGetter<String?>? name,
@@ -69,13 +71,13 @@ class ProductCreationData {
     bool? visible,
     ValueGetter<Uint8List?>? image,
   }) => ProductCreationData(
-      name: name != null ? name() : this.name,
-      price: price != null ? price() : this.price,
-      wholesalePrice: wholesalePrice != null ? wholesalePrice() : this.wholesalePrice,
-      packQty: packQty != null ? packQty() : this.packQty,
-      productType: productType ?? this.productType,
-      barcode: barcode != null ? barcode() : this.barcode,
-      visible: visible ?? this.visible,
-      image: image != null ? image() : this.image,
-    );
+    name: name != null ? name() : this.name,
+    price: price != null ? price() : this.price,
+    wholesalePrice: wholesalePrice != null ? wholesalePrice() : this.wholesalePrice,
+    packQty: packQty != null ? packQty() : this.packQty,
+    productType: productType ?? this.productType,
+    barcode: barcode != null ? barcode() : this.barcode,
+    visible: visible ?? this.visible,
+    image: image != null ? image() : this.image,
+  );
 }

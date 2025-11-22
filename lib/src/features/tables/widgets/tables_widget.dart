@@ -38,59 +38,59 @@ class _TablesWidgetState extends State<TablesWidget> {
 
   @override
   Widget build(BuildContext context) => AuthenticationListener(
-      child: (context) => SynchronizationListener(
-        child: (context) => Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: const MainAppBar(label: Constants.tables),
-          ),
-          drawer: const MainAppDrawer(),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              context.go(AppRoutesName.tables + AppRoutesName.creation);
-            },
-            child: const Icon(Icons.add),
-          ),
-          floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
-            orElse: () => FloatingActionButtonLocation.centerFloat,
-            compact: () => FloatingActionButtonLocation.endFloat,
-          ),
-          body: DecoratedBox(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: Constants.appGradientColor,
-              ),
+    child: (context) => SynchronizationListener(
+      child: (context) => Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+          child: const MainAppBar(label: tables),
+        ),
+        drawer: const MainAppDrawer(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            context.go(AppRoutesName.tables + AppRoutesName.creation);
+          },
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: WindowSizeScope.of(context).maybeMap(
+          orElse: () => FloatingActionButtonLocation.centerFloat,
+          compact: () => FloatingActionButtonLocation.endFloat,
+        ),
+        body: DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: appGradientColor,
             ),
-            child: SafeArea(
-              child: RefreshIndicatorWidget(
-                onRefresh: () async => _tablesBloc.add(const TablesEvent.refresh()),
-                child: CustomScrollView(
-                  slivers: [
-                    const SliverToBoxAdapter(child: SizedBox(height: 10)),
-                    BlocBuilder<TablesBloc, TablesState>(
-                      bloc: _tablesBloc,
-                      builder: (context, state) => WindowSizeScope.of(context).maybeMap(
-                          orElse: () => SliverFillRemaining(
-                            child: Align(
-                              alignment: Alignment.topCenter,
-                              child: SizedBox(
-                                width: WindowSizeScope.of(context).expandedSize,
-                                child: _buildContent(state: state, gridCount: 3),
-                              ),
-                            ),
+          ),
+          child: SafeArea(
+            child: RefreshIndicatorWidget(
+              onRefresh: () async => _tablesBloc.add(const TablesEvent.refresh()),
+              child: CustomScrollView(
+                slivers: [
+                  const SliverToBoxAdapter(child: SizedBox(height: 10)),
+                  BlocBuilder<TablesBloc, TablesState>(
+                    bloc: _tablesBloc,
+                    builder: (context, state) => WindowSizeScope.of(context).maybeMap(
+                      orElse: () => SliverFillRemaining(
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: SizedBox(
+                            width: WindowSizeScope.of(context).expandedSize,
+                            child: _buildContent(state: state, gridCount: 3),
                           ),
                         ),
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
       ),
-    );
+    ),
+  );
 
   Widget _buildContent({required final TablesState state, required final int gridCount}) {
     switch (state) {
@@ -101,7 +101,7 @@ class _TablesWidgetState extends State<TablesWidget> {
       case Tables$ErrorState():
         return Center(
           child: ErrorButtonWidget(
-            label: Constants.reloadLabel,
+            label: reloadLabel,
             onTap: () {
               _tablesBloc.add(const TablesEvent.refresh());
             },
@@ -149,55 +149,55 @@ class _TableWidgetState extends State<_TableWidget> {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: () async {
-        final path = '${AppRoutesName.tables}${AppRoutesName.creation}?tableId=${widget.table.id}';
-        context.go(path);
-      },
-      child: MouseRegion(
-        onEnter: (_) => setState(() => _hovered = true),
-        onExit: (_) => setState(() => _hovered = false),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 220),
-          curve: Curves.easeOut,
-          transform: Matrix4.translationValues(0, _hovered ? -6 : 0, 0),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey, width: 0.5),
-            borderRadius: BorderRadius.circular(10),
-            color: widget.table.color ?? Colors.white,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('test'),
-              SizedBox(
-                height: 60,
-                child: widget.table.imageData != null
-                    ? ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(6),
-                          topRight: Radius.circular(6),
-                        ),
-                        child: Image.memory(widget.table.imageData!, height: 60, fit: BoxFit.cover),
-                      )
-                    : widget.table.icon ?? const Icon(Icons.table_chart, size: 40),
-              ),
-              const SizedBox(height: 8),
-              TextWidget(
-                text: widget.table.name ?? 'Unnamed Table',
-                textAlign: TextAlign.center,
+    onTap: () async {
+      final path = '${AppRoutesName.tables}${AppRoutesName.creation}?tableId=${widget.table.id}';
+      context.go(path);
+    },
+    child: MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOut,
+        transform: Matrix4.translationValues(0, _hovered ? -6 : 0, 0),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey, width: 0.5),
+          borderRadius: BorderRadius.circular(10),
+          color: widget.table.color ?? Colors.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('test'),
+            SizedBox(
+              height: 60,
+              child: widget.table.imageData != null
+                  ? ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(6),
+                        topRight: Radius.circular(6),
+                      ),
+                      child: Image.memory(widget.table.imageData!, height: 60, fit: BoxFit.cover),
+                    )
+                  : widget.table.icon ?? const Icon(Icons.table_chart, size: 40),
+            ),
+            const SizedBox(height: 8),
+            TextWidget(
+              text: widget.table.name ?? 'Unnamed Table',
+              textAlign: TextAlign.center,
+              fontWeight: FontWeight.bold,
+              maxLines: 1,
+            ),
+            if (widget.table.vip == true)
+              const TextWidget(
+                text: 'VIP Table',
+                color: Colors.red,
+                size: 12,
                 fontWeight: FontWeight.bold,
-                maxLines: 1,
               ),
-              if (widget.table.vip == true)
-                const TextWidget(
-                  text: 'VIP Table',
-                  color: Colors.red,
-                  size: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-            ],
-          ),
+          ],
         ),
       ),
-    );
+    ),
+  );
 }

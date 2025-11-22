@@ -32,129 +32,131 @@ class _MainAppDrawerState extends State<MainAppDrawer> {
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(colors: Constants.appGradientColor),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: SafeArea(
-        bottom: false,
-        child: Drawer(
-          child: ListView(
-            children: [
-              BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                bloc: _authenticationBloc,
-                builder: (context, state) => SizedBox(
-                    height: 100,
-                    child: DrawerHeader(
-                      margin: EdgeInsets.zero,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(colors: Constants.appGradientColor),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextWidget(
-                                  text: state.stateModel.userModel?.name ?? '-',
-                                  size: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
-                                TextWidget(
-                                  text: state.stateModel.userModel?.userRole?.name ?? '-',
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              _synchronizationBloc.add(
-                                SynchronizationEvent.sync(
-                                  refresh: true,
-                                  onSyncDone: () {
-                                    if (mounted) Navigator.pop(context);
-                                  },
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.sync, color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
+    decoration: BoxDecoration(
+      gradient: const LinearGradient(colors: appGradientColor),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: SafeArea(
+      bottom: false,
+      child: Drawer(
+        child: ListView(
+          children: [
+            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              bloc: _authenticationBloc,
+              builder: (context, state) => SizedBox(
+                height: 100,
+                child: DrawerHeader(
+                  margin: EdgeInsets.zero,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(colors: appGradientColor),
                   ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.payment),
-                title: const Text(Constants.cashier),
-                onTap: () {
-                  Navigator.pop(context);
-                  // AutoRouter.of(context).replaceAll([const CashierRoute()]);
-                  context.go(AppRoutesName.cashier.replaceFirst(':cashierId', '1'));
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.shopping_cart),
-                title: const Text(Constants.salesMode),
-                onTap: () {
-                  Navigator.pop(context);
-                  // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
-                  context.go(AppRoutesName.orderTables);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.table_bar),
-                title: const Text(Constants.tables),
-                onTap: () {
-                  Navigator.pop(context);
-                  // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
-                  context.go(AppRoutesName.tables);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.category),
-                title: const Text(Constants.categories),
-                onTap: () {
-                  Navigator.pop(context);
-                  // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
-                  context.go(AppRoutesName.categories);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.fastfood),
-                title: const Text(Constants.products),
-                onTap: () {
-                  Navigator.pop(context);
-                  // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
-                  context.go(AppRoutesName.products);
-                },
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: OutlinedButton(
-                    onPressed: () {
-                      _authenticationBloc.add(
-                        AuthenticationEvent.logout(
-                          onLogout: () {
-                            _synchronizationBloc.add(const SynchronizationEvent.changeStateToInitial());
-                            _tablesBloc.add(const TablesEvent.clear());
-                          },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextWidget(
+                              text: state.stateModel.userModel?.name ?? '-',
+                              size: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                            TextWidget(
+                              text: state.stateModel.userModel?.userRole?.name ?? '-',
+                              color: Colors.white,
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    child: const Text(Constants.logout),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          _synchronizationBloc.add(
+                            SynchronizationEvent.sync(
+                              refresh: true,
+                              onSyncDone: () {
+                                if (mounted) Navigator.pop(context);
+                              },
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.sync, color: Colors.white),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.payment),
+              title: const Text(cashier),
+              onTap: () {
+                Navigator.pop(context);
+                // AutoRouter.of(context).replaceAll([const CashierRoute()]);
+                context.go(AppRoutesName.cashier.replaceFirst(':cashierId', '1'));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.shopping_cart),
+              title: const Text(salesMode),
+              onTap: () {
+                Navigator.pop(context);
+                // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
+                context.go(AppRoutesName.orderTables);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.table_bar),
+              title: const Text(tables),
+              onTap: () {
+                Navigator.pop(context);
+                // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
+                context.go(AppRoutesName.tables);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.category),
+              title: const Text(categories),
+              onTap: () {
+                Navigator.pop(context);
+                // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
+                context.go(AppRoutesName.categories);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.fastfood),
+              title: const Text(products),
+              onTap: () {
+                Navigator.pop(context);
+                // AutoRouter.of(context).replaceAll([const OrderFeatureRoute()]);
+                context.go(AppRoutesName.products);
+              },
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: OutlinedButton(
+                  onPressed: () {
+                    _authenticationBloc.add(
+                      AuthenticationEvent.logout(
+                        onLogout: () {
+                          _synchronizationBloc.add(
+                            const SynchronizationEvent.changeStateToInitial(),
+                          );
+                          _tablesBloc.add(const TablesEvent.clear());
+                        },
+                      ),
+                    );
+                  },
+                  child: const Text(logout),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
-    );
+    ),
+  );
 }

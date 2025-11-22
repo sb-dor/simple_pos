@@ -29,7 +29,7 @@ class TableCreationChangeNotifierController with ChangeNotifier {
   void _textListener() {
     tableModelDataChange.name = _nameController.text.trim();
     if (_nameController.text.trim().isEmpty) {
-      error = Constants.fieldCannotBeEmpty;
+      error = fieldCannotBeEmpty;
     } else {
       error = null;
     }
@@ -47,8 +47,9 @@ class TableCreationChangeNotifierController with ChangeNotifier {
     tableModelDataChange.selectedColor = tableModel.color ?? Colors.blue;
     if (tableModel.imageData != null) {
       final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/tempImage.png')..createSync();
-      file.writeAsBytesSync(tableModel.imageData!);
+      final file = File('${tempDir.path}/tempImage.png')
+        ..createSync()
+        ..writeAsBytesSync(tableModel.imageData!);
       tableModelDataChange.imageData = XFile(file.path);
     }
   }

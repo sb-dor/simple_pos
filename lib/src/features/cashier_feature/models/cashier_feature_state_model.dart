@@ -1,7 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_model.dart';
 
+@immutable
 class CashierFeatureStateModel {
-
   const CashierFeatureStateModel({
     required this.hasMore,
     required this.allCustomerInvoices,
@@ -9,10 +10,10 @@ class CashierFeatureStateModel {
   });
 
   factory CashierFeatureStateModel.initial() => const CashierFeatureStateModel(
-      hasMore: true,
-      allCustomerInvoices: <CustomerInvoiceModel>[],
-      invoices: <CustomerInvoiceModel>[],
-    );
+    hasMore: true,
+    allCustomerInvoices: <CustomerInvoiceModel>[],
+    invoices: <CustomerInvoiceModel>[],
+  );
   final bool hasMore;
 
   final List<CustomerInvoiceModel> allCustomerInvoices;
@@ -32,19 +33,20 @@ class CashierFeatureStateModel {
   int get hashCode => hasMore.hashCode ^ allCustomerInvoices.hashCode ^ invoices.hashCode;
 
   @override
-  String toString() => 'CashierFeatureStateModel{'
-        ' hasMore: $hasMore,'
-        ' allCustomerInvoices: $allCustomerInvoices,'
-        ' invoices: $invoices,'
-        '}';
+  String toString() =>
+      'CashierFeatureStateModel { '
+      'hasMore: $hasMore, '
+      'allCustomerInvoices: $allCustomerInvoices, '
+      'invoices: $invoices'
+      '}';
 
   CashierFeatureStateModel copyWith({
     bool? hasMore,
     List<CustomerInvoiceModel>? allCustomerInvoices,
     List<CustomerInvoiceModel>? invoices,
   }) => CashierFeatureStateModel(
-      hasMore: hasMore ?? this.hasMore,
-      allCustomerInvoices: allCustomerInvoices ?? this.allCustomerInvoices,
-      invoices: invoices ?? this.invoices,
-    );
+    hasMore: hasMore ?? this.hasMore,
+    allCustomerInvoices: allCustomerInvoices ?? this.allCustomerInvoices,
+    invoices: invoices ?? this.invoices,
+  );
 }

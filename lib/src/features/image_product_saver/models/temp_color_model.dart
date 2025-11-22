@@ -2,10 +2,10 @@ class TempColorModel {
   TempColorModel({this.id, this.name, this.code});
 
   factory TempColorModel.fromJson(final Map<String, Object?> json) => TempColorModel(
-      id: json['id'] as int?,
-      name: json['name'] as String?,
-      code: json['code'] as String?,
-    );
+    id: json['id'] as int?,
+    name: json['name'] as String?,
+    code: json['code'] as String?,
+  );
 
   final int? id;
   final String? name;

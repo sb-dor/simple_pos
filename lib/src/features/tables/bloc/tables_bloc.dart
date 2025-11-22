@@ -48,7 +48,7 @@ class TablesBloc extends Bloc<TablesEvent, TablesState> {
       emit(const TablesState.inProgress(<TableModel>[]));
       final tables = await _iTablesRepository.tables();
       emit(TablesState.completed(tables));
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(const TablesState.error(<TableModel>[]));
     }
@@ -61,7 +61,7 @@ class TablesBloc extends Bloc<TablesEvent, TablesState> {
   Future<void> _tables$ClearEvent(_Tables$ClearEvent event, Emitter<TablesState> emit) async {
     try {
       emit(const TablesState.initial(<TableModel>[]));
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(const TablesState.error(<TableModel>[]));
     }

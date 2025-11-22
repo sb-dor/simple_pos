@@ -4,7 +4,7 @@ enum ImageSize {
   md._('md'),
   sm._('sm');
 
-  final String value;
-
   const ImageSize._(this.value);
+
+  final String value;
 }

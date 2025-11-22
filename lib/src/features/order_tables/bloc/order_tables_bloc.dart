@@ -51,7 +51,7 @@ class OrderTablesBloc extends Bloc<OrderTablesEvent, OrderTablesState> {
       final tables = await _iOrderTablesRepository.tables();
 
       emit(OrderTablesState.completed(tables));
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(OrderTablesState.error(state.tables));
     }

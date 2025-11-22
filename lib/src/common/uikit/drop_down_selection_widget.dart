@@ -3,7 +3,10 @@ import 'package:test_pos_app/src/common/uikit/circle_selected_widget.dart';
 
 class DropDownSelectionWidget<T> extends StatelessWidget {
   const DropDownSelectionWidget({
-    required this.listOfDropdownEntries, required this.title, required this.onSelect, super.key,
+    required this.listOfDropdownEntries,
+    required this.title,
+    required this.onSelect,
+    super.key,
     this.initialSelection,
     this.textController,
     this.singleItemInfo,

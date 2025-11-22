@@ -52,7 +52,7 @@ Future<DependencyContainer> $initializeDependencies({
       );
       // calling ....
       await each.value(dependenciesContainer);
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
       logger.log(
         Level.info,
         'Initialization failed at step "${each.key}": $error',

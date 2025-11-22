@@ -65,7 +65,7 @@ class BlocObserverManager extends BlocObserver {
   }
 
   @override
-  void onClose(BlocBase bloc) {
+  void onClose(BlocBase<dynamic> bloc) {
     final logMessage = StringBuffer()..writeln('Closed Bloc: ${bloc.runtimeType}');
 
     _logger.log(Level.info, logMessage.toString());
@@ -73,7 +73,7 @@ class BlocObserverManager extends BlocObserver {
   }
 
   @override
-  void onCreate(BlocBase bloc) {
+  void onCreate(BlocBase<dynamic> bloc) {
     final logMessage = StringBuffer()..writeln('Opened Bloc: ${bloc.runtimeType}');
 
     _logger.log(Level.info, logMessage.toString());
