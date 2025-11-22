@@ -5,16 +5,16 @@ import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/initialization/models/dependency_container.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 
-class IoMaterialContext extends StatefulWidget {
-  const IoMaterialContext({required this.dependencyContainer, super.key});
+class MaterialContext extends StatefulWidget {
+  const MaterialContext({required this.dependencyContainer, super.key});
 
   final DependencyContainer dependencyContainer;
 
   @override
-  State<IoMaterialContext> createState() => _IoMaterialContextState();
+  State<MaterialContext> createState() => _MaterialContextState();
 }
 
-class _IoMaterialContextState extends State<IoMaterialContext> with AppRouter {
+class _MaterialContextState extends State<MaterialContext> with AppRouter {
   final fadeTransitionPlatforms = {
     TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
     TargetPlatform.macOS: const CupertinoPageTransitionsBuilder(),

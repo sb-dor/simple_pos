@@ -8,8 +8,7 @@ import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart
 import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
 import 'package:test_pos_app/src/features/initialization/logic/factories/app_logger_factory.dart';
 import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
-import 'package:test_pos_app/src/features/initialization/widgets/io_material_context.dart';
-import 'package:test_pos_app/src/features/initialization/widgets/web_material_context.dart';
+import 'package:test_pos_app/src/features/initialization/widgets/material_context.dart';
 
 const String _imageLibraryResourceService = 'image resource service';
 const String _connectionClosedBeforeFullHWR = 'Connection closed before full header was received';
@@ -33,9 +32,7 @@ Future<void> $initializeApp() async {
       final stopwatch = Stopwatch()..start();
 
       try {
-        binding = WidgetsFlutterBinding.ensureInitialized();
-
-        binding.deferFirstFrame();
+        binding = WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
 
         await errorReporter.initialize();
 
@@ -46,15 +43,7 @@ Future<void> $initializeApp() async {
           errorReporter: errorReporter,
         );
 
-        late final Widget materialContext;
-
-        if (kIsWeb || kIsWasm) {
-          materialContext = WebMaterialContext(dependencyContainer: dependencies);
-        } else {
-          materialContext = IoMaterialContext(dependencyContainer: dependencies);
-        }
-
-        runApp(materialContext);
+        runApp(MaterialContext(dependencyContainer: dependencies));
       } on Object {
         rethrow;
       } finally {
