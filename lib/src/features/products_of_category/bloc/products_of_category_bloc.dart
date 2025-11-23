@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/src/features/products/models/product_model.dart';
 import 'package:test_pos_app/src/features/products_of_category/data/products_of_category_repository.dart';
 
@@ -33,9 +34,7 @@ sealed class ProductsOfCategoryState with _$ProductsOfCategoryState {
 class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCategoryState> {
   ProductsOfCategoryBloc({
     required final IProductsOfCategoryRepository productsOfCategoryRepository,
-    required final Logger logger,
   }) : _iProductsOfCategoryRepository = productsOfCategoryRepository,
-       _logger = logger,
        super(const ProductsOfCategoryState.initial()) {
     //
     on<ProductsOfCategoryEvent>(
@@ -50,7 +49,6 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
   }
 
   final IProductsOfCategoryRepository _iProductsOfCategoryRepository;
-  final Logger _logger;
 
   Future<void> _productsOfCategory$LoadEvent(
     _ProductsOfCategory$LoadEvent event,
@@ -73,7 +71,7 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
     Emitter<ProductsOfCategoryState> emit,
   ) async {
     try {
-      _logger.log(Level.debug, 'Trying to save products for category');
+      l.d('Trying to save products for category');
 
       if (state is! ProductsOfCategory$CompletedState) return;
 
@@ -82,7 +80,7 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
         products: event.selectedProducts,
       );
 
-      _logger.log(Level.debug, 'Products for category was saved with result: $saveProducts');
+      l.d('Products for category was saved with result: $saveProducts');
 
       if (saveProducts) {
         final products = await _iProductsOfCategoryRepository.productsOfCategory(event.categoryId);

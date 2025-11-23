@@ -1,4 +1,4 @@
-import 'package:logger/logger.dart';
+
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
 import 'package:test_pos_app/src/features/products_of_category/bloc/products_of_category_bloc.dart';
@@ -8,12 +8,9 @@ import 'package:test_pos_app/src/features/products_of_category/data/products_of_
 final class ProductsOfCategoryBlocFactory extends Factory<ProductsOfCategoryBloc> {
   ProductsOfCategoryBlocFactory({
     required final AppDatabase appDatabase,
-    required final Logger logger,
-  }) : _appDatabase = appDatabase,
-       _logger = logger;
+  }) : _appDatabase = appDatabase;
 
   final AppDatabase _appDatabase;
-  final Logger _logger;
 
   @override
   ProductsOfCategoryBloc create() {
@@ -26,7 +23,6 @@ final class ProductsOfCategoryBlocFactory extends Factory<ProductsOfCategoryBloc
 
     return ProductsOfCategoryBloc(
       productsOfCategoryRepository: productsOfCategoryRepository,
-      logger: _logger,
     );
   }
 }

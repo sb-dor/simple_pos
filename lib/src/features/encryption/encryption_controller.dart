@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/src/features/image_product_saver/controller/image_product_constant.dart';
 
 // class represents only laravel-flutter 'string' encryption
@@ -13,9 +14,7 @@ const String _url = '/third-party-integrations/chats/telegram';
 const String _telegramToken = '';
 
 class EncryptionController {
-  EncryptionController({required this.logger});
-
-  final Logger logger;
+  EncryptionController();
 
   //
   Future<void> sendApi() async {
@@ -30,7 +29,7 @@ class EncryptionController {
           },
         ),
       );
-      logger.log(Level.debug, 'sending url: ${dio.options.baseUrl}$_url');
+      l.d('sending url: ${dio.options.baseUrl}$_url');
 
       const botName = 'TestAgainSbDor';
 
@@ -38,9 +37,9 @@ class EncryptionController {
 
       final response = await dio.post(_url, data: {'token': encryptedToken, 'bot_name': botName});
 
-      logger.log(Level.debug, response.data);
+      l.d(response.data.toString());
     } on DioException catch (error, stackTrace) {
-      logger.log(Level.error, 'error is: ${error.response}');
+      l.e('error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
     } on Object catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);

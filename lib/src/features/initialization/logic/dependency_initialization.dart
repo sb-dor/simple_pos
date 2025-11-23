@@ -4,7 +4,8 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/firebase_options.dart';
 import 'package:test_pos_app/src/common/utils/bloc_observer/bloc_observer_manager.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
@@ -36,29 +37,20 @@ abstract class Factory<T> {
 }
 
 Future<DependencyContainer> $initializeDependencies({
-  required final Logger logger,
   required final ErrorReporter errorReporter,
 }) async {
-  final dependenciesContainer = DependencyContainer(logger: logger, errorReporter: errorReporter);
+  final dependenciesContainer = DependencyContainer(errorReporter: errorReporter);
   final totalSteps = _initializationSteps.length;
   var step = 0;
   for (final each in _initializationSteps.entries) {
     try {
       step++;
       final percent = (step / totalSteps).clamp(0, 100);
-      logger.log(
-        Level.info,
-        'Initialization | $step/$totalSteps (${percent.toStringAsFixed(2)}%) | "${each.key}"',
-      );
+      l.i('Initialization | $step/$totalSteps (${percent.toStringAsFixed(2)}%) | "${each.key}"');
       // calling ....
       await each.value(dependenciesContainer);
     } on Object catch (error, stackTrace) {
-      logger.log(
-        Level.info,
-        'Initialization failed at step "${each.key}": $error',
-        error: error,
-        stackTrace: stackTrace,
-      );
+      l.e('Initialization failed at step "${each.key}": $error', stackTrace);
       Error.throwWithStackTrace(error, stackTrace);
     }
   }
@@ -76,10 +68,7 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
   },
   'Bloc Configuration init': (dependencies) {
     Bloc.transformer = sequential();
-    Bloc.observer = BlocObserverManager(
-      logger: dependencies.logger,
-      errorReporter: dependencies.errorReporter,
-    );
+    Bloc.observer = BlocObserverManager(errorReporter: dependencies.errorReporter);
   },
   'Database init': (dependencies) {
     final appDatabase = AppDatabase.defaults(name: 'test_pos_app');
@@ -97,7 +86,6 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
   //
   'Authentication Bloc init': (dependencies) =>
       dependencies.authenticationBloc = AuthenticationBlocFactory(
-        logger: dependencies.logger,
         sharedPreferencesService: dependencies.sharedPreferencesService,
         appDatabase: dependencies.appDatabase,
       ).create(),
@@ -106,7 +94,6 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
   ).create(),
   'Order bloc init': (dependencies) => dependencies.orderFeatureBloc = OrderBlocFactory(
     appDatabase: dependencies.appDatabase,
-    logger: dependencies.logger,
   ).create(),
   'Tables bloc init': (dependencies) =>
       dependencies.tablesBloc = TablesBlocFactory(appDatabase: dependencies.appDatabase).create(),
@@ -118,14 +105,12 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
   },
   'Cashier bloc init': (dependencies) => dependencies.cashierFeatureBloc = CashierBlocFactory(
     appDatabase: dependencies.appDatabase,
-    logger: dependencies.logger,
     paginatingListHelper: dependencies.paginateListHelper,
   ).create(),
   'Synchronization bloc init': (dependencies) {
     final ISynchronizationDatasource synchronizationDatasource = SynchronizationDatasourceImpl(
       firebaseStore: FirebaseFirestore.instance,
       orderTableDbTableHelper: OrderTableDbTableHelper(dependencies.appDatabase),
-      logger: dependencies.logger,
       appDatabase: dependencies.appDatabase,
     );
     final ISynchronizationRepository synchronizationRepository = SynchronizationRepositoryImpl(

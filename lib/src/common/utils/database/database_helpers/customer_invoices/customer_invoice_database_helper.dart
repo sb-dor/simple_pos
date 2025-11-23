@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart'; // import for "&" or "|"
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/src/common/global_data/global_data.dart';
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
@@ -11,17 +12,14 @@ import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 // in order to use "&" or "|" expression import drift.dart package
 final class CustomerInvoiceDatabaseHelper {
-  CustomerInvoiceDatabaseHelper(this._appDatabase, this._logger);
+  CustomerInvoiceDatabaseHelper(this._appDatabase);
 
   final AppDatabase _appDatabase;
-  final Logger _logger;
 
   Future<void> addProduct(TableModel? table, CustomerInvoiceDetailModel? item) async {
     final checkInvoiceForPlace =
         await (_appDatabase.select(_appDatabase.customerInvoicesTable)..where(
-              (element) =>
-                  element.tableId.equals(table?.id ?? '') &
-                  element.status.equals(pending),
+              (element) => element.tableId.equals(table?.id ?? '') & element.status.equals(pending),
             ))
             .get();
 
@@ -86,9 +84,7 @@ final class CustomerInvoiceDatabaseHelper {
   Future<void> deleteOrderItemFromOrder(OrderItemModel? orderItem, TableModel? table) async {
     final checkInvoiceForPlace =
         await (_appDatabase.select(_appDatabase.customerInvoicesTable)..where(
-              (element) =>
-                  element.tableId.equals(table?.id ?? '') &
-                  element.status.equals(pending),
+              (element) => element.tableId.equals(table?.id ?? '') & element.status.equals(pending),
             ))
             .get();
 
@@ -120,8 +116,7 @@ final class CustomerInvoiceDatabaseHelper {
   Future<bool> finishCustomerInvoice(TableModel? table, List<OrderItemModel> items) async {
     final currentDateTime = DateTime.now().toString().substring(0, 19);
     await (_appDatabase.update(_appDatabase.customerInvoicesTable)..where(
-          (element) =>
-              element.tableId.equals(table?.id ?? '') & element.status.equals(pending),
+          (element) => element.tableId.equals(table?.id ?? '') & element.status.equals(pending),
         ))
         .write(
           CustomerInvoicesTableCompanion(
@@ -148,7 +143,7 @@ final class CustomerInvoiceDatabaseHelper {
       _appDatabase.customerInvoiceDetailsTable,
     )..where((element) => element.customerInvoiceId.equals(invoice.first.id))).get();
 
-    _logger.log(Level.debug, customerInvoiceDetails);
+    l.d(customerInvoiceDetails);
 
     return customerInvoiceDetails.map(CustomerInvoiceDetailModel.fromDb).toList();
   }
@@ -164,7 +159,7 @@ final class CustomerInvoiceDatabaseHelper {
               ..orderBy([(element) => OrderingTerm.desc(element.invoiceDatetime)]))
             .get();
 
-    _logger.log(Level.debug, customerInvoices);
+    l.d(customerInvoices);
 
     final customerInvoicesList = <CustomerInvoiceModel>[];
 

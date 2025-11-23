@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
 import 'package:test_pos_app/src/features/category_creation/data/category_creation_repository.dart';
 import 'package:test_pos_app/src/features/category_creation/widgets/controllers/category_creation_widget_controller.dart';
@@ -58,10 +59,8 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
   /// [initialState] — optional initial state.
   CategoryCreationBloc({
     required final ICategoryCreationRepository repository,
-    required final Logger logger,
     CategoryCreationState? initialState,
   }) : _iCategoryCreationRepository = repository,
-       _logger = logger,
        super(initialState ?? CategoryCreationState.initialState) {
     //
     on<CategoryCreationEvent>(
@@ -75,9 +74,6 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
   /// Repository used to fetch and save category data.
   final ICategoryCreationRepository _iCategoryCreationRepository;
 
-  /// Logger used for debug messages.
-  final Logger _logger;
-
   /// Handles [CategoryCreationEvent.init] to load category data by ID.
   ///
   /// Emits [CategoryCreationState.initial] with the loaded or temporary category.
@@ -88,12 +84,12 @@ class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationS
     try {
       final category = await _iCategoryCreationRepository.category(event.categoryId);
       if (category == null) {
-        _logger.d(
+        l.d(
           'Category was not found\n'
           'Was added temp category with temp id: ${event.categoryId}',
         );
       } else {
-        _logger.d('Found category on init: $category');
+        l.d('Found category on init: $category');
       }
       emit(CategoryCreationState.initial(category ?? CategoryModel(id: event.categoryId)));
     } on Object catch (error, stackTrace) {

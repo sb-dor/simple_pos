@@ -1,18 +1,15 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart';
 import 'package:test_pos_app/src/common/utils/extensions/string_extensions.dart';
 
 class BlocObserverManager extends BlocObserver {
-  const BlocObserverManager({
-    required final Logger logger,
-    required final ErrorReporter errorReporter,
-  }) : _logger = logger,
-       _errorReporter = errorReporter;
+  const BlocObserverManager({required final ErrorReporter errorReporter})
+    : _errorReporter = errorReporter;
 
-  final Logger _logger;
   final ErrorReporter _errorReporter;
 
   @override
@@ -26,7 +23,7 @@ class BlocObserverManager extends BlocObserver {
       )
       ..write('New State: ${transition.nextState?.toString().limit(100)}');
 
-    _logger.log(Level.info, logMessage.toString());
+    l.i(logMessage.toString());
     super.onTransition(bloc, transition);
   }
 
@@ -37,7 +34,7 @@ class BlocObserverManager extends BlocObserver {
       ..writeln('Event: ${event.runtimeType}')
       ..write('Details: ${event?.toString().limit(200)}');
 
-    _logger.log(Level.info, logMessage.toString());
+    l.i(logMessage.toString());
     super.onEvent(bloc, event);
   }
 
@@ -49,7 +46,7 @@ class BlocObserverManager extends BlocObserver {
 
     // you can also send bloc errors to server here
 
-    _logger.log(Level.error, logMessage.toString(), error: error, stackTrace: stackTrace);
+    l.e(logMessage.toString(), stackTrace);
 
     if (kReleaseMode) {
       // send to the sever or firebase crashlytics (crashlytics does not work for web)
@@ -68,7 +65,7 @@ class BlocObserverManager extends BlocObserver {
   void onClose(BlocBase<dynamic> bloc) {
     final logMessage = StringBuffer()..writeln('Closed Bloc: ${bloc.runtimeType}');
 
-    _logger.log(Level.info, logMessage.toString());
+    l.i(logMessage.toString());
     super.onClose(bloc);
   }
 
@@ -76,7 +73,7 @@ class BlocObserverManager extends BlocObserver {
   void onCreate(BlocBase<dynamic> bloc) {
     final logMessage = StringBuffer()..writeln('Opened Bloc: ${bloc.runtimeType}');
 
-    _logger.log(Level.info, logMessage.toString());
+    l.i(logMessage.toString());
     super.onCreate(bloc);
   }
 }

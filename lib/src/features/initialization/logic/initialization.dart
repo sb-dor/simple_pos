@@ -3,10 +3,9 @@ import 'dart:async';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
 import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart';
 import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
-import 'package:test_pos_app/src/features/initialization/logic/factories/app_logger_factory.dart';
 import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/material_context.dart';
 
@@ -16,10 +15,6 @@ const String _cannotCloneDisposedImage = 'Cannot clone a disposed image';
 
 Future<void> $initializeApp() async {
   const appConfig = AppConfig();
-
-  final logger = AppLoggerFactory(
-    logFilter: kReleaseMode ? NoOpLogFilter() : DevelopmentFilter(),
-  ).create();
 
   final ErrorReporter errorReporter = SentryErrorReporter(
     sentryDsn: appConfig.sentryDsn,
@@ -34,12 +29,9 @@ Future<void> $initializeApp() async {
 
     await errorReporter.initialize();
 
-    await _catchExceptions(logger: logger, errorReporter: errorReporter);
+    await _catchExceptions(errorReporter: errorReporter);
 
-    final dependencies = await $initializeDependencies(
-      logger: logger,
-      errorReporter: errorReporter,
-    );
+    final dependencies = await $initializeDependencies(errorReporter: errorReporter);
 
     runApp(MaterialContext(dependencyContainer: dependencies));
   } on Object {
@@ -49,37 +41,29 @@ Future<void> $initializeApp() async {
     binding.allowFirstFrame();
   }
 
-  await runZonedGuarded(
-    () async {
+  await runZonedGuarded(() async {}, (error, stackTrace) {
+    //
+    l.e('Error from zone', stackTrace);
 
-    },
-    (error, stackTrace) {
-      //
-      logger.e('Error from zone', error: error, stackTrace: stackTrace);
+    if (!kReleaseMode) {
+      _errorMessage('Error occurred');
+    }
 
-      if (!kReleaseMode) {
-        _errorMessage('Error occurred');
+    if (kReleaseMode) {
+      // send to the sever or firebase crashlytics
+      if (!kIsWeb && !kIsWasm) {
+        FirebaseCrashlytics.instance.recordError(error, stackTrace, fatal: true);
       }
 
-      if (kReleaseMode) {
-        // send to the sever or firebase crashlytics
-        if (!kIsWeb && !kIsWasm) {
-          FirebaseCrashlytics.instance.recordError(error, stackTrace, fatal: true);
-        }
-
-        errorReporter.captureException(error: error, stackTrace: stackTrace);
-      }
-    },
-  );
+      errorReporter.captureException(error: error, stackTrace: stackTrace);
+    }
+  });
 }
 
-Future<void> _catchExceptions({
-  required final Logger logger,
-  required final ErrorReporter errorReporter,
-}) async {
+Future<void> _catchExceptions({required final ErrorReporter errorReporter}) async {
   try {
     PlatformDispatcher.instance.onError = (error, stack) {
-      logger.log(Level.error, 'error: $error | stacktrace: $stack');
+      l.e(error, stack);
 
       if (kReleaseMode) {
         // send to the sever or firebase crashlytics (crashlytics does not work for web)
@@ -96,9 +80,9 @@ Future<void> _catchExceptions({
       final exceptionStr = errorDetails.exception.toString();
       final library = errorDetails.library ?? '';
 
-      logger.log(
-        Level.error,
+      l.e(
         'library: $library | \nFlutter error: $exceptionStr \nException: $errorDetails',
+        errorDetails.stack,
       );
 
       // error is from cachedImageNetwork (if there is no internet connection or very slow internet connection)
@@ -127,7 +111,7 @@ Future<void> _catchExceptions({
       }
     };
   } on Object catch (error, stackTrace) {
-    logger.e('Error while catching exceptions:', error: error, stackTrace: stackTrace);
+    l.e('Error while catching exceptions: $error', stackTrace);
   }
 }
 

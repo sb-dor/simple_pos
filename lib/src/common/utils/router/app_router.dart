@@ -1,7 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_auth_check_widget.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_login_widget.dart';
@@ -39,14 +40,13 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context);
     goRouter = GoRouter(
       observers: [
         FirebaseAnalyticsObserver(
           analytics: FirebaseAnalytics.instance,
           nameExtractor: (settings) => settings.name,
         ),
-        _LocalNavigatorLoggerObserver(dependencies.logger),
+        _LocalNavigatorLoggerObserver(),
       ],
       redirect: (context, state) {
         final authenticationBloc = DependenciesScope.of(context).authenticationBloc;
@@ -167,52 +167,47 @@ mixin AppRouter<T extends StatefulWidget> on State<T> {
 }
 
 final class _LocalNavigatorLoggerObserver extends NavigatorObserver {
-  _LocalNavigatorLoggerObserver(this._logger);
-
-  final Logger _logger;
+  _LocalNavigatorLoggerObserver();
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-    _logger.log(Level.info, 'User pushed to: ${route.settings.name}');
+    l.i('User pushed to: ${route.settings.name}');
   }
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
-    _logger.log(Level.info, 'User popped from: ${route.settings.name}');
+    l.i('User popped from: ${route.settings.name}');
   }
 
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didRemove(route, previousRoute);
-    _logger.log(Level.info, 'User removed: ${route.settings.name}');
+    l.i('User removed: ${route.settings.name}');
   }
 
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    _logger.log(
-      Level.info,
-      'User replaced old ${oldRoute?.settings.name} with new ${newRoute?.settings.name}',
-    );
+    l.i('User replaced old ${oldRoute?.settings.name} with new ${newRoute?.settings.name}');
   }
 
   @override
   void didChangeTop(Route<dynamic> topRoute, Route<dynamic>? previousTopRoute) {
     super.didChangeTop(topRoute, previousTopRoute);
-    _logger.log(Level.info, 'User changed: $topRoute');
+    l.i('User changed: $topRoute');
   }
 
   @override
   void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didStartUserGesture(route, previousRoute);
-    _logger.log(Level.info, 'User started gesture: ${route.settings.name}');
+    l.i('User started gesture: ${route.settings.name}');
   }
 
   @override
   void didStopUserGesture() {
     super.didStopUserGesture();
-    _logger.log(Level.info, 'User stopped gesture');
+    l.i('User stopped gesture');
   }
 }

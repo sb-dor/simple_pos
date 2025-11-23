@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/features/category_creation/bloc/category_creation_bloc.dart';
 import 'package:test_pos_app/src/features/category_creation/data/category_creation_datasource.dart';
@@ -6,23 +5,16 @@ import 'package:test_pos_app/src/features/category_creation/data/category_creati
 import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
 
 final class CategoryCreationBlocFactory extends Factory<CategoryCreationBloc> {
-  CategoryCreationBlocFactory({
-    required final AppDatabase appDatabase,
-    required final Logger logger,
-  }) : _appDatabase = appDatabase,
-       _logger = logger;
+  CategoryCreationBlocFactory({required final AppDatabase appDatabase})
+    : _appDatabase = appDatabase;
 
   final AppDatabase _appDatabase;
-  final Logger _logger;
 
   @override
   CategoryCreationBloc create() {
     final categoryCreationDatasource = CategoryCreationDatasourceImpl(_appDatabase);
     final categoryCreationRepository = CategoryCreationRepositoryImpl(categoryCreationDatasource);
-    final categoryCreationBloc = CategoryCreationBloc(
-      repository: categoryCreationRepository,
-      logger: _logger,
-    );
+    final categoryCreationBloc = CategoryCreationBloc(repository: categoryCreationRepository);
     return categoryCreationBloc;
   }
 }

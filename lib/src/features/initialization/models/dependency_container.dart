@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:logger/logger.dart';
+
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart';
 import 'package:test_pos_app/src/common/utils/key_value_storage/shared_preferences_service.dart';
@@ -16,9 +16,7 @@ import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
 
 class DependencyContainer {
   //
-  DependencyContainer({required this.logger, required this.errorReporter});
-
-  final Logger logger;
+  DependencyContainer({required this.errorReporter});
 
   final ErrorReporter errorReporter;
 

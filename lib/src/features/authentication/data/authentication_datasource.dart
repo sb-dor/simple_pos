@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/establishment_database_helper.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
@@ -32,9 +33,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
     required final SharedPreferencesService sharedPreferencesService,
     required final EstablishmentDatabaseHelper establishmentDatabaseHelper,
     required final OrderTableDbTableHelper orderTableDbTableHelper,
-    required final Logger logger,
-  }) : _logger = logger,
-       _sharedPreferencesService = sharedPreferencesService,
+  }) : _sharedPreferencesService = sharedPreferencesService,
        _establishmentDatabaseHelper = establishmentDatabaseHelper,
        _orderTableDbTableHelper = orderTableDbTableHelper {
     _usersRef = firebaseStore
@@ -56,7 +55,6 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
         );
   }
 
-  final Logger _logger;
   final SharedPreferencesService _sharedPreferencesService;
   final EstablishmentDatabaseHelper _establishmentDatabaseHelper;
   final OrderTableDbTableHelper _orderTableDbTableHelper;
@@ -76,7 +74,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
 
     final users = await _usersRef.where('id', isEqualTo: userId).limit(1).get();
 
-    _logger.log(Level.debug, users);
+    l.d(users);
 
     final user = users.docs.firstOrNull?.data();
 
@@ -94,7 +92,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
       establishments.add(localEstablishment);
     }
 
-    _logger.log(Level.debug, 'login establishemnt: $localEstablishment | $establishments');
+    l.d('login establishemnt: $localEstablishment | $establishments');
 
     final message = user == null ? messageUserDoesNotExist : null;
 
@@ -116,7 +114,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
         .limit(1)
         .get();
 
-    _logger.log(Level.debug, 'finding user in server: ${findUser.docs.firstOrNull}');
+    l.d('finding user in server: ${findUser.docs.firstOrNull}');
 
     final establishmentIds = <String>[...user.establishmentIds!];
 
@@ -131,7 +129,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
 
     await saveEstablishment(establishment: createdEs);
 
-    // _logger.log(Level.debug, "creating user: $user | from firebase ${findUser.docs.first}");
+    // l.d( "creating user: $user | from firebase ${findUser.docs.first}");
 
     if (findUser.docs.isNotEmpty) {
       await _usersRef.doc(findUser.docs.first.id).update(newUser.toMap());
@@ -172,7 +170,7 @@ final class AuthenticationDatasourceImpl implements IAuthenticationDatasource {
       );
     }
 
-    _logger.log(Level.debug, 'login data: $user | establishements: ${establishments.length}');
+    l.d('login data: $user | establishements: ${establishments.length}');
 
     if (user?.id != null) {
       await _sharedPreferencesService.saveString(userUUIDKey, user!.id!);

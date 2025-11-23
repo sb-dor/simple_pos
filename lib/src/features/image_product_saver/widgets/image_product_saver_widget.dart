@@ -23,9 +23,8 @@ class _ImageProductSaverWidgetState extends State<ImageProductSaverWidget> {
   @override
   void initState() {
     super.initState();
-    final dependencies = DependenciesScope.of(context);
     tempProduct = product;
-    _imageProductSaverController = ImageProductSaverController(dependencies.logger);
+    _imageProductSaverController = ImageProductSaverController();
   }
 
   @override

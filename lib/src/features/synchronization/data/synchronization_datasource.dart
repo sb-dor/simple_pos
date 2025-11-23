@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drift/drift.dart';
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
 import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
@@ -21,10 +22,8 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
     required final FirebaseFirestore firebaseStore,
     required final OrderTableDbTableHelper orderTableDbTableHelper,
     required final AppDatabase appDatabase,
-    required final Logger logger,
   }) : _orderTableDbTableHelper = orderTableDbTableHelper,
-       _appDatabase = appDatabase,
-       _logger = logger {
+       _appDatabase = appDatabase {
     _establishmentRef = firebaseStore
         .collection('establishments')
         .withConverter<Establishment>(
@@ -36,13 +35,12 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
   final OrderTableDbTableHelper _orderTableDbTableHelper;
   final AppDatabase _appDatabase;
-  final Logger _logger;
 
   late final CollectionReference<Establishment> _establishmentRef;
 
   @override
   Future<bool> tableSync({required final Establishment establishment}) async {
-    _logger.log(Level.debug, 'Establishment document id: ${establishment.documentId}');
+    l.d('Establishment document id: ${establishment.documentId}');
 
     final establishmentRef = _establishmentRef.doc(establishment.documentId);
 
@@ -79,7 +77,7 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
     final remoteTables = remoteSnapshot.docs.map((d) => d.data()).toList();
 
-    _logger.log(Level.info, 'Remote tables: $remoteTables');
+    l.d( 'Remote tables: $remoteTables');
 
     if (remoteTables.isEmpty) return true;
 
@@ -131,7 +129,7 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
     final remoteCategories = remoteSnapshot.docs.map((d) => d.data()).toList();
 
-    _logger.log(Level.info, 'Remote categories: $remoteCategories');
+    l.d( 'Remote categories: $remoteCategories');
 
     if (remoteCategories.isEmpty) return true;
 
@@ -195,7 +193,7 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
     final remoteProducts = remoteSnapshot.docs.map((d) => d.data()).toList();
 
-    _logger.log(Level.info, 'Remote products: $remoteProducts');
+    l.d( 'Remote products: $remoteProducts');
 
     if (remoteProducts.isEmpty) return true;
 

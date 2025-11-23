@@ -1,4 +1,4 @@
-import 'package:logger/logger.dart';
+
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/customer_invoices/customer_invoice_database_helper.dart';
 import 'package:test_pos_app/src/common/utils/paginate_list_helper.dart';
@@ -10,20 +10,17 @@ import 'package:test_pos_app/src/features/initialization/logic/dependency_initia
 final class CashierBlocFactory extends Factory<CashierFeatureBloc> {
   CashierBlocFactory({
     required final AppDatabase appDatabase,
-    required final Logger logger,
     required final PaginateListHelper paginatingListHelper,
   }) : _appDatabase = appDatabase,
-       _logger = logger,
        _paginateListHelper = paginatingListHelper;
 
   final AppDatabase _appDatabase;
-  final Logger _logger;
   final PaginateListHelper _paginateListHelper;
 
   @override
   CashierFeatureBloc create() {
     final ICashierFeatureDataSource datasource = CashierFeatureDataSourceImpl(
-      customerInvoiceDatabaseHelper: CustomerInvoiceDatabaseHelper(_appDatabase, _logger),
+      customerInvoiceDatabaseHelper: CustomerInvoiceDatabaseHelper(_appDatabase),
     );
 
     final ICashierFeatureRepo repo = CashierFeatureRepoImpl(datasource);

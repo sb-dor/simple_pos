@@ -1,16 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/src/features/image_product_saver/controller/image_product_constant.dart';
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_image_model.dart';
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_product.dart';
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_variant.dart';
 
 class ImageProductSaverController with ChangeNotifier {
-  ImageProductSaverController(this._logger);
-
-  final Logger _logger;
+  ImageProductSaverController();
 
   bool sending = false;
 
@@ -64,14 +63,14 @@ class ImageProductSaverController with ChangeNotifier {
 
       final response = await dio.post('/products', data: formData);
 
-      _logger.log(Level.debug, response.data);
+      l.d(response.data.toString());
 
       sending = false;
       notifyListeners();
     } on DioException catch (error, stackTrace) {
       sending = false;
       notifyListeners();
-      _logger.log(Level.error, 'error is: ${error.response}');
+      l.e('error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
     } on Object catch (error, stackTrace) {
       sending = false;

@@ -2,7 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:logger/logger.dart';
+import 'package:l/l.dart';
+
 import 'package:test_pos_app/src/features/image_product_saver/controller/image_product_constant.dart';
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_image_model.dart';
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_product.dart';
@@ -10,8 +11,7 @@ import 'package:test_pos_app/src/features/image_product_saver/models/temp_varian
 import 'package:uuid/uuid.dart';
 
 class ImageProductUpdateController with ChangeNotifier {
-  ImageProductUpdateController(this._logger);
-  final Logger _logger;
+  ImageProductUpdateController();
 
   bool sending = false;
 
@@ -33,13 +33,13 @@ class ImageProductUpdateController with ChangeNotifier {
 
       final response = await dio.get('/products?product_id=$productId');
 
-      _logger.log(Level.debug, response.data);
+      l.d(response.data.toString());
 
       tempProduct = TempProduct.fromJson(response.data as Map<String, Object?>);
 
       notifyListeners();
     } on DioException catch (error, stackTrace) {
-      _logger.log(Level.error, 'error is: ${error.response}');
+      l.e('error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
     } on Object catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);
@@ -69,7 +69,7 @@ class ImageProductUpdateController with ChangeNotifier {
 
       final map = tempProduct!.toJson();
 
-      _logger.log(Level.debug, "message of product: ${map['variants']}");
+      l.d("message of product: ${map['variants']}");
 
       final files = <MultipartFile>[];
       final pathImages = <String>[];
@@ -118,20 +118,20 @@ class ImageProductUpdateController with ChangeNotifier {
       map['images[]'] = pathImages;
       map.addAll(productAndVariantImagesPosition);
 
-      _logger.log(Level.debug, map);
+      l.d(map);
 
       final formData = FormData.fromMap(map);
 
       final response = await dio.post('/products/update/${tempProduct?.id}', data: formData);
 
-      _logger.log(Level.debug, response.data);
+      l.d(response.data.toString());
 
       sending = false;
       notifyListeners();
     } on DioException catch (error, stackTrace) {
       sending = false;
       notifyListeners();
-      _logger.log(Level.error, 'error is: ${error.response}');
+      l.e('error is: ${error.response}');
       Error.throwWithStackTrace(error, stackTrace);
     } on Object catch (error, stackTrace) {
       sending = false;
