@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_pos_app/src/common/constants/constants.dart';
 import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/uikit/circular_progress_indicator_widget.dart';
 import 'package:test_pos_app/src/common/uikit/error_button_widget.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_bar.dart';
 import 'package:test_pos_app/src/common/uikit/main_app_drawer.dart';
-import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/features/authentication/widgets/authentication_listener.dart';
 import 'package:test_pos_app/src/features/cashier_feature/bloc/cashier_feature_bloc.dart';
 import 'package:test_pos_app/src/features/cashier_feature/widgets/widgets/cashier_invoice_widget.dart';

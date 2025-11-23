@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:test_pos_app/src/common/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/compress_image.dart';
-import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 class TableModelDataChange {

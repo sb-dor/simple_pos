@@ -5,7 +5,7 @@ class AppConfig {
   const AppConfig();
 
   Environment get environment {
-    const mode = String.fromEnvironment('MODE');
+    const mode = String.fromEnvironment('MODE', defaultValue: 'DEV');
     switch (mode) {
       case 'PRODUCTION':
         return Environment.prod;

@@ -1,8 +1,7 @@
 import 'package:drift/drift.dart'; // import for "&" or "|"
 import 'package:l/l.dart';
-
+import 'package:test_pos_app/src/common/constants/constants.dart';
 import 'package:test_pos_app/src/common/global_data/global_data.dart';
-import 'package:test_pos_app/src/common/utils/constants/constants.dart';
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/common/utils/extensions/order_item_extentions.dart';
 import 'package:test_pos_app/src/features/order_feature/models/customer_invoice_detail_model.dart';

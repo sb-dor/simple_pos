@@ -1,9 +1,6 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:l/l.dart';
 
-import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart';
 import 'package:test_pos_app/src/common/utils/error_util/error_util.dart';
 import 'package:test_pos_app/src/common/utils/extensions/string_extensions.dart';
 

@@ -133,6 +133,12 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 
+
+flutter_gen:
+  output: lib/src/common/constants/
+  line_length: 100
+
+
 sentry:
   upload_debug_symbols: true
   upload_source_maps: true

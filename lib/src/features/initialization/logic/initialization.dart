@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:l/l.dart';
+import 'package:test_pos_app/src/common/utils/app_zone.dart';
 import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart';
 import 'package:test_pos_app/src/common/utils/error_util/error_util.dart';
 import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
@@ -12,24 +13,36 @@ const String _imageLibraryResourceService = 'image resource service';
 const String _connectionClosedBeforeFullHWR = 'Connection closed before full header was received';
 const String _cannotCloneDisposedImage = 'Cannot clone a disposed image';
 
-Future<void> $initializeApp(final AppConfig appConfig, final ErrorReporter errorReporter) async {
+Future<void> $initializeApp() async {
+  //
   late final WidgetsBinding binding;
+
+  const appConfig = AppConfig();
+
+  final ErrorReporter errorReporter = SentryErrorReporter(
+    sentryDsn: appConfig.sentryDsn,
+    environment: appConfig.environment.value,
+  );
+
   final stopwatch = Stopwatch()..start();
+  appZone(() async {
+    try {
+      binding = WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
 
-  try {
-    binding = WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
+      await errorReporter.initialize();
 
-    await _catchExceptions();
+      await _catchExceptions();
 
-    final dependencies = await $initializeDependencies();
+      final dependencies = await $initializeDependencies();
 
-    runApp(MaterialContext(dependencyContainer: dependencies));
-  } on Object {
-    rethrow;
-  } finally {
-    stopwatch.stop();
-    binding.allowFirstFrame();
-  }
+      runApp(MaterialContext(dependencyContainer: dependencies));
+    } on Object {
+      rethrow;
+    } finally {
+      stopwatch.stop();
+      binding.allowFirstFrame();
+    }
+  });
 }
 
 Future<void> _catchExceptions() async {

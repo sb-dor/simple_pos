@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_pos_app/src/common/utils/constants/constants.dart';
+import 'package:test_pos_app/src/common/constants/constants.dart';
 
 typedef TextControllerListenerRules = Map<String, bool Function(String value)>;
 

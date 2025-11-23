@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:test_pos_app/src/common/utils/constants/constants.dart';
+import 'package:test_pos_app/src/common/constants/constants.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
 
 class CategoryCreationData {

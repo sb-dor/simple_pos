@@ -4,15 +4,4 @@ import 'package:test_pos_app/src/common/utils/error_reporter/src/sentry_error_re
 import 'package:test_pos_app/src/features/initialization/logic/initialization.dart';
 import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
 
-void main() async {
-  const appConfig = AppConfig();
-
-  final ErrorReporter errorReporter = SentryErrorReporter(
-    sentryDsn: appConfig.sentryDsn,
-    environment: appConfig.environment.value,
-  );
-
-  await errorReporter.initialize();
-
-  appZone(() => $initializeApp(appConfig, errorReporter));
-}
+void main() => $initializeApp();
