@@ -7,7 +7,6 @@ import 'package:test_pos_app/src/features/image_product_saver/models/temo_produc
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_image_model.dart';
 import 'package:test_pos_app/src/features/image_product_saver/models/temp_product.dart';
 import 'package:test_pos_app/src/features/image_product_saver/widgets/image_product_update_widget.dart';
-import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
 
 class ImageProductSaverWidget extends StatefulWidget {
   const ImageProductSaverWidget({super.key});

@@ -1,4 +1,3 @@
-
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/customer_invoices/customer_invoice_database_helper.dart';
 import 'package:test_pos_app/src/common/utils/paginate_list_helper.dart';

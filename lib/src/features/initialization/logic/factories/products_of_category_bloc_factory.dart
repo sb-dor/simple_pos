@@ -1,4 +1,3 @@
-
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
 import 'package:test_pos_app/src/features/products_of_category/bloc/products_of_category_bloc.dart';
@@ -6,9 +5,8 @@ import 'package:test_pos_app/src/features/products_of_category/data/products_of_
 import 'package:test_pos_app/src/features/products_of_category/data/products_of_category_repository.dart';
 
 final class ProductsOfCategoryBlocFactory extends Factory<ProductsOfCategoryBloc> {
-  ProductsOfCategoryBlocFactory({
-    required final AppDatabase appDatabase,
-  }) : _appDatabase = appDatabase;
+  ProductsOfCategoryBlocFactory({required final AppDatabase appDatabase})
+    : _appDatabase = appDatabase;
 
   final AppDatabase _appDatabase;
 
@@ -21,8 +19,6 @@ final class ProductsOfCategoryBlocFactory extends Factory<ProductsOfCategoryBloc
     final IProductsOfCategoryRepository productsOfCategoryRepository =
         ProductsOfCategoryRepositoryImpl(productsOfCategoryDatasource: datasource);
 
-    return ProductsOfCategoryBloc(
-      productsOfCategoryRepository: productsOfCategoryRepository,
-    );
+    return ProductsOfCategoryBloc(productsOfCategoryRepository: productsOfCategoryRepository);
   }
 }

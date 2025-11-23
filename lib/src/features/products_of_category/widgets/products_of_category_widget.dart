@@ -43,11 +43,7 @@ class _ProductsOfCategoryWidgetState extends State<ProductsOfCategoryWidget> {
         centerTitle: false,
         scrolledUnderElevation: 0,
         elevation: 0,
-        title: const TextWidget(
-          text: productsOfCategory,
-          size: 22,
-          fontWeight: FontWeight.w500,
-        ),
+        title: const TextWidget(text: productsOfCategory, size: 22, fontWeight: FontWeight.w500),
         bottom: TabBar(tabs: _tabs),
       ),
       body: TabBarView(children: _children),

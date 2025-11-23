@@ -77,7 +77,7 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
     final remoteTables = remoteSnapshot.docs.map((d) => d.data()).toList();
 
-    l.d( 'Remote tables: $remoteTables');
+    l.d('Remote tables: $remoteTables');
 
     if (remoteTables.isEmpty) return true;
 
@@ -129,7 +129,7 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
     final remoteCategories = remoteSnapshot.docs.map((d) => d.data()).toList();
 
-    l.d( 'Remote categories: $remoteCategories');
+    l.d('Remote categories: $remoteCategories');
 
     if (remoteCategories.isEmpty) return true;
 
@@ -193,7 +193,7 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
 
     final remoteProducts = remoteSnapshot.docs.map((d) => d.data()).toList();
 
-    l.d( 'Remote products: $remoteProducts');
+    l.d('Remote products: $remoteProducts');
 
     if (remoteProducts.isEmpty) return true;
 

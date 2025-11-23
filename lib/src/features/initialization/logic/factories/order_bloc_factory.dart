@@ -1,4 +1,3 @@
-
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/customer_invoices/customer_invoice_database_helper.dart';
 import 'package:test_pos_app/src/common/utils/database/database_helpers/order_table_db_table_helper.dart';
@@ -8,8 +7,7 @@ import 'package:test_pos_app/src/features/order_feature/data/order_feature_repo.
 import 'package:test_pos_app/src/features/order_feature/data/order_feature_source.dart';
 
 final class OrderBlocFactory extends Factory<OrderFeatureBloc> {
-  OrderBlocFactory({required final AppDatabase appDatabase})
-    : _appDatabase = appDatabase;
+  OrderBlocFactory({required final AppDatabase appDatabase}) : _appDatabase = appDatabase;
 
   final AppDatabase _appDatabase;
 

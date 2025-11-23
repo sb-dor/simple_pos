@@ -42,9 +42,7 @@ class _CashierPageState extends State<CashierPage> {
         ),
         drawer: const MainAppDrawer(),
         body: DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: appGradientColor),
-          ),
+          decoration: const BoxDecoration(gradient: LinearGradient(colors: appGradientColor)),
           child: SafeArea(
             child: RefreshIndicator(
               onRefresh: () async => _cashierFeatureBloc.add(const CashierFeatureEvents.initial()),

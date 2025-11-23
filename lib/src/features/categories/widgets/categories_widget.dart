@@ -51,9 +51,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
           child: MainAppBar(label: categories),
         ),
         body: DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: appGradientColor),
-          ),
+          decoration: const BoxDecoration(gradient: LinearGradient(colors: appGradientColor)),
           child: SafeArea(
             child: CustomScrollView(
               slivers: [

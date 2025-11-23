@@ -129,9 +129,7 @@ class _ProductCreationWidgetsState extends State<_ProductCreationWidgets> {
             compact: () => FloatingActionButtonLocation.endFloat,
           ),
           body: DecoratedBox(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: appGradientColor),
-            ),
+            decoration: const BoxDecoration(gradient: LinearGradient(colors: appGradientColor)),
             child: SafeArea(
               child: Center(
                 child: SizedBox(

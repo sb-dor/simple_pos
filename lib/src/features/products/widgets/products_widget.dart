@@ -52,9 +52,7 @@ class _ProductsWidgetState extends State<ProductsWidget> {
           compact: () => FloatingActionButtonLocation.endFloat,
         ),
         body: DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: appGradientColor),
-          ),
+          decoration: const BoxDecoration(gradient: LinearGradient(colors: appGradientColor)),
           child: Center(
             child: SizedBox(
               width: WindowSizeScope.of(context).expandedSize,

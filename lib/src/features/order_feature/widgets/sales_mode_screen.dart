@@ -36,10 +36,7 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
   void initState() {
     super.initState();
     final dependencies = DependenciesScope.of(context);
-    _tabs = [
-      Tab(text: '$products (${products.length})'),
-      const Tab(text: settings),
-    ];
+    _tabs = [Tab(text: '$products (${products.length})'), const Tab(text: settings)];
     _tabController = TabController(length: _tabs.length, vsync: this);
     _tabController.animateTo(widget.statefulNavigationShell.currentIndex);
 
@@ -86,15 +83,10 @@ class _SalesModeScreenState extends State<SalesModeScreen> with SingleTickerProv
         child: (context) => Scaffold(
           appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: const AppBarBack(
-              label: salesMode,
-              backPath: AppRoutesName.orderTables,
-            ),
+            child: const AppBarBack(label: salesMode, backPath: AppRoutesName.orderTables),
           ),
           body: DecoratedBox(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: appGradientColor),
-            ),
+            decoration: const BoxDecoration(gradient: LinearGradient(colors: appGradientColor)),
             child: SafeArea(
               child: Center(
                 child: SizedBox(

@@ -119,9 +119,7 @@ class _TableCreationWidgetState extends State<TableCreationWidget> {
           compact: () => FloatingActionButtonLocation.endFloat,
         ),
         body: DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: appGradientColor),
-          ),
+          decoration: const BoxDecoration(gradient: LinearGradient(colors: appGradientColor)),
           child: SafeArea(
             child: Center(
               child: SizedBox(

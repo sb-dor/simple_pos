@@ -62,10 +62,7 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
           drawer: const MainAppDrawer(),
           appBar: const PreferredSize(
             preferredSize: Size(double.infinity, kToolbarHeight),
-            child: AppBarBack(
-              label: categoryCreation,
-              backPath: AppRoutesName.categories,
-            ),
+            child: AppBarBack(label: categoryCreation, backPath: AppRoutesName.categories),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -84,9 +81,7 @@ class _CategoryCreationWidgetsState extends State<CategoryCreationWidgets> {
             compact: () => FloatingActionButtonLocation.endFloat,
           ),
           body: DecoratedBox(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: appGradientColor),
-            ),
+            decoration: const BoxDecoration(gradient: LinearGradient(colors: appGradientColor)),
             child: SafeArea(
               child: Center(
                 child: SizedBox(

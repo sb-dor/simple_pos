@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:l/l.dart';
 
-
 abstract interface class ErrorReporter {
   bool get isInitialized;
 
@@ -13,15 +12,14 @@ abstract interface class ErrorReporter {
 }
 
 final class ErrorReporterWithLog {
-  ErrorReporterWithLog({required final ErrorReporter reporter})
-    : _reporter = reporter;
+  ErrorReporterWithLog({required final ErrorReporter reporter}) : _reporter = reporter;
 
   final ErrorReporter _reporter;
 
   void log({final Error? error, final StackTrace? stackTrace}) {
     if (!_reporter.isInitialized) return;
 
-    l.e( 'Error reporter:', stackTrace);
+    l.e('Error reporter:', stackTrace);
 
     _reporter.captureException(
       error: error ?? const ReportMessageException('Error reporter log exception'),
