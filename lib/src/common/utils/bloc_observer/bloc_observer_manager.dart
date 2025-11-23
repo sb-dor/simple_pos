@@ -4,13 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:l/l.dart';
 
 import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart';
+import 'package:test_pos_app/src/common/utils/error_util/error_util.dart';
 import 'package:test_pos_app/src/common/utils/extensions/string_extensions.dart';
 
 class BlocObserverManager extends BlocObserver {
-  const BlocObserverManager({required final ErrorReporter errorReporter})
-    : _errorReporter = errorReporter;
-
-  final ErrorReporter _errorReporter;
+  const BlocObserverManager();
 
   @override
   void onTransition(Bloc<Object?, Object?> bloc, Transition<Object?, Object?> transition) {
@@ -46,16 +44,8 @@ class BlocObserverManager extends BlocObserver {
 
     // you can also send bloc errors to server here
 
-    l.e(logMessage.toString(), stackTrace);
-
-    if (kReleaseMode) {
-      // send to the sever or firebase crashlytics (crashlytics does not work for web)
-      if (!kIsWeb && !kIsWasm) {
-        FirebaseCrashlytics.instance.recordError(error, stackTrace, fatal: true);
-      }
-
-      _errorReporter.captureException(error: error, stackTrace: stackTrace);
-    }
+    ErrorUtil.logMessage(logMessage.toString());
+    ErrorUtil.logError(error, stackTrace);
 
     // Avoid calling super.onError to prevent propagation
     super.onError(bloc, error, stackTrace);

@@ -36,7 +36,7 @@ abstract final class ErrorUtil {
   }) async {
     try {
       l.e(message, stackTrace ?? StackTrace.current);
-      $captureMessage(message, stackTrace, hint, warning).ignore();
+      // $captureMessage(message, stackTrace, hint, warning).ignore();
     } on Object catch (error, stackTrace) {
       l.e('Error while logging error "$error" inside ErrorUtil.logMessage', stackTrace);
     }

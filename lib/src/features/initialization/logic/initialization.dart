@@ -1,10 +1,9 @@
 import 'dart:async';
-
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:l/l.dart';
 import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart';
+import 'package:test_pos_app/src/common/utils/error_util/error_util.dart';
 import 'package:test_pos_app/src/features/initialization/logic/dependency_initialization.dart';
 import 'package:test_pos_app/src/features/initialization/models/app_config.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/material_context.dart';
@@ -13,25 +12,16 @@ const String _imageLibraryResourceService = 'image resource service';
 const String _connectionClosedBeforeFullHWR = 'Connection closed before full header was received';
 const String _cannotCloneDisposedImage = 'Cannot clone a disposed image';
 
-Future<void> $initializeApp() async {
-  const appConfig = AppConfig();
-
-  final ErrorReporter errorReporter = SentryErrorReporter(
-    sentryDsn: appConfig.sentryDsn,
-    environment: appConfig.environment.value,
-  );
-
+Future<void> $initializeApp(final AppConfig appConfig, final ErrorReporter errorReporter) async {
   late final WidgetsBinding binding;
   final stopwatch = Stopwatch()..start();
 
   try {
     binding = WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
 
-    await errorReporter.initialize();
+    await _catchExceptions();
 
-    await _catchExceptions(errorReporter: errorReporter);
-
-    final dependencies = await $initializeDependencies(errorReporter: errorReporter);
+    final dependencies = await $initializeDependencies();
 
     runApp(MaterialContext(dependencyContainer: dependencies));
   } on Object {
@@ -40,39 +30,12 @@ Future<void> $initializeApp() async {
     stopwatch.stop();
     binding.allowFirstFrame();
   }
-
-  await runZonedGuarded(() async {}, (error, stackTrace) {
-    //
-    l.e('Error from zone', stackTrace);
-
-    if (!kReleaseMode) {
-      _errorMessage('Error occurred');
-    }
-
-    if (kReleaseMode) {
-      // send to the sever or firebase crashlytics
-      if (!kIsWeb && !kIsWasm) {
-        FirebaseCrashlytics.instance.recordError(error, stackTrace, fatal: true);
-      }
-
-      errorReporter.captureException(error: error, stackTrace: stackTrace);
-    }
-  });
 }
 
-Future<void> _catchExceptions({required final ErrorReporter errorReporter}) async {
+Future<void> _catchExceptions() async {
   try {
     PlatformDispatcher.instance.onError = (error, stack) {
-      l.e(error, stack);
-
-      if (kReleaseMode) {
-        // send to the sever or firebase crashlytics (crashlytics does not work for web)
-        if (!kIsWeb && !kIsWasm) {
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-        }
-
-        errorReporter.captureException(error: error, stackTrace: stack);
-      }
+      ErrorUtil.logError(error, stack);
       return true;
     };
 
@@ -97,24 +60,9 @@ Future<void> _catchExceptions({required final ErrorReporter errorReporter}) asyn
         return;
       }
 
-      // send error to Firebase crashlytics
-      if (kReleaseMode) {
-        // send to the sever or firebase crashlytics (crashlytics does not work for web)
-        if (!kIsWeb && !kIsWasm) {
-          FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-        }
-
-        errorReporter.captureException(
-          error: errorDetails.exception,
-          stackTrace: errorDetails.stack ?? StackTrace.current,
-        );
-      }
+      ErrorUtil.logError(errorDetails.exception, errorDetails.stack ?? StackTrace.current);
     };
   } on Object catch (error, stackTrace) {
     l.e('Error while catching exceptions: $error', stackTrace);
   }
-}
-
-void _errorMessage(String message) {
-  //
 }

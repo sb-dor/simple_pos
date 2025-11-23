@@ -36,10 +36,8 @@ abstract class Factory<T> {
   T create();
 }
 
-Future<DependencyContainer> $initializeDependencies({
-  required final ErrorReporter errorReporter,
-}) async {
-  final dependenciesContainer = DependencyContainer(errorReporter: errorReporter);
+Future<DependencyContainer> $initializeDependencies() async {
+  final dependenciesContainer = DependencyContainer();
   final totalSteps = _initializationSteps.length;
   var step = 0;
   for (final each in _initializationSteps.entries) {
@@ -68,7 +66,7 @@ final Map<String, _InitializationStep> _initializationSteps = <String, _Initiali
   },
   'Bloc Configuration init': (dependencies) {
     Bloc.transformer = sequential();
-    Bloc.observer = BlocObserverManager(errorReporter: dependencies.errorReporter);
+    Bloc.observer = const BlocObserverManager();
   },
   'Database init': (dependencies) {
     final appDatabase = AppDatabase.defaults(name: 'test_pos_app');

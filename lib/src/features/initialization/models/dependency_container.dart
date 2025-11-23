@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
-
 import 'package:test_pos_app/src/common/utils/database/app_database.dart';
-import 'package:test_pos_app/src/common/utils/error_reporter/error_reporter.dart';
 import 'package:test_pos_app/src/common/utils/key_value_storage/shared_preferences_service.dart';
 import 'package:test_pos_app/src/common/utils/paginate_list_helper.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
@@ -16,9 +14,7 @@ import 'package:test_pos_app/src/features/tables/bloc/tables_bloc.dart';
 
 class DependencyContainer {
   //
-  DependencyContainer({required this.errorReporter});
-
-  final ErrorReporter errorReporter;
+  DependencyContainer();
 
   late final AppDatabase appDatabase;
 
