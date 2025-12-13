@@ -30,7 +30,7 @@ class _ProductsOfCategoryWidgetState extends State<ProductsOfCategoryWidget> {
     super.initState();
     _tabs = [const Tab(text: 'Selected products'), const Tab(text: 'All products')];
     _children = [
-      _ProdudctsOfCategory(categoryId: widget.categoryId),
+      _ProductsOfCategory(categoryId: widget.categoryId),
       _AllProductsWidget(categoryId: widget.categoryId),
     ];
   }
@@ -51,16 +51,16 @@ class _ProductsOfCategoryWidgetState extends State<ProductsOfCategoryWidget> {
   );
 }
 
-class _ProdudctsOfCategory extends StatefulWidget {
-  const _ProdudctsOfCategory({required this.categoryId});
+class _ProductsOfCategory extends StatefulWidget {
+  const _ProductsOfCategory({required this.categoryId});
 
   final String categoryId;
 
   @override
-  State<_ProdudctsOfCategory> createState() => __ProdudctsOfCategoryState();
+  State<_ProductsOfCategory> createState() => _ProductsOfCategoryState();
 }
 
-class __ProdudctsOfCategoryState extends State<_ProdudctsOfCategory> {
+class _ProductsOfCategoryState extends State<_ProductsOfCategory> {
   @override
   void initState() {
     super.initState();

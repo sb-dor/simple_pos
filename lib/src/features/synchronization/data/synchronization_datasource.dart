@@ -7,6 +7,7 @@ import 'package:test_pos_app/src/common/utils/database/database_helpers/order_ta
 import 'package:test_pos_app/src/features/authentication/models/establishment.dart';
 import 'package:test_pos_app/src/features/categories/models/category_model.dart';
 import 'package:test_pos_app/src/features/products/models/product_model.dart';
+import 'package:test_pos_app/src/features/products_of_category/models/product_of_category.dart';
 import 'package:test_pos_app/src/features/tables/models/table_model.dart';
 
 abstract interface class ISynchronizationDatasource {
@@ -15,6 +16,8 @@ abstract interface class ISynchronizationDatasource {
   Future<bool> categorySync({required final Establishment establishment});
 
   Future<bool> productsSync({required final Establishment establishment});
+
+  Future<bool> productsOfCategoriesSync({required final Establishment establishment});
 }
 
 final class SynchronizationDatasourceImpl implements ISynchronizationDatasource {
@@ -208,6 +211,80 @@ final class SynchronizationDatasourceImpl implements ISynchronizationDatasource 
         await (_appDatabase.update(_appDatabase.productsTable)
               ..where((element) => element.id.equals(product.id!)))
             .write(product.toDbProductCompanion());
+      }
+    }
+
+    return true;
+  }
+
+  @override
+  Future<bool> productsOfCategoriesSync({required Establishment establishment}) async {
+    final establishmentRef = _establishmentRef.doc(establishment.documentId);
+
+    final productOfCategoriesRef = establishmentRef
+        .collection('products_of_categories')
+        .withConverter(
+          fromFirestore: (doc, _) => ProductOfCategory.fromJson(doc.data() ?? {}),
+          toFirestore: (value, _) => value.toJson(),
+        );
+
+    final localChangedProductsOfCategories = (await (_appDatabase.select(
+      _appDatabase.productsCategoriesTable,
+    )..where((el) => el.changed.equals(true))).get()).map(ProductOfCategory.fromDbTable);
+
+    if (localChangedProductsOfCategories.isNotEmpty) {
+      final batch = FirebaseFirestore.instance.batch();
+
+      for (final each in localChangedProductsOfCategories) {
+        final docRef = productOfCategoriesRef.doc(
+          'category_${each.categoryId}_product_${each.productId}',
+        );
+
+        final docSnapshot = await docRef.get();
+
+        if (docSnapshot.exists) {
+          batch.update(docRef, each.toJson());
+        } else {
+          batch.set(docRef, each);
+        }
+      }
+
+      await batch.commit();
+    }
+
+    await (_appDatabase.update(_appDatabase.productsCategoriesTable)..where(
+          (t) => t.id.isIn(localChangedProductsOfCategories.map((e) => e.id ?? '').toList()),
+        ))
+        .write(const ProductsCategoriesTableCompanion(changed: Value(true)));
+
+    final remoteSnapshot = await productOfCategoriesRef.get();
+
+    final remoteProductsOfCategories = remoteSnapshot.docs.map((d) => d.data()).toList();
+
+    l.d('Remote products of categories: $remoteProductsOfCategories');
+
+    if (remoteProductsOfCategories.isEmpty) return true;
+
+    for (final productOfCategory in remoteProductsOfCategories) {
+      if (productOfCategory.productId == null || productOfCategory.categoryId == null) continue;
+      final findTable =
+          await (_appDatabase.select(_appDatabase.productsCategoriesTable)..where(
+                (element) =>
+                    element.productId.equals(productOfCategory.productId!) &
+                    element.categoryId.equals(productOfCategory.categoryId!),
+              ))
+              .getSingleOrNull();
+      if (findTable == null) {
+        await _appDatabase
+            .into(_appDatabase.productsCategoriesTable)
+            .insert(productOfCategory.toDbProductCategoryCompanion());
+      } else {
+        await (_appDatabase.update(_appDatabase.productsCategoriesTable)..where(
+              (element) =>
+                  element.productId.equals(productOfCategory.productId!) &
+                  element.categoryId.equals(productOfCategory.categoryId!),
+            ))
+            .write(productOfCategory.toDbProductCategoryCompanion());
       }
     }
 

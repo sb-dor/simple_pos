@@ -4,7 +4,7 @@ import 'package:test_pos_app/src/features/products_of_category/data/products_of_
 abstract interface class IProductsOfCategoryRepository {
   Future<List<ProductModel>> productsOfCategory(final String categoryId);
 
-  Future<bool> saveProdouctsToCategory({
+  Future<bool> saveProductsToCategory({
     required final String categoryId,
     required final List<ProductModel> products,
   });
@@ -25,10 +25,10 @@ final class ProductsOfCategoryRepositoryImpl implements IProductsOfCategoryRepos
   }
 
   @override
-  Future<bool> saveProdouctsToCategory({
+  Future<bool> saveProductsToCategory({
     required final String categoryId,
     required final List<ProductModel> products,
-  }) => _iProductsOfCategoryDatasource.saveProdouctsToCategory(
+  }) => _iProductsOfCategoryDatasource.saveProductsToCategory(
     categoryId: categoryId,
     products: products,
   );

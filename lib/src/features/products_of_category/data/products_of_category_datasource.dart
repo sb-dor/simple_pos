@@ -6,7 +6,7 @@ import 'package:uuid/uuid.dart';
 abstract interface class IProductsOfCategoryDatasource {
   Future<List<ProductsTableData>> productsOfCategory(final String categoryId);
 
-  Future<bool> saveProdouctsToCategory({
+  Future<bool> saveProductsToCategory({
     required final String categoryId,
     required final List<ProductModel> products,
   });
@@ -32,7 +32,7 @@ final class ProductsOfCategoryDatasourceImpl implements IProductsOfCategoryDatas
   }
 
   @override
-  Future<bool> saveProdouctsToCategory({
+  Future<bool> saveProductsToCategory({
     required String categoryId,
     required List<ProductModel> products,
   }) async {
@@ -42,6 +42,7 @@ final class ProductsOfCategoryDatasourceImpl implements IProductsOfCategoryDatas
             id: Value(const Uuid().v4()),
             productId: Value(p.id),
             categoryId: Value(categoryId),
+            changed: const Value(true),
           ),
         )
         .toList();

@@ -75,7 +75,7 @@ class ProductsOfCategoryBloc extends Bloc<ProductsOfCategoryEvent, ProductsOfCat
 
       if (state is! ProductsOfCategory$CompletedState) return;
 
-      final saveProducts = await _iProductsOfCategoryRepository.saveProdouctsToCategory(
+      final saveProducts = await _iProductsOfCategoryRepository.saveProductsToCategory(
         categoryId: event.categoryId,
         products: event.selectedProducts,
       );
