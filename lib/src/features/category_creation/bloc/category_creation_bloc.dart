@@ -45,28 +45,19 @@ sealed class CategoryCreationState with _$CategoryCreationState {
   /// State indicating category creation or update completed successfully.
   const factory CategoryCreationState.completed(final CategoryModel? category) =
       CategoryCreation$CompletedState;
-
-  /// Static getter for the initial state of the bloc.
-  static CategoryCreationState get initialState => const CategoryCreationState.initial(null);
 }
 
-/// Bloc responsible for managing category creation and editing.
 class CategoryCreationBloc extends Bloc<CategoryCreationEvent, CategoryCreationState> {
-  /// Constructs the bloc with the required repository and logger.
-  ///
-  /// [repository] — used to fetch and save category data.
-  /// [logger] — used for debug logging.
-  /// [initialState] — optional initial state.
   CategoryCreationBloc({
     required final ICategoryCreationRepository repository,
-    CategoryCreationState? initialState,
+    required final CategoryCreationState initialState,
   }) : _iCategoryCreationRepository = repository,
-       super(initialState ?? CategoryCreationState.initialState) {
+       super(initialState) {
     //
     on<CategoryCreationEvent>(
-      (event, emit) => switch (event) {
-        final _CategoryCreation$InitEvent event => _categoryCreation$InitEvent(event, emit),
-        final _CategoryCreation$SaveEvent event => _categoryCreation$SaveEvent(event, emit),
+      (event, state) => switch (event) {
+        final _CategoryCreation$InitEvent event => _categoryCreation$InitEvent(event, state),
+        final _CategoryCreation$SaveEvent event => _categoryCreation$SaveEvent(event, state),
       },
     );
   }

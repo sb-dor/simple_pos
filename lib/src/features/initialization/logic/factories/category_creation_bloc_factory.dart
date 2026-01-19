@@ -14,7 +14,10 @@ final class CategoryCreationBlocFactory extends Factory<CategoryCreationBloc> {
   CategoryCreationBloc create() {
     final categoryCreationDatasource = CategoryCreationDatasourceImpl(_appDatabase);
     final categoryCreationRepository = CategoryCreationRepositoryImpl(categoryCreationDatasource);
-    final categoryCreationBloc = CategoryCreationBloc(repository: categoryCreationRepository);
+    final categoryCreationBloc = CategoryCreationBloc(
+      repository: categoryCreationRepository,
+      initialState: const CategoryCreationState.initial(null),
+    );
     return categoryCreationBloc;
   }
 }
