@@ -48,4 +48,6 @@ firebase.json
 *.freezed.dart
 *.g.dart
 
+credentials.json
+
 sentry.properties

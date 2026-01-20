@@ -4,6 +4,7 @@ import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/initialization/models/dependency_container.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
+import 'package:test_pos_app/src/generated/pos_localizations.dart';
 
 class MaterialContext extends StatefulWidget {
   const MaterialContext({required this.dependencyContainer, super.key});
@@ -58,6 +59,8 @@ class _MaterialRouteConfigState extends State<_MaterialRouteConfig> with AppRout
       theme: ThemeData(
         pageTransitionsTheme: PageTransitionsTheme(builders: fadeTransitionPlatforms),
       ),
+      localizationsDelegates: PosLocalizations.localizationsDelegates,
+      supportedLocales: PosLocalizations.supportedLocales,
     );
   }
 }
