@@ -64,7 +64,7 @@ dependencies:
   dio: ^5.9.0
   faker: ^2.2.0
   encrypt: ^5.0.3
-  firebase_crashlytics: ^5.0.5  # Updated from 5.0.5 (already latest)
+  firebase_crashlytics: ^5.0.6  # Updated from 5.0.5 (already latest)
   flutter_launcher_icons: ^0.14.4
   rename: ^3.1.0
   bloc: ^9.1.0
