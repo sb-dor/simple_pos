@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:test_pos_app/localization.dart';
 import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/initialization/models/dependency_container.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
-import 'package:test_pos_app/src/generated/pos_localizations.dart';
+import 'package:test_pos_app/src/generated/locales.dart' as generated_locales;
 
 class MaterialContext extends StatefulWidget {
   const MaterialContext({required this.dependencyContainer, super.key});
@@ -59,8 +60,8 @@ class _MaterialRouteConfigState extends State<_MaterialRouteConfig> with AppRout
       theme: ThemeData(
         pageTransitionsTheme: PageTransitionsTheme(builders: fadeTransitionPlatforms),
       ),
-      localizationsDelegates: PosLocalizations.localizationsDelegates,
-      supportedLocales: PosLocalizations.supportedLocales,
+      localizationsDelegates: AuthLocalization.localizationsDelegates,
+      supportedLocales: AuthLocalization.supportedLocales,
     );
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:test_pos_app/localization.dart';
 import 'package:test_pos_app/src/common/constants/constants.dart';
 import 'package:test_pos_app/src/common/layout/window_size.dart';
 import 'package:test_pos_app/src/common/utils/reusable_functions.dart';
 import 'package:test_pos_app/src/common/utils/router/app_router.dart';
 import 'package:test_pos_app/src/features/authentication/bloc/authentication_bloc.dart';
 import 'package:test_pos_app/src/features/initialization/widgets/dependencies_scope.dart';
-import 'package:test_pos_app/src/generated/pos_localizations.dart';
 
 class AuthenticationLoginWidget extends StatefulWidget {
   const AuthenticationLoginWidget({super.key});
@@ -137,7 +137,7 @@ class _AuthenticationLoginWidgetState extends State<AuthenticationLoginWidget> {
               child: state is Authentication$InProgressState
                   ? const Center(child: CircularProgressIndicator(color: Colors.white))
                   : Text(
-                      PosLocalizations.of(context)!.login,
+                      AuthLocalization.of(context).login,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
